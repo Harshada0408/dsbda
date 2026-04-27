@@ -1,0 +1,919 @@
+# DSBDA Practical 1 — Data Wrangling I (Single Combined File)
+
+Source material compiled from your uploaded notebook and markdown notes. The practical uses the Titanic dataset for data wrangling in Python using Pandas and NumPy. fileciteturn0file0
+
+---
+
+# Aim
+
+To perform Data Wrangling operations using Python libraries on an open-source dataset.
+
+---
+
+# Dataset Used
+
+**Titanic Dataset**
+
+The Titanic dataset contains passenger information such as:
+
+* PassengerId
+* Survived
+* Pclass
+* Name
+* Sex
+* Age
+* SibSp
+* Parch
+* Ticket
+* Fare
+* Cabin
+* Embarked
+
+---
+
+# Required Libraries
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+### Why Pandas?
+
+* Used for data handling
+* Works with DataFrames
+* Useful for CSV reading and preprocessing
+
+### Why NumPy?
+
+* Used for numerical operations
+* Helps with missing values and arrays
+
+---
+
+# Complete Practical Code (Single File)
+
+```python
+# Import Libraries
+import pandas as pd
+import numpy as np
+
+# Load Dataset
+# Make sure Titanic-Dataset.csv is in same folder
+
+df = pd.read_csv('Titanic-Dataset.csv')
+
+# Display first rows
+print("
+First 5 Rows:")
+print(df.head())
+
+# Dataset Shape
+print("
+Dataset Shape:")
+print(df.shape)
+
+# Column Names
+print("
+Column Names:")
+print(df.columns)
+
+# Data Types
+print("
+Data Types:")
+print(df.dtypes)
+
+# Dataset Information
+print("
+Dataset Info:")
+print(df.info())
+
+# Statistical Summary
+print("
+Statistical Summary:")
+print(df.describe())
+
+# Include Categorical Columns
+print("
+Full Summary:")
+print(df.describe(include='all'))
+
+# Missing Values
+print("
+Missing Values:")
+print(df.isnull().sum())
+
+# Fill Missing Age Values
+# Replace null age values using mean
+
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+
+# Check Data Types Again
+print("
+Updated Data Types:")
+print(df.dtypes)
+
+# Convert Survived to Category Type
+
+df['Survived'] = df['Survived'].astype('category')
+
+# Convert Gender to Numeric
+
+df['Sex'] = df['Sex'].map({'male':0, 'female':1})
+
+# Convert Embarked to Numeric
+
+df['Embarked'] = df['Embarked'].map({'S':0, 'C':1})
+
+# Display Updated Dataset
+print("
+Updated Dataset:")
+print(df.head())
+```
+
+---
+
+# Detailed Line-by-Line Explanation
+
+## Line 1
+
+```python
+import pandas as pd
+```
+
+### Explanation
+
+* `import` means bring library into program.
+* `pandas` is a Python library.
+* It is used for data analysis and table handling.
+* `as pd` gives shortcut name.
+
+### Why Needed?
+
+Because Pandas provides DataFrame support.
+
+---
+
+## Line 2
+
+```python
+import numpy as np
+```
+
+### Explanation
+
+* NumPy is numerical Python library.
+* Used for calculations and arrays.
+* `np` is shortcut name.
+
+### Why Needed?
+
+Pandas internally uses NumPy.
+
+---
+
+## Line 3
+
+```python
+df = pd.read_csv('Titanic-Dataset.csv')
+```
+
+### Explanation
+
+* `pd.read_csv()` reads CSV file.
+* CSV = Comma Separated Values.
+* `'Titanic-Dataset.csv'` is dataset file.
+* `df` means DataFrame variable.
+
+### What Happens?
+
+Dataset gets loaded into memory.
+
+---
+
+## Line 4
+
+```python
+print("
+First 5 Rows:")
+```
+
+### Explanation
+
+* `print()` displays text.
+* `
+  ` means new line.
+* Used for better output formatting.
+
+---
+
+## Line 5
+
+```python
+print(df.head())
+```
+
+### Explanation
+
+* `head()` shows first 5 rows.
+* Helps inspect dataset quickly.
+
+### Example Output
+
+```python
+PassengerId  Survived
+1            0
+2            1
+```
+
+---
+
+## Line 6
+
+```python
+print("
+Dataset Shape:")
+```
+
+### Explanation
+
+Displays heading before output.
+
+---
+
+## Line 7
+
+```python
+print(df.shape)
+```
+
+### Explanation
+
+* `shape` returns dataset dimensions.
+* Output format:
+
+```python
+(rows, columns)
+```
+
+### Example
+
+```python
+(891, 12)
+```
+
+Meaning:
+
+* 891 rows
+* 12 columns
+
+---
+
+## Line 8
+
+```python
+print("
+Column Names:")
+```
+
+### Explanation
+
+Prints title before column list.
+
+---
+
+## Line 9
+
+```python
+print(df.columns)
+```
+
+### Explanation
+
+Displays all column names.
+
+### Example
+
+```python
+PassengerId
+Age
+Sex
+Fare
+```
+
+---
+
+## Line 10
+
+```python
+print("
+Data Types:")
+```
+
+### Explanation
+
+Displays title.
+
+---
+
+## Line 11
+
+```python
+print(df.dtypes)
+```
+
+### Explanation
+
+Shows datatype of each column.
+
+### Common Types
+
+* int64 → Integer
+* float64 → Decimal
+* object → Text
+
+---
+
+## Line 12
+
+```python
+print("
+Dataset Info:")
+```
+
+### Explanation
+
+Print heading.
+
+---
+
+## Line 13
+
+```python
+print(df.info())
+```
+
+### Explanation
+
+`info()` provides:
+
+* Number of rows
+* Number of columns
+* Data types
+* Null values
+* Memory usage
+
+---
+
+## Line 14
+
+```python
+print("
+Statistical Summary:")
+```
+
+### Explanation
+
+Displays title.
+
+---
+
+## Line 15
+
+```python
+print(df.describe())
+```
+
+### Explanation
+
+Provides statistics.
+
+### Includes
+
+* Mean
+* Min
+* Max
+* Standard deviation
+* Quartiles
+
+---
+
+## Line 16
+
+```python
+print("
+Full Summary:")
+```
+
+### Explanation
+
+Displays title.
+
+---
+
+## Line 17
+
+```python
+print(df.describe(include='all'))
+```
+
+### Explanation
+
+* Includes all columns.
+* Also includes categorical data.
+
+### Example
+
+Text columns also appear.
+
+---
+
+## Line 18
+
+```python
+print("
+Missing Values:")
+```
+
+### Explanation
+
+Displays heading.
+
+---
+
+## Line 19
+
+```python
+print(df.isnull().sum())
+```
+
+### Explanation
+
+* `isnull()` checks missing values.
+* `sum()` counts them.
+
+### Example
+
+```python
+Age       177
+Cabin     687
+```
+
+---
+
+## Line 20
+
+```python
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+```
+
+### Explanation
+
+* Select Age column.
+* `fillna()` fills missing values.
+* `mean()` calculates average.
+
+### Meaning
+
+Missing age values are replaced by average age.
+
+---
+
+## Line 21
+
+```python
+print("
+Updated Data Types:")
+```
+
+### Explanation
+
+Prints title.
+
+---
+
+## Line 22
+
+```python
+print(df.dtypes)
+```
+
+### Explanation
+
+Checks datatype again.
+
+---
+
+## Line 23
+
+```python
+df['Survived'] = df['Survived'].astype('category')
+```
+
+### Explanation
+
+* Converts datatype.
+* `astype()` changes datatype.
+
+### Why?
+
+Survived has only categories:
+
+* 0 → Not survived
+* 1 → Survived
+
+---
+
+## Line 24
+
+```python
+df['Sex'] = df['Sex'].map({'male':0, 'female':1})
+```
+
+### Explanation
+
+Converts text into numbers.
+
+### Before
+
+```python
+male
+female
+```
+
+### After
+
+```python
+0
+1
+```
+
+---
+
+## Line 25
+
+```python
+df['Embarked'] = df['Embarked'].map({'S':0, 'C':1})
+```
+
+### Explanation
+
+Converts embark values.
+
+### Example
+
+* S → 0
+* C → 1
+
+---
+
+## Line 26
+
+```python
+print("
+Updated Dataset:")
+```
+
+### Explanation
+
+Displays heading.
+
+---
+
+## Line 27
+
+```python
+print(df.head())
+```
+
+### Explanation
+
+Shows final processed dataset.
+
+---
+
+# Step-by-Step Explanation
+
+## 1. Import Libraries
+
+```python
+import pandas as pd
+import numpy as np
+```
+
+Used to load libraries required for data handling.
+
+---
+
+## 2. Read Dataset
+
+```python
+df = pd.read_csv('Titanic-Dataset.csv')
+```
+
+Reads CSV file into DataFrame.
+
+---
+
+## 3. Display Dataset
+
+```python
+df.head()
+```
+
+Shows first 5 rows.
+
+---
+
+## 4. Dataset Dimensions
+
+```python
+df.shape
+```
+
+Returns:
+
+```python
+(rows, columns)
+```
+
+---
+
+## 5. Column Names
+
+```python
+df.columns
+```
+
+Displays all feature names.
+
+---
+
+## 6. Data Types
+
+```python
+df.dtypes
+```
+
+Displays datatype of each column.
+
+---
+
+## 7. Dataset Information
+
+```python
+df.info()
+```
+
+Shows:
+
+* Number of rows
+* Memory usage
+* Data types
+* Null values
+
+---
+
+## 8. Statistical Summary
+
+```python
+df.describe()
+```
+
+Returns:
+
+* Mean
+* Standard deviation
+* Min
+* Max
+* Quartiles
+
+---
+
+## 9. Missing Values
+
+```python
+df.isnull().sum()
+```
+
+Counts null values.
+
+---
+
+## 10. Fill Missing Values
+
+```python
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+```
+
+Replaces missing age values using average.
+
+---
+
+## 11. Convert Datatype
+
+```python
+df['Survived'] = df['Survived'].astype('category')
+```
+
+Changes datatype.
+
+---
+
+## 12. Convert Categorical Data
+
+```python
+df['Sex'] = df['Sex'].map({'male':0, 'female':1})
+```
+
+Machine learning requires numerical data.
+
+---
+
+# Important Viva Questions and Answers
+
+## 1. What is Data Wrangling?
+
+Cleaning and transforming raw data into usable format.
+
+---
+
+## 2. Why Pandas is Used?
+
+Pandas helps in:
+
+* Data cleaning
+* Filtering
+* Manipulation
+* CSV reading
+
+---
+
+## 3. What is a DataFrame?
+
+A 2D tabular structure in Pandas.
+
+---
+
+## 4. Difference Between Series and DataFrame?
+
+* Series → One-dimensional
+* DataFrame → Two-dimensional
+
+---
+
+## 5. What is Missing Value?
+
+A null or empty value in dataset.
+
+---
+
+## 6. Why Handle Missing Values?
+
+Missing values reduce accuracy.
+
+---
+
+## 7. What is `fillna()`?
+
+Used to replace null values.
+
+---
+
+## 8. What is `astype()`?
+
+Used to change datatype.
+
+---
+
+## 9. Difference Between `info()` and `describe()`?
+
+* `info()` → Dataset structure
+* `describe()` → Statistical summary
+
+---
+
+## 10. What is Normalization?
+
+Scaling data into fixed range.
+
+Example:
+
+0 to 1
+
+---
+
+## 11. Why Convert Categorical Data?
+
+Machine learning only accepts numerical values.
+
+---
+
+## 12. What is CSV?
+
+CSV means Comma Separated Values.
+
+Used to store tabular data.
+
+---
+
+## 13. What is NumPy?
+
+Library used for mathematical operations.
+
+---
+
+## 14. Why Use `map()`?
+
+Used to convert categorical values into numeric values.
+
+Example:
+
+```python
+male → 0
+female → 1
+```
+
+---
+
+## 15. What is Data Cleaning?
+
+Removing errors and missing values from dataset.
+
+---
+
+## 16. What is Mean?
+
+Average of values.
+
+Formula:
+
+```python
+Mean = Sum of values / Total values
+```
+
+---
+
+## 17. What is Median?
+
+Middle value after sorting.
+
+---
+
+## 18. What is Mode?
+
+Most repeated value.
+
+---
+
+## 19. What is Null Value?
+
+Unknown or empty data.
+
+---
+
+## 20. Why Use Jupyter Notebook?
+
+* Easy coding
+* Cell-by-cell execution
+* Good for visualization
+
+---
+
+# Faculty Modification Questions
+
+## Replace Mean with Median
+
+```python
+df['Age'] = df['Age'].fillna(df['Age'].median())
+```
+
+---
+
+## Delete Missing Rows
+
+```python
+df.dropna()
+```
+
+---
+
+## Use Another Dataset
+
+```python
+df = pd.read_csv('student.csv')
+```
+
+---
+
+## Convert Using get_dummies()
+
+```python
+pd.get_dummies(df, columns=['Sex'])
+```
+
+---
+
+# Conclusion
+
+Data Wrangling helps clean and organize data before analysis. Using Pandas and NumPy, missing values, datatype conversion, and categorical encoding can be handled easily.

@@ -1,0 +1,484 @@
+# DSBDA Practical 10 — Data Visualization III (Iris Dataset using Histograms and Boxplots)
+
+Compiled from your uploaded notebook and markdown file for Practical 10. This document includes:
+
+* Full practical code
+* Detailed line-by-line explanation
+* Histogram and Boxplot concepts
+* Distribution and outlier explanation
+* Viva questions and answers
+* Faculty modification questions
+
+Source reference: fileciteturn10file0
+
+---
+
+# Aim
+
+To analyze Iris dataset using histograms and boxplots to understand distributions and outliers.
+
+---
+
+# Visualization Concepts
+
+## Histogram
+
+Histogram shows frequency distribution.
+
+## Boxplot
+
+Boxplot shows:
+
+* Median
+* Spread
+* Quartiles
+* Outliers
+
+---
+
+# Complete Practical Code
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+
+df = sns.load_dataset('iris')
+
+# Display dataset
+print(df.head())
+
+# Dataset info
+print(df.info())
+
+# Columns
+print(df.columns)
+
+# Data types
+print(df.dtypes)
+
+# Histograms
+
+df.hist(figsize=(10,8))
+plt.show()
+
+# Single Histogram
+
+df['sepal_length'].hist()
+plt.title('Sepal Length Distribution')
+plt.show()
+
+# Boxplot for all features
+
+plt.figure(figsize=(10,6))
+sns.boxplot(data=df)
+plt.title('Boxplot for Iris Features')
+plt.show()
+
+# Single Boxplot
+
+sns.boxplot(y=df['sepal_width'])
+plt.title('Sepal Width Boxplot')
+plt.show()
+```
+
+---
+
+# Detailed Line-by-Line Explanation
+
+## Line 1
+
+```python
+import pandas as pd
+```
+
+### Explanation
+
+* Imports Pandas library.
+* Used for data handling.
+
+---
+
+## Line 2
+
+```python
+import seaborn as sns
+```
+
+### Explanation
+
+* Imports Seaborn.
+* Used for visualization.
+
+---
+
+## Line 3
+
+```python
+import matplotlib.pyplot as plt
+```
+
+### Explanation
+
+* Imports plotting module.
+* Displays charts.
+
+---
+
+## Line 4
+
+```python
+df = sns.load_dataset('iris')
+```
+
+### Explanation
+
+Loads Iris dataset.
+
+---
+
+## Line 5
+
+```python
+print(df.head())
+```
+
+### Explanation
+
+Displays first 5 rows.
+
+---
+
+## Line 6
+
+```python
+print(df.info())
+```
+
+### Explanation
+
+Displays:
+
+* Rows
+* Columns
+* Datatypes
+* Missing values
+
+---
+
+## Line 7
+
+```python
+print(df.columns)
+```
+
+### Explanation
+
+Displays column names.
+
+---
+
+## Line 8
+
+```python
+print(df.dtypes)
+```
+
+### Explanation
+
+Shows datatype of each column.
+
+---
+
+## Line 9
+
+```python
+df.hist(figsize=(10,8))
+```
+
+### Explanation
+
+Creates histogram for all numeric columns.
+
+---
+
+## Line 10
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays histogram.
+
+---
+
+## Line 11
+
+```python
+df['sepal_length'].hist()
+```
+
+### Explanation
+
+Creates histogram for one feature.
+
+---
+
+## Line 12
+
+```python
+plt.title('Sepal Length Distribution')
+```
+
+### Explanation
+
+Adds graph title.
+
+---
+
+## Line 13
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays plot.
+
+---
+
+## Line 14
+
+```python
+plt.figure(figsize=(10,6))
+```
+
+### Explanation
+
+Creates figure.
+
+---
+
+## Line 15
+
+```python
+sns.boxplot(data=df)
+```
+
+### Explanation
+
+Creates boxplot for all features.
+
+---
+
+## Line 16
+
+```python
+plt.title('Boxplot for Iris Features')
+```
+
+### Explanation
+
+Adds title.
+
+---
+
+## Line 17
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays plot.
+
+---
+
+## Line 18
+
+```python
+sns.boxplot(y=df['sepal_width'])
+```
+
+### Explanation
+
+Creates single boxplot.
+
+---
+
+## Line 19
+
+```python
+plt.title('Sepal Width Boxplot')
+```
+
+### Explanation
+
+Adds title.
+
+---
+
+## Line 20
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays plot.
+
+---
+
+# Important Concepts
+
+## Distribution
+
+Spread of data.
+
+---
+
+## Frequency
+
+Count of values.
+
+---
+
+## Outlier
+
+Extreme value.
+
+---
+
+## Quartiles
+
+Divide data into four parts.
+
+---
+
+## Histogram
+
+Frequency graph.
+
+---
+
+## Boxplot
+
+Spread visualization.
+
+---
+
+# Viva Questions
+
+## 1. What is Histogram?
+
+Frequency graph.
+
+---
+
+## 2. What is Boxplot?
+
+Spread visualization.
+
+---
+
+## 3. Why Iris Dataset?
+
+Good for visualization.
+
+---
+
+## 4. What are Outliers?
+
+Extreme values.
+
+---
+
+## 5. Difference Between Histogram and Boxplot?
+
+* Histogram → Distribution
+* Boxplot → Spread and outliers
+
+---
+
+## 6. What is Numeric Variable?
+
+Numerical feature.
+
+---
+
+## 7. What is Nominal Variable?
+
+Text category.
+
+---
+
+## 8. Why Visualization Needed?
+
+To find patterns.
+
+---
+
+## 9. Which Feature Shows Outliers?
+
+Usually sepal width.
+
+---
+
+## 10. What is Distribution?
+
+Spread of values.
+
+---
+
+# Faculty Modification Questions
+
+## Plot KDE
+
+```python
+sns.histplot(df['petal_length'], kde=True)
+```
+
+---
+
+## Change Feature
+
+```python
+df['petal_width']
+```
+
+---
+
+## Use Violin Plot
+
+```python
+sns.violinplot(data=df)
+```
+
+---
+
+## Plot Scatterplot
+
+```python
+sns.scatterplot(x='sepal_length', y='petal_length', data=df)
+```
+
+---
+
+## Plot Pairplot
+
+```python
+sns.pairplot(df)
+```
+
+---
+
+# Conclusion
+
+Histograms and boxplots help understand distribution, frequency, and outliers. Iris dataset provides a clear way to analyze numeric features visually.

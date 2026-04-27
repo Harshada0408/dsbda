@@ -1,0 +1,413 @@
+# DSBDA Practical 9 — Data Visualization II (Box Plot using Titanic Dataset)
+
+Compiled from your uploaded notebook and markdown file for Practical 9. This document includes:
+
+* Full practical code
+* Detailed line-by-line explanation
+* Boxplot concepts
+* Outlier and IQR explanation
+* Viva questions and answers
+* Faculty modification questions
+
+Source reference: fileciteturn9file0
+
+---
+
+# Aim
+
+To visualize age distribution with respect to gender and survival status using Titanic dataset.
+
+---
+
+# Visualization Concept
+
+## Box Plot
+
+Boxplot is used to visualize:
+
+* Median
+* Quartiles
+* Outliers
+* Distribution
+
+---
+
+# Complete Practical Code
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load Titanic dataset
+
+df = sns.load_dataset('titanic')
+
+# Display dataset
+print(df.head())
+
+# Dataset Information
+print(df.info())
+
+# Create Figure
+plt.figure(figsize=(8,6))
+
+# Create Boxplot
+sns.boxplot(x='sex', y='age', hue='survived', data=df)
+
+# Title
+plt.title('Titanic Age Distribution by Gender and Survival')
+
+# Axis Labels
+plt.xlabel('Gender')
+plt.ylabel('Age')
+
+# Display Plot
+plt.show()
+```
+
+---
+
+# Detailed Line-by-Line Explanation
+
+## Line 1
+
+```python
+import pandas as pd
+```
+
+### Explanation
+
+* Imports Pandas library.
+* Used for handling datasets.
+
+---
+
+## Line 2
+
+```python
+import seaborn as sns
+```
+
+### Explanation
+
+* Imports Seaborn visualization library.
+* Used for advanced plotting.
+
+---
+
+## Line 3
+
+```python
+import matplotlib.pyplot as plt
+```
+
+### Explanation
+
+* Imports plotting module.
+* Used to display charts.
+
+---
+
+## Line 4
+
+```python
+df = sns.load_dataset('titanic')
+```
+
+### Explanation
+
+Loads Titanic dataset from entity["software","Seaborn","Python statistical data visualization library"].
+
+---
+
+## Line 5
+
+```python
+print(df.head())
+```
+
+### Explanation
+
+Displays first 5 rows.
+
+---
+
+## Line 6
+
+```python
+print(df.info())
+```
+
+### Explanation
+
+Displays:
+
+* Rows
+* Columns
+* Datatypes
+* Missing values
+
+---
+
+## Line 7
+
+```python
+plt.figure(figsize=(8,6))
+```
+
+### Explanation
+
+Creates figure size.
+
+### figsize=(8,6)
+
+* Width = 8
+* Height = 6
+
+---
+
+## Line 8
+
+```python
+sns.boxplot(x='sex', y='age', hue='survived', data=df)
+```
+
+### Explanation
+
+Creates boxplot.
+
+### x='sex'
+
+Groups by gender.
+
+### y='age'
+
+Plots age distribution.
+
+### hue='survived'
+
+Separates survived and non-survived.
+
+---
+
+## Line 9
+
+```python
+plt.title('Titanic Age Distribution by Gender and Survival')
+```
+
+### Explanation
+
+Adds graph title.
+
+---
+
+## Line 10
+
+```python
+plt.xlabel('Gender')
+```
+
+### Explanation
+
+Sets X-axis label.
+
+---
+
+## Line 11
+
+```python
+plt.ylabel('Age')
+```
+
+### Explanation
+
+Sets Y-axis label.
+
+---
+
+## Line 12
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays plot.
+
+---
+
+# Understanding Boxplot Components
+
+## Median Line
+
+Middle value.
+
+---
+
+## Box
+
+Represents Interquartile Range (IQR).
+
+---
+
+## Whiskers
+
+Shows normal spread.
+
+---
+
+## Outliers
+
+Displayed as dots.
+
+---
+
+## IQR Formula
+
+[
+IQR = Q3 - Q1
+]
+
+Where:
+
+* Q1 → 25th percentile
+* Q3 → 75th percentile
+
+---
+
+# Important Concepts
+
+## Quartiles
+
+Divide data into 4 parts.
+
+---
+
+## Distribution
+
+Spread of values.
+
+---
+
+## Outlier
+
+Extreme value.
+
+---
+
+## Hue
+
+Extra grouping.
+
+---
+
+# Viva Questions
+
+## 1. What is Boxplot?
+
+Shows spread and outliers.
+
+---
+
+## 2. Why Use Hue?
+
+Extra grouping.
+
+---
+
+## 3. What is Median?
+
+Middle value.
+
+---
+
+## 4. What is IQR?
+
+Difference between Q3 and Q1.
+
+---
+
+## 5. What are Outliers?
+
+Extreme values.
+
+---
+
+## 6. Why Titanic Dataset?
+
+Good for analysis.
+
+---
+
+## 7. What Does Boxplot Show?
+
+Distribution and spread.
+
+---
+
+## 8. Why Visualization Important?
+
+Helps identify patterns.
+
+---
+
+## 9. What are Quartiles?
+
+Four equal divisions.
+
+---
+
+## 10. Why Seaborn?
+
+Advanced plotting library.
+
+---
+
+# Faculty Modification Questions
+
+## Change X-axis
+
+```python
+x='class'
+```
+
+---
+
+## Remove Hue
+
+```python
+sns.boxplot(x='sex', y='age', data=df)
+```
+
+---
+
+## Use Violin Plot
+
+```python
+sns.violinplot(x='sex', y='age', hue='survived', data=df)
+```
+
+---
+
+## Use Fare Column
+
+```python
+y='fare'
+```
+
+---
+
+## Change Figure Size
+
+```python
+plt.figure(figsize=(10,8))
+```
+
+---
+
+# Conclusion
+
+Boxplots help analyze data spread, age distribution, and outliers. Titanic dataset helps compare survival and gender-based age distribution visually.

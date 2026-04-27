@@ -1,0 +1,700 @@
+# DSBDA Practical 5 — Data Analytics II (Logistic Regression using Social Network Ads Dataset)
+
+Compiled from your uploaded notebook and markdown file for Practical 5. This document includes:
+
+* Full practical code
+* Detailed explanation of every line
+* Logistic Regression concept
+* Confusion Matrix explanation
+* Metrics formulas
+* Viva questions and answers
+* Faculty modification questions
+
+Source reference: fileciteturn5file0
+
+---
+
+# Aim
+
+To implement Logistic Regression using Python and evaluate model performance using Confusion Matrix.
+
+---
+
+# Machine Learning Concept
+
+## Logistic Regression
+
+Logistic Regression is used for classification problems.
+
+Examples:
+
+* Buy / Not Buy
+* Spam / Not Spam
+* Yes / No
+
+### Logistic Function
+
+[
+P(y=1)=\frac{1}{1+e^{-z}}
+]
+
+Where:
+
+* P → Probability
+* e → Exponential constant
+* z → Linear combination
+
+---
+
+# Complete Practical Code
+
+```python
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+# Load dataset
+
+df = pd.read_csv('Social_Network_Ads.csv')
+
+# Select Features and Target
+X = df[['Age','EstimatedSalary']]
+y = df['Purchased']
+
+# Split Dataset
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=0
+)
+
+# Feature Scaling
+
+sc = StandardScaler()
+
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+# Logistic Regression Model
+
+model = LogisticRegression()
+
+# Train Model
+model.fit(X_train, y_train)
+
+# Prediction
+
+y_pred = model.predict(X_test)
+
+# Confusion Matrix
+
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+
+# Accuracy
+
+accuracy = accuracy_score(y_test, y_pred)
+print('Accuracy:', accuracy)
+
+# Extract Matrix Values
+
+TN = cm[0][0]
+FP = cm[0][1]
+FN = cm[1][0]
+TP = cm[1][1]
+
+# Metrics
+
+error_rate = (FP + FN) / (TP + TN + FP + FN)
+precision = TP / (TP + FP)
+recall = TP / (TP + FN)
+
+# Display Results
+
+print('TP:', TP)
+print('TN:', TN)
+print('FP:', FP)
+print('FN:', FN)
+print('Error Rate:', error_rate)
+print('Precision:', precision)
+print('Recall:', recall)
+```
+
+---
+
+# Detailed Line-by-Line Explanation
+
+## Line 1
+
+```python
+import pandas as pd
+```
+
+### Explanation
+
+* Imports Pandas library.
+* Used for dataset handling.
+
+---
+
+## Line 2
+
+```python
+import numpy as np
+```
+
+### Explanation
+
+* Imports NumPy.
+* Used for calculations.
+
+---
+
+## Line 3
+
+```python
+from sklearn.model_selection import train_test_split
+```
+
+### Explanation
+
+Imports function to split dataset.
+
+---
+
+## Line 4
+
+```python
+from sklearn.preprocessing import StandardScaler
+```
+
+### Explanation
+
+Imports scaling method.
+
+---
+
+## Line 5
+
+```python
+from sklearn.linear_model import LogisticRegression
+```
+
+### Explanation
+
+Imports Logistic Regression algorithm.
+
+---
+
+## Line 6
+
+```python
+from sklearn.metrics import confusion_matrix, accuracy_score
+```
+
+### Explanation
+
+Imports evaluation metrics.
+
+---
+
+## Line 7
+
+```python
+df = pd.read_csv('Social_Network_Ads.csv')
+```
+
+### Explanation
+
+Loads dataset.
+
+---
+
+## Line 8
+
+```python
+X = df[['Age','EstimatedSalary']]
+```
+
+### Explanation
+
+Selects input features.
+
+---
+
+## Line 9
+
+```python
+y = df['Purchased']
+```
+
+### Explanation
+
+Defines target variable.
+
+---
+
+## Line 10
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=0
+)
+```
+
+### Explanation
+
+Splits dataset.
+
+* 75% training
+* 25% testing
+
+---
+
+## Line 11
+
+```python
+sc = StandardScaler()
+```
+
+### Explanation
+
+Creates scaling object.
+
+---
+
+## Line 12
+
+```python
+X_train = sc.fit_transform(X_train)
+```
+
+### Explanation
+
+* Learns scaling values.
+* Applies scaling.
+
+---
+
+## Line 13
+
+```python
+X_test = sc.transform(X_test)
+```
+
+### Explanation
+
+Uses same scaling on test data.
+
+---
+
+## Line 14
+
+```python
+model = LogisticRegression()
+```
+
+### Explanation
+
+Creates Logistic Regression model.
+
+---
+
+## Line 15
+
+```python
+model.fit(X_train, y_train)
+```
+
+### Explanation
+
+Trains model.
+
+---
+
+## Line 16
+
+```python
+y_pred = model.predict(X_test)
+```
+
+### Explanation
+
+Predicts output.
+
+---
+
+## Line 17
+
+```python
+cm = confusion_matrix(y_test, y_pred)
+```
+
+### Explanation
+
+Creates confusion matrix.
+
+---
+
+## Line 18
+
+```python
+print(cm)
+```
+
+### Explanation
+
+Displays confusion matrix.
+
+---
+
+## Line 19
+
+```python
+accuracy = accuracy_score(y_test, y_pred)
+```
+
+### Explanation
+
+Calculates accuracy.
+
+Formula:
+
+[
+Accuracy = \frac{TP+TN}{TP+TN+FP+FN}
+]
+
+---
+
+## Line 20
+
+```python
+print('Accuracy:', accuracy)
+```
+
+### Explanation
+
+Displays accuracy.
+
+---
+
+## Line 21
+
+```python
+TN = cm[0][0]
+```
+
+### Explanation
+
+Extracts True Negative.
+
+---
+
+## Line 22
+
+```python
+FP = cm[0][1]
+```
+
+### Explanation
+
+Extracts False Positive.
+
+---
+
+## Line 23
+
+```python
+FN = cm[1][0]
+```
+
+### Explanation
+
+Extracts False Negative.
+
+---
+
+## Line 24
+
+```python
+TP = cm[1][1]
+```
+
+### Explanation
+
+Extracts True Positive.
+
+---
+
+## Line 25
+
+```python
+error_rate = (FP + FN) / (TP + TN + FP + FN)
+```
+
+### Explanation
+
+Calculates prediction error.
+
+---
+
+## Line 26
+
+```python
+precision = TP / (TP + FP)
+```
+
+### Explanation
+
+Measures positive correctness.
+
+---
+
+## Line 27
+
+```python
+recall = TP / (TP + FN)
+```
+
+### Explanation
+
+Measures sensitivity.
+
+---
+
+## Line 28
+
+```python
+print('TP:', TP)
+```
+
+### Explanation
+
+Displays TP.
+
+---
+
+## Line 29
+
+```python
+print('TN:', TN)
+```
+
+### Explanation
+
+Displays TN.
+
+---
+
+## Line 30
+
+```python
+print('FP:', FP)
+```
+
+### Explanation
+
+Displays FP.
+
+---
+
+## Line 31
+
+```python
+print('FN:', FN)
+```
+
+### Explanation
+
+Displays FN.
+
+---
+
+## Line 32
+
+```python
+print('Error Rate:', error_rate)
+```
+
+### Explanation
+
+Displays error rate.
+
+---
+
+## Line 33
+
+```python
+print('Precision:', precision)
+```
+
+### Explanation
+
+Displays precision.
+
+---
+
+## Line 34
+
+```python
+print('Recall:', recall)
+```
+
+### Explanation
+
+Displays recall.
+
+---
+
+# Important Terms
+
+## Classification
+
+Predict category.
+
+---
+
+## Feature Scaling
+
+Balances variables.
+
+---
+
+## Confusion Matrix
+
+Performance measurement table.
+
+---
+
+## Accuracy
+
+Correct prediction ratio.
+
+---
+
+## Precision
+
+Correct positive predictions.
+
+---
+
+## Recall
+
+Sensitivity.
+
+---
+
+# Viva Questions
+
+## 1. What is Logistic Regression?
+
+Used for classification.
+
+---
+
+## 2. Difference Between Linear and Logistic Regression?
+
+* Linear → Continuous value
+* Logistic → Category
+
+---
+
+## 3. Why Scaling Needed?
+
+Balances features.
+
+---
+
+## 4. What is Confusion Matrix?
+
+Performance matrix.
+
+---
+
+## 5. What is TP?
+
+Correct positive.
+
+---
+
+## 6. What is FP?
+
+Wrong positive.
+
+---
+
+## 7. What is FN?
+
+Wrong negative.
+
+---
+
+## 8. What is Precision?
+
+Positive correctness.
+
+---
+
+## 9. What is Recall?
+
+Sensitivity.
+
+---
+
+## 10. What is Accuracy?
+
+Correct prediction percentage.
+
+---
+
+# Faculty Modification Questions
+
+## Change Test Size
+
+```python
+test_size=0.30
+```
+
+---
+
+## Add Gender Feature
+
+```python
+X = df[['Age','EstimatedSalary','Gender']]
+```
+
+Need encoding.
+
+---
+
+## Use Classification Report
+
+```python
+from sklearn.metrics import classification_report
+
+print(classification_report(y_test, y_pred))
+```
+
+---
+
+## Print Probability
+
+```python
+model.predict_proba(X_test)
+```
+
+---
+
+## Change Random State
+
+```python
+random_state=10
+```
+
+---
+
+# Conclusion
+
+Logistic Regression is a classification algorithm. This practical predicts customer purchase behavior using Age and Estimated Salary. Metrics such as confusion matrix, precision, recall, and accuracy help evaluate performance.

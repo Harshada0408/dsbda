@@ -1,0 +1,556 @@
+# DSBDA Practical 2 — Data Wrangling II (Single Combined File)
+
+Compiled from your uploaded notebook and markdown file for Practical 2. This document includes:
+
+* Complete practical code
+* Detailed explanation of every line
+* Step-by-step flow
+* Viva questions
+* Faculty modification questions
+* Final conclusion
+
+Source reference: fileciteturn2file0
+
+---
+
+# Aim
+
+To create an Academic Performance Dataset and perform:
+
+1. Missing value detection and handling
+2. Inconsistency detection and correction
+3. Outlier detection and treatment
+4. Data transformation
+
+---
+
+# Dataset Description
+
+The dataset contains:
+
+* Student_ID
+* Name
+* Gender
+* Age
+* Maths
+* Science
+* English
+* Attendance
+* Study_Hours
+
+---
+
+# Complete Practical Code
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create dataset
+
+data = {
+    'Student_ID':[1,2,3,4,5,6,7,8,9,10],
+    'Name':['Harshada','Sarvesh','Amit','Priya','Rohan','Neha','Kunal','Pooja','Raj','Sneha'],
+    'Gender':['F','M','M','F','M','F','M','F','M','F'],
+    'Age':[20,21,19,22,np.nan,20,45,21,20,19],
+    'Maths':[85,90,78,92,88,76,500,89,85,np.nan],
+    'Science':[80,85,70,95,90,72,65,88,np.nan,75],
+    'English':[78,82,75,90,85,70,68,80,77,72],
+    'Attendance':[90,85,88,np.nan,92,80,78,95,89,84],
+    'Study_Hours':[2,3,2.5,4,3.5,np.nan,15,3,2.8,2]
+}
+
+# Convert into DataFrame
+
+df = pd.DataFrame(data)
+
+# Check missing values
+print(df.isnull().sum())
+
+# Fill missing values
+
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+df['Maths'] = df['Maths'].fillna(df['Maths'].mean())
+df['Science'] = df['Science'].fillna(df['Science'].mean())
+df['Attendance'] = df['Attendance'].fillna(df['Attendance'].mean())
+df['Study_Hours'] = df['Study_Hours'].fillna(df['Study_Hours'].mean())
+
+# Fix inconsistency
+
+df.loc[df['Maths'] > 100, 'Maths'] = df['Maths'].mean()
+
+# Calculate Quartiles
+
+Q1 = df['Maths'].quantile(0.25)
+Q3 = df['Maths'].quantile(0.75)
+IQR = Q3 - Q1
+
+# Outlier Range
+
+lower_limit = Q1 - 1.5 * IQR
+upper_limit = Q3 + 1.5 * IQR
+
+# Remove outliers
+
+df = df[(df['Maths'] >= lower_limit) & (df['Maths'] <= upper_limit)]
+
+# Boxplot
+
+plt.boxplot(df['Maths'])
+plt.title('Maths Marks Boxplot')
+plt.show()
+
+# Log Transformation
+
+df['Study_Hours_Log'] = np.log(df['Study_Hours'])
+
+# Histograms
+
+plt.hist(df['Study_Hours'])
+plt.title('Before Transformation')
+plt.show()
+
+plt.hist(df['Study_Hours_Log'])
+plt.title('After Transformation')
+plt.show()
+
+# Final Dataset
+print(df)
+```
+
+---
+
+# Detailed Line-by-Line Explanation
+
+## Line 1
+
+```python
+import pandas as pd
+```
+
+### Explanation
+
+* Imports Pandas library.
+* Used for DataFrame handling.
+* `pd` is shortcut.
+
+---
+
+## Line 2
+
+```python
+import numpy as np
+```
+
+### Explanation
+
+* Imports NumPy.
+* Used for calculations and missing values.
+* `np` is shortcut.
+
+---
+
+## Line 3
+
+```python
+import matplotlib.pyplot as plt
+```
+
+### Explanation
+
+* Imports plotting library.
+* `pyplot` helps create graphs.
+* `plt` is shortcut.
+
+---
+
+## Dataset Dictionary Creation
+
+```python
+data = {}
+```
+
+### Explanation
+
+Dictionary stores dataset in key-value format.
+
+---
+
+## Student_ID Column
+
+```python
+'Student_ID':[1,2,3,4,5,6,7,8,9,10]
+```
+
+### Explanation
+
+Stores unique student IDs.
+
+---
+
+## Name Column
+
+```python
+'Name':['Harshada','Sarvesh','Amit']
+```
+
+### Explanation
+
+Stores student names.
+
+---
+
+## Gender Column
+
+```python
+'Gender':['F','M']
+```
+
+### Explanation
+
+Stores gender values.
+
+---
+
+## Age Column
+
+```python
+'Age':[20,21,19,22,np.nan]
+```
+
+### Explanation
+
+* Age data.
+* `np.nan` means missing value.
+
+---
+
+## Maths Column
+
+```python
+'Maths':[85,90,78,92,500]
+```
+
+### Explanation
+
+* Stores marks.
+* `500` added as inconsistency.
+
+---
+
+## Convert to DataFrame
+
+```python
+df = pd.DataFrame(data)
+```
+
+### Explanation
+
+Converts dictionary into tabular structure.
+
+---
+
+## Missing Value Detection
+
+```python
+print(df.isnull().sum())
+```
+
+### Explanation
+
+* `isnull()` checks missing values.
+* `sum()` counts them.
+
+---
+
+## Fill Missing Values
+
+```python
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+```
+
+### Explanation
+
+* Select Age column.
+* `fillna()` replaces null values.
+* `mean()` calculates average.
+
+---
+
+## Fix Inconsistency
+
+```python
+df.loc[df['Maths'] > 100, 'Maths'] = df['Maths'].mean()
+```
+
+### Explanation
+
+* `loc[]` accesses rows and columns.
+* Checks if Maths > 100.
+* Replaces unrealistic values.
+
+---
+
+## Quartile Calculation
+
+```python
+Q1 = df['Maths'].quantile(0.25)
+```
+
+### Explanation
+
+Finds 25th percentile.
+
+---
+
+```python
+Q3 = df['Maths'].quantile(0.75)
+```
+
+### Explanation
+
+Finds 75th percentile.
+
+---
+
+```python
+IQR = Q3 - Q1
+```
+
+### Explanation
+
+Calculates Interquartile Range.
+
+Formula:
+
+```python
+IQR = Q3 - Q1
+```
+
+---
+
+## Define Outlier Range
+
+```python
+lower_limit = Q1 - 1.5 * IQR
+upper_limit = Q3 + 1.5 * IQR
+```
+
+### Explanation
+
+Defines valid data range.
+
+---
+
+## Remove Outliers
+
+```python
+df = df[(df['Maths'] >= lower_limit) & (df['Maths'] <= upper_limit)]
+```
+
+### Explanation
+
+Keeps only valid rows.
+
+---
+
+## Boxplot
+
+```python
+plt.boxplot(df['Maths'])
+```
+
+### Explanation
+
+Creates boxplot.
+
+Used for outlier detection.
+
+---
+
+```python
+plt.title('Maths Marks Boxplot')
+```
+
+### Explanation
+
+Adds graph title.
+
+---
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays graph.
+
+---
+
+## Log Transformation
+
+```python
+df['Study_Hours_Log'] = np.log(df['Study_Hours'])
+```
+
+### Explanation
+
+Applies log transformation.
+
+Purpose:
+
+* Reduce skewness
+* Normalize data
+
+---
+
+## Histogram Before Transformation
+
+```python
+plt.hist(df['Study_Hours'])
+```
+
+### Explanation
+
+Creates histogram.
+
+---
+
+## Histogram After Transformation
+
+```python
+plt.hist(df['Study_Hours_Log'])
+```
+
+### Explanation
+
+Shows transformed distribution.
+
+---
+
+## Final Output
+
+```python
+print(df)
+```
+
+### Explanation
+
+Displays final cleaned dataset.
+
+---
+
+# Viva Questions
+
+## 1. What is Missing Value?
+
+Unknown or empty value.
+
+---
+
+## 2. What is Outlier?
+
+Extreme value far away from normal data.
+
+---
+
+## 3. What is IQR?
+
+Interquartile Range.
+
+Formula:
+
+```python
+IQR = Q3 - Q1
+```
+
+---
+
+## 4. Why Remove Outliers?
+
+Outliers affect accuracy.
+
+---
+
+## 5. What is Transformation?
+
+Changing data scale.
+
+---
+
+## 6. Why Use Log Transformation?
+
+Reduce skewness.
+
+---
+
+## 7. What is Quantile?
+
+Divides dataset into percentages.
+
+---
+
+## 8. Difference Between Mean and Median?
+
+* Mean → Average
+* Median → Middle value
+
+---
+
+## 9. What is Boxplot?
+
+Graph used to detect outliers.
+
+---
+
+## 10. Why Fill Missing Values?
+
+Avoid null errors.
+
+---
+
+# Faculty Modification Questions
+
+## Use Median Instead of Mean
+
+```python
+df['Age'] = df['Age'].fillna(df['Age'].median())
+```
+
+---
+
+## Use Z-score Method
+
+```python
+from scipy.stats import zscore
+
+z = np.abs(zscore(df['Maths']))
+df = df[(z < 3)]
+```
+
+---
+
+## Use Square Root Transformation
+
+```python
+df['Study_Hours_Sqrt'] = np.sqrt(df['Study_Hours'])
+```
+
+---
+
+## Use Min-Max Scaling
+
+```python
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+df['Maths_scaled'] = scaler.fit_transform(df[['Maths']])
+```
+
+---
+
+# Conclusion
+
+Data Wrangling II helps clean data by removing inconsistencies, handling missing values, detecting outliers, and transforming variables for better analysis.

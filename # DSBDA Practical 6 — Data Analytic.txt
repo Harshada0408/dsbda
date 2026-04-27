@@ -1,0 +1,686 @@
+# DSBDA Practical 6 — Data Analytics III (Naive Bayes Classification using Iris Dataset)
+
+Compiled from your uploaded notebook and markdown file for Practical 6. This document includes:
+
+* Full practical code
+* Detailed line-by-line explanation
+* Naive Bayes concept
+* Bayes Theorem explanation
+* Confusion Matrix metrics
+* Viva questions and answers
+* Faculty modification questions
+
+Source reference: fileciteturn6file0
+
+---
+
+# Aim
+
+To implement Naive Bayes Classification using Python on Iris Dataset and compute performance metrics.
+
+---
+
+# Machine Learning Concept
+
+## Naive Bayes
+
+Naive Bayes is a probability-based classification algorithm.
+
+Examples:
+
+* Email Spam Detection
+* Disease Prediction
+* Flower Classification
+
+### Bayes Theorem Formula
+
+[
+P(A|B)=\frac{P(B|A)P(A)}{P(B)}
+]
+
+Where:
+
+* P(A|B) → Probability of A given B
+* P(B|A) → Probability of B given A
+* P(A) → Prior probability
+* P(B) → Evidence probability
+
+---
+
+# Complete Practical Code
+
+```python
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+# Load dataset
+
+df = pd.read_csv('iris.csv')
+
+# Features and Target
+
+X = df.drop('species', axis=1)
+y = df['species']
+
+# Train-Test Split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=0
+)
+
+# Create Model
+
+model = GaussianNB()
+
+# Train Model
+
+model.fit(X_train, y_train)
+
+# Predictions
+
+y_pred = model.predict(X_test)
+
+# Confusion Matrix
+
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+
+# Accuracy
+
+accuracy = accuracy_score(y_test, y_pred)
+print('Accuracy:', accuracy)
+
+# Binary Conversion
+
+y_test_binary = (y_test == 'Iris-setosa')
+y_pred_binary = (y_pred == 'Iris-setosa')
+
+# Binary Confusion Matrix
+
+binary_cm = confusion_matrix(y_test_binary, y_pred_binary)
+
+# Extract Metrics
+
+TN = binary_cm[0][0]
+FP = binary_cm[0][1]
+FN = binary_cm[1][0]
+TP = binary_cm[1][1]
+
+# Additional Metrics
+
+error_rate = (FP + FN) / (TP + TN + FP + FN)
+precision = TP / (TP + FP)
+recall = TP / (TP + FN)
+
+# Print Metrics
+
+print('TP:', TP)
+print('TN:', TN)
+print('FP:', FP)
+print('FN:', FN)
+print('Error Rate:', error_rate)
+print('Precision:', precision)
+print('Recall:', recall)
+```
+
+---
+
+# Detailed Line-by-Line Explanation
+
+## Line 1
+
+```python
+import pandas as pd
+```
+
+### Explanation
+
+* Imports Pandas library.
+* Used for dataset handling.
+
+---
+
+## Line 2
+
+```python
+import numpy as np
+```
+
+### Explanation
+
+* Imports NumPy.
+* Used for calculations.
+
+---
+
+## Line 3
+
+```python
+from sklearn.model_selection import train_test_split
+```
+
+### Explanation
+
+Imports train-test split function.
+
+---
+
+## Line 4
+
+```python
+from sklearn.naive_bayes import GaussianNB
+```
+
+### Explanation
+
+Imports Gaussian Naive Bayes model.
+
+---
+
+## Line 5
+
+```python
+from sklearn.metrics import confusion_matrix, accuracy_score
+```
+
+### Explanation
+
+Imports evaluation metrics.
+
+---
+
+## Line 6
+
+```python
+df = pd.read_csv('iris.csv')
+```
+
+### Explanation
+
+Loads Iris dataset.
+
+---
+
+## Line 7
+
+```python
+X = df.drop('species', axis=1)
+```
+
+### Explanation
+
+Selects features.
+
+Removes target column.
+
+---
+
+## Line 8
+
+```python
+y = df['species']
+```
+
+### Explanation
+
+Defines target variable.
+
+---
+
+## Line 9
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=0
+)
+```
+
+### Explanation
+
+Splits dataset.
+
+* 75% training
+* 25% testing
+
+---
+
+## Line 10
+
+```python
+model = GaussianNB()
+```
+
+### Explanation
+
+Creates Naive Bayes model.
+
+---
+
+## Line 11
+
+```python
+model.fit(X_train, y_train)
+```
+
+### Explanation
+
+Trains model.
+
+---
+
+## Line 12
+
+```python
+y_pred = model.predict(X_test)
+```
+
+### Explanation
+
+Predicts output.
+
+---
+
+## Line 13
+
+```python
+cm = confusion_matrix(y_test, y_pred)
+```
+
+### Explanation
+
+Creates confusion matrix.
+
+---
+
+## Line 14
+
+```python
+print(cm)
+```
+
+### Explanation
+
+Displays confusion matrix.
+
+---
+
+## Line 15
+
+```python
+accuracy = accuracy_score(y_test, y_pred)
+```
+
+### Explanation
+
+Calculates accuracy.
+
+---
+
+## Line 16
+
+```python
+print('Accuracy:', accuracy)
+```
+
+### Explanation
+
+Displays accuracy.
+
+---
+
+## Line 17
+
+```python
+y_test_binary = (y_test == 'Iris-setosa')
+```
+
+### Explanation
+
+Converts target into binary values.
+
+---
+
+## Line 18
+
+```python
+y_pred_binary = (y_pred == 'Iris-setosa')
+```
+
+### Explanation
+
+Converts predictions into binary.
+
+---
+
+## Line 19
+
+```python
+binary_cm = confusion_matrix(y_test_binary, y_pred_binary)
+```
+
+### Explanation
+
+Creates binary confusion matrix.
+
+---
+
+## Line 20
+
+```python
+TN = binary_cm[0][0]
+```
+
+### Explanation
+
+Extracts True Negative.
+
+---
+
+## Line 21
+
+```python
+FP = binary_cm[0][1]
+```
+
+### Explanation
+
+Extracts False Positive.
+
+---
+
+## Line 22
+
+```python
+FN = binary_cm[1][0]
+```
+
+### Explanation
+
+Extracts False Negative.
+
+---
+
+## Line 23
+
+```python
+TP = binary_cm[1][1]
+```
+
+### Explanation
+
+Extracts True Positive.
+
+---
+
+## Line 24
+
+```python
+error_rate = (FP + FN) / (TP + TN + FP + FN)
+```
+
+### Explanation
+
+Calculates prediction error.
+
+---
+
+## Line 25
+
+```python
+precision = TP / (TP + FP)
+```
+
+### Explanation
+
+Calculates precision.
+
+---
+
+## Line 26
+
+```python
+recall = TP / (TP + FN)
+```
+
+### Explanation
+
+Calculates recall.
+
+---
+
+## Line 27
+
+```python
+print('TP:', TP)
+```
+
+### Explanation
+
+Displays TP.
+
+---
+
+## Line 28
+
+```python
+print('TN:', TN)
+```
+
+### Explanation
+
+Displays TN.
+
+---
+
+## Line 29
+
+```python
+print('FP:', FP)
+```
+
+### Explanation
+
+Displays FP.
+
+---
+
+## Line 30
+
+```python
+print('FN:', FN)
+```
+
+### Explanation
+
+Displays FN.
+
+---
+
+## Line 31
+
+```python
+print('Error Rate:', error_rate)
+```
+
+### Explanation
+
+Displays error rate.
+
+---
+
+## Line 32
+
+```python
+print('Precision:', precision)
+```
+
+### Explanation
+
+Displays precision.
+
+---
+
+## Line 33
+
+```python
+print('Recall:', recall)
+```
+
+### Explanation
+
+Displays recall.
+
+---
+
+# Important Terms
+
+## Classification
+
+Predict category.
+
+---
+
+## Naive Bayes
+
+Probability-based classifier.
+
+---
+
+## Prior Probability
+
+Existing probability.
+
+---
+
+## Posterior Probability
+
+Updated probability.
+
+---
+
+## GaussianNB
+
+Naive Bayes for continuous values.
+
+---
+
+# Viva Questions
+
+## 1. What is Naive Bayes?
+
+Probability-based classifier.
+
+---
+
+## 2. Why Called Naive?
+
+Assumes independent features.
+
+---
+
+## 3. What is Bayes Theorem?
+
+Probability formula.
+
+---
+
+## 4. What is GaussianNB?
+
+Naive Bayes for continuous data.
+
+---
+
+## 5. What is Confusion Matrix?
+
+Performance matrix.
+
+---
+
+## 6. What is Precision?
+
+Correct positive prediction.
+
+---
+
+## 7. What is Recall?
+
+Sensitivity.
+
+---
+
+## 8. Why Iris Dataset?
+
+Good classification dataset.
+
+---
+
+## 9. What is Accuracy?
+
+Correct prediction percentage.
+
+---
+
+## 10. Why Train-Test Split?
+
+To evaluate model.
+
+---
+
+# Faculty Modification Questions
+
+## Change Test Size
+
+```python
+test_size=0.30
+```
+
+---
+
+## Use Another Species
+
+Replace:
+
+```python
+Iris-setosa
+```
+
+with:
+
+```python
+Iris-versicolor
+```
+
+---
+
+## Print Prediction Probability
+
+```python
+model.predict_proba(X_test)
+```
+
+---
+
+## Print Classification Report
+
+```python
+from sklearn.metrics import classification_report
+
+print(classification_report(y_test, y_pred))
+```
+
+---
+
+## Print Accuracy Only
+
+```python
+accuracy_score(y_test, y_pred)
+```
+
+---
+
+# Conclusion
+
+Naive Bayes is a probability-based classification algorithm. This practical classifies Iris flower species using GaussianNB. Confusion matrix metrics such as precision, recall, and accuracy help measure performance.

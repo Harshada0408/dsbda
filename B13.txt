@@ -1,0 +1,430 @@
+B13
+
+# Weather Data Analysis Practical Report
+
+## Name
+
+Payal Sandip Tanpure
+
+## Roll No
+
+24CO316
+
+## Practical No
+
+3
+
+---
+
+# Practical Title
+
+**Locate Dataset for Weather Data and Calculate Average Temperature, Dew Point, and Wind Speed using Java**
+
+---
+
+# Aim
+
+To read weather data from a text file and calculate:
+
+1. Average Temperature
+2. Average Dew Point
+3. Average Wind Speed
+
+using Java file handling.
+
+---
+
+# Objective
+
+To understand:
+
+* Reading text files in Java
+* File handling concepts
+* Data extraction from dataset
+* Processing weather information
+* Average calculation
+
+---
+
+# Software Required
+
+* Java JDK
+* Visual Studio Code / IntelliJ / Eclipse
+* Command Prompt or Terminal
+
+---
+
+# Dataset Used
+
+## File Name
+
+```text
+sample_weather.txt
+```
+
+---
+
+# Dataset Description
+
+The weather dataset contains:
+
+* Date
+* Temperature
+* Dew Point
+* Wind Speed
+
+Each row represents weather information for one day.
+
+---
+
+# Sample Dataset
+
+```text
+2024-01-01 25 18 10
+2024-01-02 28 20 12
+2024-01-03 30 22 15
+2024-01-04 27 19 11
+2024-01-05 26 18 13
+```
+
+---
+
+# Column Meaning
+
+| Column  | Description |
+| ------- | ----------- |
+| data[0] | Date        |
+| data[1] | Temperature |
+| data[2] | Dew Point   |
+| data[3] | Wind Speed  |
+
+---
+
+# Java Program
+
+```java
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class practical3 {
+
+    public static void main(String[] args) {
+
+        String fileName = "sample_weather.txt";
+
+        double tempSum = 0;
+        double dewSum = 0;
+        double windSum = 0;
+        int count = 0;
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+
+                String[] data = line.split(" ");
+
+                double temperature = Double.parseDouble(data[1]);
+                double dewPoint = Double.parseDouble(data[2]);
+                double windSpeed = Double.parseDouble(data[3]);
+
+                tempSum += temperature;
+                dewSum += dewPoint;
+                windSum += windSpeed;
+
+                count++;
+            }
+
+            br.close();
+
+            double avgTemp = tempSum / count;
+            double avgDew = dewSum / count;
+            double avgWind = windSum / count;
+
+            System.out.println("Average Temperature: " + avgTemp);
+            System.out.println("Average Dew Point: " + avgDew);
+            System.out.println("Average Wind Speed: " + avgWind);
+
+        } catch (IOException e) {
+
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+}
+```
+
+---
+
+# Program Explanation
+
+## Import Statements
+
+```java
+import java.io.BufferedReader;
+```
+
+Used for efficient file reading.
+
+---
+
+```java
+import java.io.FileReader;
+```
+
+Used to connect Java program with text file.
+
+---
+
+```java
+import java.io.IOException;
+```
+
+Used for exception handling.
+
+---
+
+# Variable Explanation
+
+```java
+String fileName = "sample_weather.txt";
+```
+
+Stores file name.
+
+---
+
+```java
+double tempSum = 0;
+```
+
+Stores total temperature.
+
+---
+
+```java
+double dewSum = 0;
+```
+
+Stores total dew point.
+
+---
+
+```java
+double windSum = 0;
+```
+
+Stores total wind speed.
+
+---
+
+```java
+int count = 0;
+```
+
+Counts number of rows.
+
+---
+
+# File Reading Logic
+
+```java
+BufferedReader br = new BufferedReader(new FileReader(fileName));
+```
+
+Opens text file.
+
+---
+
+```java
+while ((line = br.readLine()) != null)
+```
+
+Reads file line by line.
+
+---
+
+```java
+String[] data = line.split(" ");
+```
+
+Splits row into columns.
+
+Example:
+
+```text
+2024-01-01 25 18 10
+```
+
+Becomes:
+
+```text
+data[0] = 2024-01-01
+data[1] = 25
+data[2] = 18
+data[3] = 10
+```
+
+---
+
+# Conversion Logic
+
+```java
+Double.parseDouble()
+```
+
+Converts string to numeric value.
+
+---
+
+# Average Formula
+
+```text
+Average = Total Sum / Count
+```
+
+---
+
+# Output
+
+```text
+Average Temperature: 27.2
+Average Dew Point: 19.4
+Average Wind Speed: 12.2
+```
+
+---
+
+# Folder Structure
+
+```text
+WeatherProject/
+│
+├── practical3.java
+├── sample_weather.txt
+```
+
+---
+
+# Execution Steps
+
+## Step 1
+
+Open VS Code.
+
+---
+
+## Step 2
+
+Create folder.
+
+---
+
+## Step 3
+
+Add:
+
+* practical3.java
+* sample_weather.txt
+
+---
+
+## Step 4
+
+Open terminal.
+
+---
+
+## Step 5
+
+Compile program.
+
+```bash
+javac practical3.java
+```
+
+---
+
+## Step 6
+
+Run program.
+
+```bash
+java practical3
+```
+
+---
+
+# Result
+
+The Java program successfully reads the weather dataset and calculates the average values of temperature, dew point, and wind speed.
+
+---
+
+# Conclusion
+
+This practical demonstrates how Java file handling works using BufferedReader. Weather data is read line-by-line, processed, and average values are calculated efficiently.
+
+---
+
+# Viva Questions
+
+## 1. Why BufferedReader is used?
+
+Used to read file line-by-line.
+
+---
+
+## 2. Why split() function used?
+
+Separates columns.
+
+---
+
+## 3. What is Double.parseDouble()?
+
+Converts string to numeric.
+
+---
+
+## 4. Why use count variable?
+
+To calculate average.
+
+---
+
+## 5. What is IOException?
+
+Handles file errors.
+
+---
+
+## 6. Why use try-catch?
+
+Prevents program crash.
+
+---
+
+## 7. What is FileReader?
+
+Reads file data.
+
+---
+
+## 8. What is average formula?
+
+Sum / Count.
+
+---
+
+## 9. Why use double datatype?
+
+Supports decimal values.
+
+---
+
+## 10. What is line-by-line reading?
+
+Reads one row at a time.

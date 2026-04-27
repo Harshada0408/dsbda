@@ -1,0 +1,751 @@
+# DSBDA Practical 7 — Text Analytics (NLP Preprocessing and TF-IDF)
+
+Compiled from your uploaded notebook and markdown file for Practical 7. This document includes:
+
+* Full practical code
+* Detailed line-by-line explanation
+* NLP concepts
+* TF, IDF, TF-IDF explanation
+* Viva questions and answers
+* Faculty modification questions
+
+Source reference: fileciteturn7file0
+
+---
+
+# Aim
+
+To perform Text Analytics operations using Python and Natural Language Processing techniques.
+
+---
+
+# NLP Concept
+
+## Natural Language Processing (NLP)
+
+NLP helps computers understand human language.
+
+Examples:
+
+* Chatbots
+* Translation
+* Spam Detection
+* Sentiment Analysis
+
+---
+
+# Complete Practical Code
+
+```python
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+from nltk import pos_tag
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Download NLTK resources
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+
+# Sample Text
+text = "Text analytics is the process of converting unstructured text into meaningful information. Natural Language Processing helps in analyzing text data."
+
+# Tokenization
+tokens = word_tokenize(text)
+print('Tokens:', tokens)
+
+# POS Tagging
+pos = pos_tag(tokens)
+print('POS Tags:', pos)
+
+# Stop Words Removal
+stop_words = set(stopwords.words('english'))
+filtered_words = []
+
+for word in tokens:
+    if word.lower() not in stop_words:
+        filtered_words.append(word)
+
+print('Filtered Words:', filtered_words)
+
+# Stemming
+stemmer = PorterStemmer()
+stemmed_words = []
+
+for word in filtered_words:
+    stemmed_words.append(stemmer.stem(word))
+
+print('Stemmed Words:', stemmed_words)
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_words = []
+
+for word in filtered_words:
+    lemmatized_words.append(lemmatizer.lemmatize(word))
+
+print('Lemmatized Words:', lemmatized_words)
+
+# TF-IDF Documents
+documents = [
+    "Text analytics converts text into data",
+    "Natural language processing analyzes text",
+    "Text data is important in analytics"
+]
+
+# TF-IDF
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(documents)
+
+# Output
+print('Feature Names:', vectorizer.get_feature_names_out())
+print('TF-IDF Matrix:')
+print(X.toarray())
+```
+
+---
+
+# Detailed Line-by-Line Explanation
+
+## Line 1
+
+```python
+import nltk
+```
+
+### Explanation
+
+* Imports NLTK library.
+* Used for NLP operations.
+
+---
+
+## Line 2
+
+```python
+from nltk.tokenize import word_tokenize
+```
+
+### Explanation
+
+Imports tokenizer.
+
+Used to split sentence into words.
+
+---
+
+## Line 3
+
+```python
+from nltk.corpus import stopwords
+```
+
+### Explanation
+
+Imports stop words collection.
+
+---
+
+## Line 4
+
+```python
+from nltk.stem import PorterStemmer
+```
+
+### Explanation
+
+Imports stemming tool.
+
+---
+
+## Line 5
+
+```python
+from nltk.stem import WordNetLemmatizer
+```
+
+### Explanation
+
+Imports lemmatizer.
+
+---
+
+## Line 6
+
+```python
+from nltk import pos_tag
+```
+
+### Explanation
+
+Imports POS tagging.
+
+---
+
+## Line 7
+
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+```
+
+### Explanation
+
+Imports TF-IDF tool.
+
+---
+
+## Line 8
+
+```python
+nltk.download('punkt')
+```
+
+### Explanation
+
+Downloads tokenizer package.
+
+---
+
+## Line 9
+
+```python
+nltk.download('stopwords')
+```
+
+### Explanation
+
+Downloads stopwords package.
+
+---
+
+## Line 10
+
+```python
+nltk.download('averaged_perceptron_tagger')
+```
+
+### Explanation
+
+Downloads POS tagging model.
+
+---
+
+## Line 11
+
+```python
+nltk.download('wordnet')
+```
+
+### Explanation
+
+Downloads dictionary for lemmatization.
+
+---
+
+## Line 12
+
+```python
+text = "Text analytics is the process of converting unstructured text into meaningful information. Natural Language Processing helps in analyzing text data."
+```
+
+### Explanation
+
+Stores text document.
+
+---
+
+## Line 13
+
+```python
+tokens = word_tokenize(text)
+```
+
+### Explanation
+
+Splits text into words.
+
+---
+
+## Line 14
+
+```python
+print('Tokens:', tokens)
+```
+
+### Explanation
+
+Displays token list.
+
+---
+
+## Line 15
+
+```python
+pos = pos_tag(tokens)
+```
+
+### Explanation
+
+Assigns grammar tags.
+
+---
+
+## Line 16
+
+```python
+print('POS Tags:', pos)
+```
+
+### Explanation
+
+Displays POS tags.
+
+---
+
+## Line 17
+
+```python
+stop_words = set(stopwords.words('english'))
+```
+
+### Explanation
+
+Creates stop words set.
+
+---
+
+## Line 18
+
+```python
+filtered_words = []
+```
+
+### Explanation
+
+Creates empty list.
+
+---
+
+## Line 19
+
+```python
+for word in tokens:
+```
+
+### Explanation
+
+Loops through tokens.
+
+---
+
+## Line 20
+
+```python
+if word.lower() not in stop_words:
+```
+
+### Explanation
+
+Checks if word is not stopword.
+
+---
+
+## Line 21
+
+```python
+filtered_words.append(word)
+```
+
+### Explanation
+
+Adds valid word.
+
+---
+
+## Line 22
+
+```python
+print('Filtered Words:', filtered_words)
+```
+
+### Explanation
+
+Displays filtered list.
+
+---
+
+## Line 23
+
+```python
+stemmer = PorterStemmer()
+```
+
+### Explanation
+
+Creates stemming object.
+
+---
+
+## Line 24
+
+```python
+stemmed_words = []
+```
+
+### Explanation
+
+Creates empty list.
+
+---
+
+## Line 25
+
+```python
+for word in filtered_words:
+```
+
+### Explanation
+
+Loops filtered words.
+
+---
+
+## Line 26
+
+```python
+stemmed_words.append(stemmer.stem(word))
+```
+
+### Explanation
+
+Converts into root word.
+
+---
+
+## Line 27
+
+```python
+print('Stemmed Words:', stemmed_words)
+```
+
+### Explanation
+
+Displays stemmed words.
+
+---
+
+## Line 28
+
+```python
+lemmatizer = WordNetLemmatizer()
+```
+
+### Explanation
+
+Creates lemmatizer.
+
+---
+
+## Line 29
+
+```python
+lemmatized_words = []
+```
+
+### Explanation
+
+Creates empty list.
+
+---
+
+## Line 30
+
+```python
+for word in filtered_words:
+```
+
+### Explanation
+
+Loops through words.
+
+---
+
+## Line 31
+
+```python
+lemmatized_words.append(lemmatizer.lemmatize(word))
+```
+
+### Explanation
+
+Converts to meaningful root.
+
+---
+
+## Line 32
+
+```python
+print('Lemmatized Words:', lemmatized_words)
+```
+
+### Explanation
+
+Displays lemmatized output.
+
+---
+
+## Line 33
+
+```python
+documents = [
+    "Text analytics converts text into data",
+    "Natural language processing analyzes text",
+    "Text data is important in analytics"
+]
+```
+
+### Explanation
+
+Creates document collection.
+
+---
+
+## Line 34
+
+```python
+vectorizer = TfidfVectorizer()
+```
+
+### Explanation
+
+Creates TF-IDF object.
+
+---
+
+## Line 35
+
+```python
+X = vectorizer.fit_transform(documents)
+```
+
+### Explanation
+
+* Learns words.
+* Computes TF-IDF.
+
+---
+
+## Line 36
+
+```python
+print('Feature Names:', vectorizer.get_feature_names_out())
+```
+
+### Explanation
+
+Displays vocabulary words.
+
+---
+
+## Line 37
+
+```python
+print('TF-IDF Matrix:')
+```
+
+### Explanation
+
+Displays heading.
+
+---
+
+## Line 38
+
+```python
+print(X.toarray())
+```
+
+### Explanation
+
+Converts sparse matrix to table.
+
+---
+
+# Important Concepts
+
+## Tokenization
+
+Sentence → Words.
+
+---
+
+## POS Tagging
+
+Grammar labeling.
+
+---
+
+## Stop Words
+
+Common meaningless words.
+
+---
+
+## Stemming
+
+Cuts word endings.
+
+---
+
+## Lemmatization
+
+Meaningful root word.
+
+---
+
+## TF
+
+Term Frequency.
+
+Formula:
+
+[
+TF = \frac{Word\ Count}{Total\ Words}
+]
+
+---
+
+## IDF
+
+Inverse Document Frequency.
+
+Formula:
+
+[
+IDF = \log\left(\frac{Total\ Documents}{Documents\ Containing\ Word}\right)
+]
+
+---
+
+## TF-IDF
+
+Importance score.
+
+Formula:
+
+[
+TF-IDF = TF \times IDF
+]
+
+---
+
+# Viva Questions
+
+## 1. What is NLP?
+
+Natural Language Processing.
+
+---
+
+## 2. What is Tokenization?
+
+Break text into words.
+
+---
+
+## 3. What is POS Tagging?
+
+Grammar tagging.
+
+---
+
+## 4. What are Stop Words?
+
+Common words.
+
+---
+
+## 5. What is Stemming?
+
+Word root extraction.
+
+---
+
+## 6. What is Lemmatization?
+
+Meaningful root extraction.
+
+---
+
+## 7. Difference Between Stemming and Lemmatization?
+
+* Stemming → Faster
+* Lemmatization → More accurate
+
+---
+
+## 8. What is TF?
+
+Term Frequency.
+
+---
+
+## 9. What is IDF?
+
+Inverse Document Frequency.
+
+---
+
+## 10. Why TF-IDF?
+
+Finds important words.
+
+---
+
+# Faculty Modification Questions
+
+## Use Another Text
+
+Replace text paragraph.
+
+---
+
+## Remove Punctuation
+
+```python
+import string
+```
+
+---
+
+## Use CountVectorizer
+
+```python
+from sklearn.feature_extraction.text import CountVectorizer
+```
+
+---
+
+## Sentence Tokenization
+
+```python
+from nltk.tokenize import sent_tokenize
+```
+
+---
+
+## Display Only Stemmed Words
+
+```python
+print(stemmed_words)
+```
+
+---
+
+# Conclusion
+
+Text Analytics extracts information from text using NLP preprocessing techniques. TF-IDF helps represent documents numerically for analysis and machine learning.

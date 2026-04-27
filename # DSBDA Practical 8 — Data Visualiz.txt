@@ -1,0 +1,585 @@
+# DSBDA Practical 8 — Data Visualization I (Titanic Dataset using Seaborn)
+
+Compiled from your uploaded notebook and markdown file for Practical 8. This document includes:
+
+* Full practical code
+* Detailed line-by-line explanation
+* Data Visualization concepts
+* Seaborn plotting explanations
+* Viva questions and answers
+* Faculty modification questions
+
+Source reference: fileciteturn8file0
+
+---
+
+# Aim
+
+To perform Data Visualization using Titanic dataset and identify patterns using Seaborn.
+
+---
+
+# Visualization Concept
+
+## Data Visualization
+
+Data Visualization is graphical representation of data.
+
+Examples:
+
+* Bar Chart
+* Histogram
+* Boxplot
+* Scatterplot
+
+---
+
+# Complete Practical Code
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load Titanic dataset
+
+df = sns.load_dataset('titanic')
+
+# Display data
+print(df.head())
+
+# Dataset information
+print(df.info())
+
+# Shape
+print(df.shape)
+
+# Survival count plot
+sns.countplot(x='survived', data=df)
+plt.title('Survival Count')
+plt.show()
+
+# Survival by gender
+sns.countplot(x='sex', hue='survived', data=df)
+plt.title('Survival by Gender')
+plt.show()
+
+# Passenger class distribution
+sns.countplot(x='class', data=df)
+plt.title('Passenger Class Distribution')
+plt.show()
+
+# Age distribution histogram
+sns.histplot(df['age'], bins=20)
+plt.title('Age Distribution')
+plt.show()
+
+# Fare distribution histogram
+sns.histplot(df['fare'], bins=30)
+plt.title('Fare Distribution')
+plt.xlabel('Fare')
+plt.ylabel('Count')
+plt.show()
+
+# Fare boxplot
+sns.boxplot(x=df['fare'])
+plt.title('Fare Boxplot')
+plt.show()
+```
+
+---
+
+# Detailed Line-by-Line Explanation
+
+## Line 1
+
+```python
+import pandas as pd
+```
+
+### Explanation
+
+* Imports Pandas library.
+* Used for data handling.
+
+---
+
+## Line 2
+
+```python
+import seaborn as sns
+```
+
+### Explanation
+
+* Imports Seaborn library.
+* Used for advanced visualization.
+* `sns` is shortcut.
+
+---
+
+## Line 3
+
+```python
+import matplotlib.pyplot as plt
+```
+
+### Explanation
+
+* Imports plotting module.
+* Used to display graphs.
+
+---
+
+## Line 4
+
+```python
+df = sns.load_dataset('titanic')
+```
+
+### Explanation
+
+Loads Titanic dataset from entity["software","Seaborn","Python statistical data visualization library"].
+
+---
+
+## Line 5
+
+```python
+print(df.head())
+```
+
+### Explanation
+
+Displays first 5 rows.
+
+---
+
+## Line 6
+
+```python
+print(df.info())
+```
+
+### Explanation
+
+Displays:
+
+* Rows
+* Columns
+* Datatypes
+* Missing values
+
+---
+
+## Line 7
+
+```python
+print(df.shape)
+```
+
+### Explanation
+
+Returns:
+
+```python
+(rows, columns)
+```
+
+Example:
+
+```python
+(891,15)
+```
+
+---
+
+## Line 8
+
+```python
+sns.countplot(x='survived', data=df)
+```
+
+### Explanation
+
+Creates count plot.
+
+Shows number of survivors.
+
+---
+
+## Line 9
+
+```python
+plt.title('Survival Count')
+```
+
+### Explanation
+
+Adds graph title.
+
+---
+
+## Line 10
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays graph.
+
+---
+
+## Line 11
+
+```python
+sns.countplot(x='sex', hue='survived', data=df)
+```
+
+### Explanation
+
+Creates grouped countplot.
+
+### hue
+
+Adds extra category.
+
+---
+
+## Line 12
+
+```python
+plt.title('Survival by Gender')
+```
+
+### Explanation
+
+Adds title.
+
+---
+
+## Line 13
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays graph.
+
+---
+
+## Line 14
+
+```python
+sns.countplot(x='class', data=df)
+```
+
+### Explanation
+
+Shows passenger class count.
+
+---
+
+## Line 15
+
+```python
+plt.title('Passenger Class Distribution')
+```
+
+### Explanation
+
+Adds title.
+
+---
+
+## Line 16
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays graph.
+
+---
+
+## Line 17
+
+```python
+sns.histplot(df['age'], bins=20)
+```
+
+### Explanation
+
+Creates histogram.
+
+Shows age distribution.
+
+---
+
+## Line 18
+
+```python
+plt.title('Age Distribution')
+```
+
+### Explanation
+
+Adds title.
+
+---
+
+## Line 19
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays histogram.
+
+---
+
+## Line 20
+
+```python
+sns.histplot(df['fare'], bins=30)
+```
+
+### Explanation
+
+Shows fare distribution.
+
+---
+
+## Line 21
+
+```python
+plt.title('Fare Distribution')
+```
+
+### Explanation
+
+Adds title.
+
+---
+
+## Line 22
+
+```python
+plt.xlabel('Fare')
+```
+
+### Explanation
+
+Sets X-axis label.
+
+---
+
+## Line 23
+
+```python
+plt.ylabel('Count')
+```
+
+### Explanation
+
+Sets Y-axis label.
+
+---
+
+## Line 24
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays graph.
+
+---
+
+## Line 25
+
+```python
+sns.boxplot(x=df['fare'])
+```
+
+### Explanation
+
+Creates boxplot.
+
+Detects outliers.
+
+---
+
+## Line 26
+
+```python
+plt.title('Fare Boxplot')
+```
+
+### Explanation
+
+Adds title.
+
+---
+
+## Line 27
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays plot.
+
+---
+
+# Important Concepts
+
+## Histogram
+
+Shows frequency distribution.
+
+---
+
+## Countplot
+
+Shows category count.
+
+---
+
+## Boxplot
+
+Detects outliers.
+
+---
+
+## Hue
+
+Adds subgroup category.
+
+---
+
+## Distribution
+
+Spread of values.
+
+---
+
+# Viva Questions
+
+## 1. What is Data Visualization?
+
+Graphical representation of data.
+
+---
+
+## 2. Why Seaborn?
+
+Advanced visualization library.
+
+---
+
+## 3. What is Histogram?
+
+Frequency distribution graph.
+
+---
+
+## 4. What is Countplot?
+
+Displays category count.
+
+---
+
+## 5. What is Boxplot?
+
+Shows spread and outliers.
+
+---
+
+## 6. What is Hue?
+
+Additional category grouping.
+
+---
+
+## 7. Why Titanic Dataset?
+
+Easy for visualization.
+
+---
+
+## 8. What is Distribution?
+
+Spread of values.
+
+---
+
+## 9. Why Fare Histogram?
+
+Shows ticket price pattern.
+
+---
+
+## 10. Why Visualization Important?
+
+Helps identify patterns.
+
+---
+
+# Faculty Modification Questions
+
+## Change Histogram Bins
+
+```python
+sns.histplot(df['fare'], bins=10)
+```
+
+---
+
+## Plot Age vs Fare
+
+```python
+sns.scatterplot(x='age', y='fare', data=df)
+```
+
+---
+
+## Use KDE Curve
+
+```python
+sns.histplot(df['fare'], kde=True)
+```
+
+---
+
+## Survival by Class
+
+```python
+sns.countplot(x='class', hue='survived', data=df)
+```
+
+---
+
+## Pie Chart
+
+```python
+df['survived'].value_counts().plot.pie()
+```
+
+---
+
+# Conclusion
+
+Data Visualization helps understand data through graphs. Titanic dataset with Seaborn reveals survival patterns, fare distribution, and passenger trends effectively.

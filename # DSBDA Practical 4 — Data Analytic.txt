@@ -1,0 +1,654 @@
+# DSBDA Practical 4 — Data Analytics I (Linear Regression using Boston Housing Dataset)
+
+Compiled from your uploaded notebook and markdown file for Practical 4. This document includes:
+
+* Full practical code
+* Detailed line-by-line explanation
+* Machine Learning concepts
+* Formula explanations
+* Viva questions and answers
+* Faculty modification questions
+* Final conclusion
+
+Source reference: fileciteturn4file0
+
+---
+
+# Aim
+
+To build a Linear Regression model using Python to predict house prices using the Boston Housing Dataset.
+
+---
+
+# Machine Learning Concept
+
+## Linear Regression
+
+Linear Regression predicts continuous values.
+
+Examples:
+
+* House price
+* Salary
+* Temperature
+
+### Formula
+
+[
+y = mx + c
+]
+
+Where:
+
+* y → Predicted value
+* m → Slope
+* x → Input feature
+* c → Intercept
+
+---
+
+# Complete Practical Code
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Load dataset
+
+df = pd.read_csv('HousingData.csv')
+
+# Display dataset
+print(df.head())
+
+# Dataset shape
+print(df.shape)
+
+# Missing values
+print(df.isnull().sum())
+
+# Fill missing values
+
+df = df.fillna(df.mean())
+
+# Features and target
+X = df.drop('MEDV', axis=1)
+y = df['MEDV']
+
+# Train-test split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Create model
+model = LinearRegression()
+
+# Train model
+model.fit(X_train, y_train)
+
+# Predictions
+
+y_pred = model.predict(X_test)
+
+# Evaluation
+
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print('Mean Squared Error:', mse)
+print('R2 Score:', r2)
+
+# Actual vs Predicted
+comparison = pd.DataFrame({
+    'Actual': y_test,
+    'Predicted': y_pred
+})
+
+print(comparison)
+
+# Visualization
+
+plt.scatter(y_test, y_pred)
+plt.xlabel('Actual Prices')
+plt.ylabel('Predicted Prices')
+plt.title('Actual vs Predicted House Prices')
+plt.show()
+```
+
+---
+
+# Detailed Line-by-Line Explanation
+
+## Line 1
+
+```python
+import pandas as pd
+```
+
+### Explanation
+
+* Imports Pandas library.
+* Used for dataset handling.
+* `pd` is shortcut.
+
+---
+
+## Line 2
+
+```python
+import numpy as np
+```
+
+### Explanation
+
+* Imports NumPy library.
+* Used for mathematical operations.
+* `np` is shortcut.
+
+---
+
+## Line 3
+
+```python
+import matplotlib.pyplot as plt
+```
+
+### Explanation
+
+* Imports graph plotting library.
+* Used for visualization.
+* `plt` is shortcut.
+
+---
+
+## Line 4
+
+```python
+from sklearn.model_selection import train_test_split
+```
+
+### Explanation
+
+* Imports train-test splitting function.
+* Divides dataset into training and testing.
+
+---
+
+## Line 5
+
+```python
+from sklearn.linear_model import LinearRegression
+```
+
+### Explanation
+
+Imports Linear Regression algorithm.
+
+---
+
+## Line 6
+
+```python
+from sklearn.metrics import mean_squared_error, r2_score
+```
+
+### Explanation
+
+Imports evaluation metrics.
+
+---
+
+## Line 7
+
+```python
+df = pd.read_csv('HousingData.csv')
+```
+
+### Explanation
+
+Loads housing dataset.
+
+---
+
+## Line 8
+
+```python
+print(df.head())
+```
+
+### Explanation
+
+Displays first 5 rows.
+
+---
+
+## Line 9
+
+```python
+print(df.shape)
+```
+
+### Explanation
+
+Shows:
+
+```python
+(rows, columns)
+```
+
+Example:
+
+```python
+(506,14)
+```
+
+---
+
+## Line 10
+
+```python
+print(df.isnull().sum())
+```
+
+### Explanation
+
+Checks missing values.
+
+---
+
+## Line 11
+
+```python
+df = df.fillna(df.mean())
+```
+
+### Explanation
+
+* Replaces null values.
+* Uses average value.
+
+---
+
+## Line 12
+
+```python
+X = df.drop('MEDV', axis=1)
+```
+
+### Explanation
+
+* Removes target column.
+* Remaining columns become features.
+
+---
+
+## Line 13
+
+```python
+y = df['MEDV']
+```
+
+### Explanation
+
+Defines target variable.
+
+---
+
+## Line 14
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+```
+
+### Explanation
+
+Splits data.
+
+### Meaning
+
+* 80% training
+* 20% testing
+
+### random_state=42
+
+Ensures same split.
+
+---
+
+## Line 15
+
+```python
+model = LinearRegression()
+```
+
+### Explanation
+
+Creates model object.
+
+---
+
+## Line 16
+
+```python
+model.fit(X_train, y_train)
+```
+
+### Explanation
+
+Trains model.
+
+Learns patterns.
+
+---
+
+## Line 17
+
+```python
+y_pred = model.predict(X_test)
+```
+
+### Explanation
+
+Predicts house prices.
+
+---
+
+## Line 18
+
+```python
+mse = mean_squared_error(y_test, y_pred)
+```
+
+### Explanation
+
+Calculates error.
+
+Formula:
+
+[
+MSE = \frac{1}{n}\sum (y_i - \hat{y})^2
+]
+
+---
+
+## Line 19
+
+```python
+r2 = r2_score(y_test, y_pred)
+```
+
+### Explanation
+
+Calculates model accuracy.
+
+Formula:
+
+[
+R^2 = 1 - \frac{SS_{res}}{SS_{tot}}
+]
+
+---
+
+## Line 20
+
+```python
+print('Mean Squared Error:', mse)
+```
+
+### Explanation
+
+Displays error value.
+
+---
+
+## Line 21
+
+```python
+print('R2 Score:', r2)
+```
+
+### Explanation
+
+Displays accuracy score.
+
+---
+
+## Line 22
+
+```python
+comparison = pd.DataFrame({
+    'Actual': y_test,
+    'Predicted': y_pred
+})
+```
+
+### Explanation
+
+Creates comparison table.
+
+---
+
+## Line 23
+
+```python
+print(comparison)
+```
+
+### Explanation
+
+Displays actual vs predicted values.
+
+---
+
+## Line 24
+
+```python
+plt.scatter(y_test, y_pred)
+```
+
+### Explanation
+
+Creates scatter plot.
+
+---
+
+## Line 25
+
+```python
+plt.xlabel('Actual Prices')
+```
+
+### Explanation
+
+Sets X-axis label.
+
+---
+
+## Line 26
+
+```python
+plt.ylabel('Predicted Prices')
+```
+
+### Explanation
+
+Sets Y-axis label.
+
+---
+
+## Line 27
+
+```python
+plt.title('Actual vs Predicted House Prices')
+```
+
+### Explanation
+
+Sets graph title.
+
+---
+
+## Line 28
+
+```python
+plt.show()
+```
+
+### Explanation
+
+Displays plot.
+
+---
+
+# Important Machine Learning Terms
+
+## Feature Variables
+
+Input columns.
+
+Examples:
+
+* RM
+* TAX
+* CRIM
+
+---
+
+## Target Variable
+
+Output prediction.
+
+Example:
+
+```python
+MEDV
+```
+
+---
+
+## Training Data
+
+Used for learning.
+
+---
+
+## Testing Data
+
+Used for evaluation.
+
+---
+
+# Viva Questions
+
+## 1. What is Linear Regression?
+
+Predicts continuous value.
+
+---
+
+## 2. What is Target Variable?
+
+Variable to predict.
+
+---
+
+## 3. Why Split Dataset?
+
+To test performance.
+
+---
+
+## 4. What is fit()?
+
+Trains model.
+
+---
+
+## 5. What is predict()?
+
+Makes predictions.
+
+---
+
+## 6. What is MSE?
+
+Prediction error.
+
+---
+
+## 7. What is R² Score?
+
+Accuracy measurement.
+
+---
+
+## 8. Difference Between Regression and Classification?
+
+* Regression → Continuous value
+* Classification → Category
+
+---
+
+## 9. Why Boston Housing Dataset?
+
+Suitable for regression.
+
+---
+
+## 10. What is Supervised Learning?
+
+Learning using labeled data.
+
+---
+
+# Faculty Modification Questions
+
+## Print Coefficients
+
+```python
+print(model.coef_)
+```
+
+---
+
+## Print Intercept
+
+```python
+print(model.intercept_)
+```
+
+---
+
+## Change Test Size
+
+```python
+test_size=0.3
+```
+
+---
+
+## Use One Feature
+
+```python
+X = df[['RM']]
+```
+
+---
+
+## Change Target Variable
+
+```python
+y = df['RM']
+```
+
+---
+
+# Conclusion
+
+Linear Regression is used for predicting continuous values. In this practical, Boston Housing dataset is used to predict house prices. Evaluation metrics like MSE and R² help measure model quality.
