@@ -1,0 +1,756 @@
+# DSBDA Practical 1 — Data Wrangling I (Complete Theory Notes)
+
+# 1. What is Data Wrangling?
+
+Data Wrangling is the process of:
+
+* cleaning,
+* organizing,
+* transforming,
+* and preparing raw data
+
+into a useful format for analysis or machine learning.
+
+Raw data usually contains:
+
+* missing values,
+* incorrect datatypes,
+* duplicate values,
+* inconsistent formatting,
+* categorical text values.
+
+Data wrangling improves:
+
+* data quality,
+* accuracy,
+* readability,
+* and model performance.
+
+---
+
+# 2. What is a Dataset?
+
+A dataset is a collection of related data organized in rows and columns.
+
+Example:
+
+| Name     | Age | Gender |
+| -------- | --- | ------ |
+| Harshada | 20  | Female |
+| Sarvesh  | 21  | Male   |
+
+Datasets are commonly stored in:
+
+* CSV files
+* Excel files
+* Databases
+
+---
+
+# 3. What is CSV?
+
+CSV stands for:
+
+# Comma Separated Values
+
+It is a simple file format used to store tabular data.
+
+Example:
+
+Name,Age,Gender
+Harshada,20,Female
+Sarvesh,21,Male
+
+Advantages of CSV:
+
+* lightweight
+* easy to read
+* supported by many tools
+* portable
+
+---
+
+# 4. Titanic Dataset
+
+The Titanic dataset contains passenger information from the Titanic ship disaster.
+
+It includes:
+
+* PassengerId
+* Survived
+* Pclass
+* Name
+* Sex
+* Age
+* Fare
+* Embarked
+
+This dataset is commonly used because:
+
+* it contains numerical and categorical data,
+* it contains missing values,
+* it is beginner-friendly for preprocessing.
+
+Dataset Source:
+https://www.kaggle.com/datasets/yasserh/titanic-dataset
+
+---
+
+# 5. Python Libraries Used
+
+## 5.1 Pandas
+
+Pandas is a Python library used for:
+
+* data handling,
+* data cleaning,
+* preprocessing,
+* reading CSV files,
+* working with tables.
+
+Import Statement:
+
+```python
+import pandas as pd
+```
+
+`pd` is an alias (shortcut name) for pandas.
+
+### Why Pandas is Used?
+
+Because Python alone cannot efficiently handle tabular datasets.
+
+Pandas provides:
+
+* DataFrame
+* Series
+* CSV reading functions
+* filtering operations
+* preprocessing tools
+
+---
+
+## 5.2 NumPy
+
+NumPy is a Python library used for:
+
+* numerical operations,
+* arrays,
+* mathematical calculations.
+
+Import Statement:
+
+```python
+import numpy as np
+```
+
+### Why NumPy is Used?
+
+Pandas internally uses NumPy arrays for fast processing.
+
+Advantages:
+
+* faster calculations
+* optimized memory usage
+* mathematical operations support
+
+---
+
+# 6. What is a DataFrame?
+
+A DataFrame is:
+
+# a two-dimensional tabular data structure in pandas.
+
+It contains:
+
+* rows
+* columns
+
+Similar to:
+
+* Excel sheet
+* SQL table
+
+Example:
+
+| Name     | Age |
+| -------- | --- |
+| Harshada | 20  |
+| Sarvesh  | 21  |
+
+Entire table = DataFrame
+
+---
+
+# 7. What is a Series?
+
+A Series is:
+
+# a single column in pandas.
+
+Example:
+
+```python
+df['Age']
+```
+
+This returns only the Age column.
+
+---
+
+# 8. Difference Between Series and DataFrame
+
+| Series              | DataFrame             |
+| ------------------- | --------------------- |
+| One-dimensional     | Two-dimensional       |
+| Single column       | Multiple columns      |
+| Example: Age column | Example: entire table |
+
+---
+
+# 9. Reading Dataset using read_csv()
+
+```python
+df = pd.read_csv("Titanic-Dataset.csv")
+```
+
+## Explanation
+
+* `pd` → pandas alias
+* `read_csv()` → function used to read CSV files
+* `df` → variable storing DataFrame
+
+## Internally What Happens?
+
+1. Python opens file
+2. Reads line-by-line
+3. Detects commas
+4. Separates rows and columns
+5. Creates DataFrame
+
+---
+
+# 10. Displaying First Rows using head()
+
+```python
+df.head()
+```
+
+## Purpose
+
+Displays first 5 rows of dataset.
+
+### Why Used?
+
+To quickly inspect dataset contents.
+
+---
+
+# 11. Dataset Dimensions using shape
+
+```python
+df.shape
+```
+
+Returns:
+
+```python
+(rows, columns)
+```
+
+Example:
+
+```python
+(891, 12)
+```
+
+Meaning:
+
+* 891 rows
+* 12 columns
+
+---
+
+# 12. Column Names using columns
+
+```python
+df.columns
+```
+
+Displays all column names present in dataset.
+
+---
+
+# 13. Data Types using dtypes
+
+```python
+df.dtypes
+```
+
+Displays datatype of each column.
+
+## Common Datatypes
+
+| Datatype | Meaning            |
+| -------- | ------------------ |
+| int64    | Integer values     |
+| float64  | Decimal values     |
+| object   | String/Text        |
+| bool     | True/False         |
+| category | Categorical values |
+
+---
+
+# 14. Dataset Information using info()
+
+```python
+df.info()
+```
+
+## Purpose
+
+Provides complete dataset structure.
+
+## Includes
+
+* number of rows
+* number of columns
+* datatype of each column
+* non-null values
+* memory usage
+
+---
+
+# 15. Difference Between info() and describe()
+
+| info()             | describe()          |
+| ------------------ | ------------------- |
+| Structural summary | Statistical summary |
+| Datatypes          | Mean                |
+| Non-null values    | Standard deviation  |
+| Memory usage       | Min/Max             |
+| Dataset structure  | Quartiles           |
+
+---
+
+# 16. Statistical Summary using describe()
+
+```python
+df.describe()
+```
+
+## Purpose
+
+Provides statistical analysis of numerical columns.
+
+## Includes
+
+* count
+* mean
+* standard deviation
+* minimum value
+* maximum value
+* quartiles
+
+---
+
+# 17. Mean
+
+Mean is:
+
+# average of values
+
+Formula:
+
+Mean = Sum of values / Total values
+
+Example:
+
+10 + 20 + 30 = 60
+60 / 3 = 20
+
+---
+
+# 18. Median
+
+Median is:
+
+# middle value after sorting
+
+Example:
+
+10, 20, 30
+
+Median = 20
+
+---
+
+# 19. Mode
+
+Mode is:
+
+# most frequently occurring value
+
+Example:
+
+1, 2, 2, 3
+
+Mode = 2
+
+---
+
+# 20. Standard Deviation
+
+Standard deviation measures:
+
+# spread of data
+
+Low standard deviation:
+
+* values are close together
+
+High standard deviation:
+
+* values are far apart
+
+---
+
+# 21. Missing Values
+
+Missing values are:
+
+# empty or null values in dataset.
+
+Example:
+
+| Age  |
+| ---- |
+| 20   |
+| NULL |
+
+---
+
+# 22. Checking Missing Values
+
+```python
+df.isnull().sum()
+```
+
+## Explanation
+
+### isnull()
+
+Checks whether values are missing.
+
+Returns:
+
+* True
+* False
+
+### sum()
+
+Counts total missing values.
+
+---
+
+# 23. Handling Missing Values using fillna()
+
+```python
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+```
+
+## Purpose
+
+Replaces missing Age values using average age.
+
+---
+
+# 24. Why Handle Missing Values?
+
+Because missing values:
+
+* reduce accuracy,
+* cause errors,
+* affect machine learning models,
+* produce incorrect statistics.
+
+---
+
+# 25. Type Conversion using astype()
+
+```python
+df['Survived'] = df['Survived'].astype('category')
+```
+
+## Purpose
+
+Changes datatype of column.
+
+---
+
+# 26. Why Convert to Category?
+
+Because:
+
+* Survived contains fixed values (0 and 1)
+* category datatype uses less memory
+* improves processing efficiency
+
+---
+
+# 27. Categorical Variables
+
+Categorical variables contain text categories.
+
+Examples:
+
+* male/female
+* red/blue
+* yes/no
+
+Machine learning models cannot directly understand text values.
+
+---
+
+# 28. Converting Categorical Variables into Numerical Variables
+
+```python
+pd.get_dummies()
+```
+
+This process is called:
+
+# One-Hot Encoding
+
+---
+
+# 29. What is One-Hot Encoding?
+
+Converts categorical values into binary columns.
+
+Example:
+
+Before:
+
+| Sex    |
+| ------ |
+| Male   |
+| Female |
+
+After:
+
+| Sex_Male | Sex_Female |
+| -------- | ---------- |
+| 1        | 0          |
+| 0        | 1          |
+
+---
+
+# 30. Why One-Hot Encoding is Used?
+
+Because:
+
+* machine learning models require numerical data,
+* avoids false ranking between categories.
+
+---
+
+# 31. Difference Between map() and get_dummies()
+
+| map()                               | get_dummies()                   |
+| ----------------------------------- | ------------------------------- |
+| Converts into single numeric column | Creates separate binary columns |
+| Simple                              | More accurate                   |
+| May create false ordering           | Avoids false ordering           |
+
+---
+
+# 32. Data Normalization
+
+Normalization is:
+
+# scaling numerical values into a fixed range.
+
+Usually:
+0 to 1
+
+---
+
+# 33. Why Normalization is Needed?
+
+Different columns may have different scales.
+
+Example:
+
+| Age | Fare |
+| --- | ---- |
+| 20  | 500  |
+| 30  | 1000 |
+
+Large values dominate analysis.
+
+Normalization balances values.
+
+---
+
+# 34. Min-Max Normalization
+
+Formula:
+
+(x - min) / (max - min)
+
+---
+
+# 35. Example of Normalization
+
+Before:
+
+| Age |
+| --- |
+| 10  |
+| 50  |
+| 100 |
+
+After:
+
+| Age  |
+| ---- |
+| 0    |
+| 0.44 |
+| 1    |
+
+---
+
+# 36. Why Normalize Only Numerical Columns?
+
+Because normalization is applied on:
+
+* continuous numerical data
+
+Not on:
+
+* identifiers
+* text columns
+* categorical values
+
+---
+
+# 37. Difference Between Formatting, Encoding, and Normalization
+
+| Term          | Meaning                                 |
+| ------------- | --------------------------------------- |
+| Formatting    | Correcting datatype                     |
+| Encoding      | Converting text categories into numbers |
+| Normalization | Scaling numerical values                |
+
+---
+
+# 38. Important Viva Questions and Answers
+
+## Q1. What is Data Wrangling?
+
+Cleaning and transforming raw data into usable format.
+
+---
+
+## Q2. What is a DataFrame?
+
+A two-dimensional table-like data structure in pandas.
+
+---
+
+## Q3. Difference between Series and DataFrame?
+
+Series = single column
+DataFrame = complete table
+
+---
+
+## Q4. Why Pandas is Used?
+
+For data handling, preprocessing, and CSV operations.
+
+---
+
+## Q5. What is Missing Value?
+
+An empty or null value in dataset.
+
+---
+
+## Q6. Why Handle Missing Values?
+
+To improve data quality and avoid incorrect analysis.
+
+---
+
+## Q7. What is fillna()?
+
+Function used to replace missing values.
+
+---
+
+## Q8. What is astype()?
+
+Function used to change datatype.
+
+---
+
+## Q9. Difference between info() and describe()?
+
+info() → structure
+describe() → statistics
+
+---
+
+## Q10. What is One-Hot Encoding?
+
+Converting categorical variables into binary numerical columns.
+
+---
+
+## Q11. Why Convert Categorical Variables?
+
+Because machine learning models require numerical data.
+
+---
+
+## Q12. What is Normalization?
+
+Scaling numerical values into fixed range.
+
+---
+
+## Q13. Which Normalization Method Was Used?
+
+Min-Max Normalization.
+
+---
+
+## Q14. Why Normalize Data?
+
+To bring all numerical features to same scale.
+
+---
+
+## Q15. What is CSV?
+
+Comma Separated Values file format.
+
+---
+
+## Q16. Why Titanic Dataset is Popular?
+
+Because it contains:
+
+* missing values,
+* numerical data,
+* categorical data,
+* and is beginner-friendly.
+
+---
+
+# 39. Conclusion
+
+Data Wrangling is an important preprocessing step in Data Science and Machine Learning. Using Python libraries like Pandas and NumPy, datasets can be cleaned, formatted, normalized, and transformed into usable form. Proper preprocessing improves data quality, analysis accuracy, and machine learning performance.
