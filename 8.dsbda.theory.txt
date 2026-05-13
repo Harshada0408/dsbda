@@ -1,0 +1,592 @@
+FIRST UNDERSTAND THE COMPLETE PRACTICAL
+
+This practical is about:
+
+DATA VISUALIZATION
+
+Meaning:
+
+representing data using graphs/charts.
+
+Instead of reading huge tables,
+graphs help us:
+
+identify patterns,
+trends,
+relationships,
+distributions.
+WHAT IS THIS PRACTICAL DOING?
+
+You are:
+
+loading Titanic dataset,
+analyzing passenger data,
+visualizing survival patterns,
+visualizing fare distribution.
+MAIN FLOW OF YOUR PROGRAM
+Step	Purpose
+Import libraries	use plotting/data tools
+Load dataset	get Titanic data
+Inspect dataset	understand structure
+Countplots	analyze survival patterns
+Scatter plots	relationship between variables
+Histogram	fare distribution
+NOW COMPLETE LINE-BY-LINE EXPLANATION
+HEADER COMMENTS
+# =========================================================
+# DATA VISUALIZATION I
+# Titanic Dataset Visualization using Seaborn
+# =========================================================
+PURPOSE
+
+Used for:
+
+readability,
+documentation,
+neat structure.
+
+Python ignores comments.
+
+AIM SECTION
+# Aim:
+
+Explains:
+
+what practical is trying to achieve.
+CELL 1 — INSTALL LIBRARIES
+# !pip install pandas matplotlib seaborn
+WHAT IS pip?
+
+pip =
+
+Python package installer.
+
+Used to install external libraries.
+
+WHY ! USED?
+
+In Jupyter Notebook:
+
+!
+
+runs terminal/system command.
+
+WHAT IS A LIBRARY?
+
+Prewritten collection of code.
+
+Helps avoid writing everything manually.
+
+PANDAS
+
+pandas
+
+Used for:
+
+handling tables,
+reading CSV files,
+DataFrames.
+MATPLOTLIB
+
+Matplotlib
+
+Used for:
+
+creating graphs,
+charts,
+visualizations.
+SEABORN
+
+Seaborn
+
+Built on top of Matplotlib.
+
+Provides:
+
+attractive graphs,
+easier plotting,
+statistical visualizations.
+CELL 2 — IMPORT LIBRARIES
+PANDAS IMPORT
+import pandas as pd
+
+Imports pandas library.
+
+WHY as pd?
+
+Short alias.
+
+Instead of:
+
+pandas.read_csv()
+
+we write:
+
+pd.read_csv()
+MATPLOTLIB IMPORT
+import matplotlib.pyplot as plt
+
+Imports plotting module.
+
+WHY plt?
+
+Short alias for plotting functions.
+
+SEABORN IMPORT
+import seaborn as sns
+
+Imports seaborn library.
+
+WHY sns?
+
+Standard short alias.
+
+COMMENTS BELOW IMPORTS
+# pandas -> data handling
+
+Explain purpose of each library.
+
+Very good for viva.
+
+CELL 3 — LOAD DATASET
+
+MOST IMPORTANT SECTION.
+
+BUILT-IN DATASET
+titanic = sns.load_dataset("titanic")
+
+Loads:
+
+Titanic dataset directly from Seaborn.
+WHAT IS TITANIC DATASET?
+
+Dataset containing passenger information from Titanic ship.
+
+Contains:
+
+age,
+gender,
+class,
+fare,
+survival status.
+WHY THIS DATASET USED?
+
+Very famous dataset for:
+
+machine learning,
+data analysis,
+visualization.
+ALTERNATIVE CSV OPTION
+# titanic = pd.read_csv("titanic.csv")
+
+Loads downloaded CSV file.
+
+WHAT IS CSV?
+
+CSV =
+
+Comma Separated Values.
+
+Common tabular file format.
+
+URL OPTION
+# url = "https://..."
+
+Loads dataset directly from internet.
+
+WHY KEEP ALTERNATIVES?
+
+External may ask:
+
+“Can dataset be loaded differently?”
+
+Answer:
+YES.
+
+PRINTING FIRST 5 ROWS
+print(titanic.head())
+
+MOST IMPORTANT FUNCTION.
+
+WHAT DOES head() DO?
+
+Displays:
+
+first 5 rows.
+WHY IMPORTANT?
+
+Quickly inspect dataset structure.
+
+CELL 4 — DATASET INFORMATION
+SHAPE
+print(titanic.shape)
+
+Returns:
+
+(rows, columns)
+EXAMPLE
+(891, 15)
+
+means:
+
+891 rows,
+15 columns.
+COLUMN NAMES
+print(titanic.columns)
+
+Displays all feature names.
+
+DATASET INFO
+titanic.info()
+
+VERY IMPORTANT.
+
+WHAT DOES info() SHOW?
+Information	Meaning
+rows	total entries
+columns	total variables
+datatype	type of data
+non-null count	missing values
+memory usage	RAM usage
+COMMON DATATYPES
+Type	Meaning
+int64	integers
+float64	decimal values
+object	text/string
+bool	True/False
+MISSING VALUES
+titanic.isnull().sum()
+
+MOST IMPORTANT.
+
+WHAT IS isnull()?
+
+Checks missing values.
+
+Returns:
+
+True for missing,
+False otherwise.
+WHAT DOES sum() DO?
+
+Counts total missing values.
+
+WHY IMPORTANT?
+
+Missing values affect:
+
+analysis,
+machine learning,
+visualization.
+CELL 5 — SET SEABORN STYLE
+sns.set(style="darkgrid")
+
+Changes graph appearance/theme.
+
+WHAT IS darkgrid?
+
+Adds:
+
+dark background grid,
+cleaner visualization.
+WHY USED?
+
+Improves readability.
+
+CELL 6 — SURVIVAL COUNT PLOT
+
+MOST IMPORTANT VISUALIZATION.
+
+CREATE FIGURE
+plt.figure(figsize=(6,4))
+
+Creates graph canvas.
+
+WHAT IS figsize?
+
+Controls graph size.
+
+Format:
+
+(width, height)
+COUNTPLOT
+sns.countplot(
+    x='survived',
+    data=titanic
+)
+
+Creates:
+
+frequency/count graph.
+WHAT DOES IT SHOW?
+
+Number of:
+
+survived passengers,
+non-survived passengers.
+AXIS
+x='survived'
+
+Places survival categories on x-axis.
+
+TITLE
+plt.title("Survival Count")
+
+Adds graph title.
+
+XLABEL & YLABEL
+plt.xlabel()
+plt.ylabel()
+
+Add axis names.
+
+SHOW
+plt.show()
+
+Displays graph.
+
+CELL 7 — SURVIVAL BASED ON GENDER
+
+MOST IMPORTANT ANALYSIS.
+
+HUE PARAMETER
+hue='survived'
+
+MOST IMPORTANT.
+
+WHAT IS hue?
+
+Splits graph into colored categories.
+
+HERE IT SHOWS
+
+For:
+
+males,
+females,
+
+how many:
+
+survived,
+died.
+OBSERVATION
+
+Usually:
+
+females survived more.
+WHY?
+
+“Women and children first” rescue policy.
+
+CELL 8 — SURVIVAL BASED ON CLASS
+x='class'
+
+Groups passengers by:
+
+First,
+Second,
+Third class.
+WHAT DOES GRAPH SHOW?
+
+Relationship between:
+
+passenger class and survival.
+OBSERVATION
+
+First class passengers survived more.
+
+WHY?
+
+Better:
+
+access,
+safety,
+rescue priority.
+CELL 9 — SCATTER PLOT USING SEABORN
+
+MOST IMPORTANT RELATIONSHIP GRAPH.
+
+WHAT IS SCATTER PLOT?
+
+Shows relationship between:
+
+two numerical variables.
+HERE
+x='age'
+y='fare'
+
+means:
+
+age on x-axis,
+fare on y-axis.
+EACH DOT REPRESENTS
+one passenger.
+HUE
+hue='survived'
+
+Colors dots based on:
+
+survived,
+not survived.
+WHAT CAN WE OBSERVE?
+
+Possible relationship between:
+
+age,
+fare,
+survival.
+CELL 10 — SCATTER PLOT USING MATPLOTLIB
+plt.scatter()
+
+Alternative plotting method.
+
+DIFFERENCE
+Matplotlib	Seaborn
+basic plotting	advanced statistical plotting
+WHY KEEP BOTH?
+
+External may ask:
+
+“Can same graph be plotted without seaborn?”
+
+YES.
+
+CELL 11 — HISTOGRAM USING SEABORN
+
+MOST IMPORTANT PS REQUIREMENT.
+
+WHAT IS HISTOGRAM?
+
+Shows:
+
+distribution of numerical data.
+HERE
+titanic['fare']
+
+Analyzes:
+
+ticket price distribution.
+BINS
+bins=30
+
+Divides fare values into:
+
+30 intervals/groups.
+EXAMPLE
+Fare Range	Passenger Count
+0-10	many
+10-20	many
+KDE
+kde=True
+
+MOST IMPORTANT.
+
+WHAT IS KDE?
+
+KDE =
+
+Kernel Density Estimation.
+
+Adds smooth probability curve.
+
+WHY USED?
+
+Better understanding of:
+
+distribution shape.
+OBSERVATION
+
+Fare distribution is:
+
+right-skewed.
+WHAT IS RIGHT SKEWED?
+
+Most values:
+
+small,
+few values:
+extremely large.
+CELL 12 — HISTOGRAM USING MATPLOTLIB
+plt.hist()
+
+Alternative histogram.
+
+DIFFERENCE
+Seaborn Histplot	Matplotlib Hist
+prettier	simpler
+KDE support	basic
+IMPORTANT GRAPH TYPES SUMMARY
+Graph	Purpose
+Countplot	categorical counts
+Scatter Plot	relationship
+Histogram	distribution
+IMPORTANT TITANIC COLUMNS
+Column	Meaning
+survived	0=died, 1=survived
+sex	male/female
+age	passenger age
+fare	ticket cost
+class	passenger class
+MOST IMPORTANT VIVA QUESTIONS
+Q1
+
+What is data visualization?
+
+Representing data graphically.
+
+Q2
+
+Why use Seaborn?
+
+For attractive statistical visualizations.
+
+Q3
+
+Difference between histogram and bar chart?
+
+Histogram	Bar Chart
+continuous data	categorical data
+Q4
+
+What is hue in seaborn?
+
+Used for subgroup coloring.
+
+Q5
+
+What is KDE?
+
+Smooth density curve over histogram.
+
+Q6
+
+What is scatter plot used for?
+
+Relationship between two numerical variables.
+
+Q7
+
+Why use plt.figure()?
+
+Creates new graph figure.
+
+Q8
+
+Why histogram used for fare?
+
+Because fare is continuous numerical data.
+
+Q9
+
+What does each dot represent in scatter plot?
+
+One observation/passenger.
+
+Q10
+
+What patterns observed?
+
+Females survived more.
+First class passengers survived more.
+Fare distribution is skewed.
+Higher fares mostly associated with upper classes

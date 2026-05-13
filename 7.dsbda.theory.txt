@@ -1,0 +1,765 @@
+FIRST UNDERSTAND WHAT THIS PRACTICAL DOES
+
+This practical is about:
+
+TEXT ANALYTICS / NLP
+
+NLP means:
+
+Natural Language Processing
+
+It helps computers:
+
+understand text,
+process language,
+analyze documents.
+MAIN FLOW OF YOUR PRACTICAL
+Step	Purpose
+Load text	input documents
+Tokenization	split words
+POS Tagging	identify grammar
+Stopword Removal	remove useless words
+Stemming	root form
+Lemmatization	meaningful base word
+TF	local word frequency
+IDF	global word importance
+TF-IDF	overall importance
+VERY IMPORTANT CONCEPT
+
+This practical converts:
+
+TEXT → NUMBERS
+
+because machine learning models understand:
+
+numerical data only.
+NOW COMPLETE LINE-BY-LINE EXPLANATION
+HEADER COMMENTS
+# =========================================================
+# TEXT ANALYTICS PRACTICAL
+# NLP Preprocessing and TF-IDF Representation
+# =========================================================
+WHY THESE COMMENTS?
+
+Used for:
+
+readability,
+structure,
+documentation.
+
+Python ignores comments.
+
+AIM SECTION
+# Aim:
+
+Explains:
+
+what practical is trying to achieve.
+CELL 1 — INSTALL LIBRARIES
+# !pip install nltk pandas matplotlib scikit-learn
+WHAT IS pip?
+
+pip =
+
+Python package installer.
+
+Used to install libraries.
+
+WHAT IS A LIBRARY?
+
+Prewritten collection of code.
+
+Helps avoid writing everything manually.
+
+WHY ! USED?
+
+In Jupyter Notebook:
+
+!
+
+runs terminal/system command.
+
+NLTK
+
+NLTK
+
+Used for:
+
+tokenization,
+stemming,
+stopwords,
+POS tagging.
+PANDAS
+
+pandas
+
+Used for:
+
+tables,
+DataFrames,
+displaying TF-IDF results.
+MATPLOTLIB
+
+Matplotlib
+
+Used for:
+
+graphs,
+charts,
+visualization.
+SCIKIT-LEARN
+
+scikit-learn
+
+Used here for:
+
+automatic TF-IDF generation.
+CELL 2 — IMPORT LIBRARIES
+NLTK
+import nltk
+
+Main NLP library.
+
+RE
+import re
+
+Used for:
+
+regular expressions.
+
+Helps clean text.
+
+WHAT ARE REGULAR EXPRESSIONS?
+
+Patterns used for:
+
+removing symbols,
+matching text,
+filtering strings.
+STRING
+import string
+
+Provides:
+
+punctuation constants,
+string operations.
+
+Though not heavily used here.
+
+MATH
+import math
+
+Used for:
+
+mathematical calculations.
+
+Needed for:
+
+log()
+
+inside IDF formula.
+
+PANDAS
+import pandas as pd
+
+Used for DataFrames.
+
+MATPLOTLIB
+import matplotlib.pyplot as plt
+
+Used for graphs.
+
+TOKENIZER IMPORT
+from nltk.tokenize import word_tokenize
+
+Imports tokenizer function.
+
+WHAT IS TOKENIZATION?
+
+Breaking sentence into:
+
+smaller pieces/tokens.
+
+Example:
+
+Sentence:
+
+I love Python
+
+Tokens:
+
+['I', 'love', 'Python']
+POS TAG IMPORT
+from nltk.tag import pos_tag
+
+Used for:
+
+grammatical tagging.
+WHAT IS POS TAGGING?
+
+POS =
+
+Part Of Speech
+
+Identifies:
+
+noun,
+verb,
+adjective.
+STOPWORDS IMPORT
+from nltk.corpus import stopwords
+
+Imports stopword list.
+
+WHAT ARE STOPWORDS?
+
+Common words:
+
+the,
+is,
+are,
+and.
+
+Usually removed because:
+
+low importance.
+PORTER STEMMER
+from nltk.stem import PorterStemmer
+
+Imports stemming tool.
+
+WHAT IS STEMMING?
+
+Cuts words into root form.
+
+Example:
+
+Original	Stemmed
+playing	play
+studies	studi
+
+May create invalid words.
+
+LEMMATIZER
+from nltk.stem import WordNetLemmatizer
+
+Imports lemmatization tool.
+
+WHAT IS LEMMATIZATION?
+
+Converts word into:
+
+meaningful dictionary form.
+
+Example:
+
+Original	Lemmatized
+studies	study
+running	run
+DIFFERENCE BETWEEN STEMMING & LEMMATIZATION
+Stemming	Lemmatization
+rough cutting	dictionary-based
+faster	more accurate
+may create invalid words	meaningful words
+TFIDFVECTORIZER
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+Automatic TF-IDF generator.
+
+Alternative to manual calculation.
+
+CELL 3 — DOWNLOAD NLTK RESOURCES
+nltk.download('punkt')
+
+Downloads tokenizer model.
+
+WHAT IS punkt?
+
+Pretrained tokenizer package.
+
+Needed for:
+
+word_tokenize()
+NEXT
+nltk.download('averaged_perceptron_tagger')
+
+Downloads POS tagging model.
+
+NEXT
+nltk.download('stopwords')
+
+Downloads stopword dictionary.
+
+NEXT
+nltk.download('wordnet')
+
+Downloads WordNet database.
+
+Needed for:
+
+lemmatization.
+CELL 4 — SAMPLE DOCUMENTS
+text1 = """ ... """
+
+Creates:
+
+multiline string.
+WHAT ARE THESE?
+
+Input text documents.
+
+WHY TWO DOCUMENTS?
+
+Because:
+
+IDF requires multiple documents.
+WHY ABOUT WHALES & GOLDFISH?
+
+Simple understandable topics.
+
+URL OPTION
+# url = "https://..."
+
+Alternative online loading.
+
+WHY KEEP THIS?
+
+External may ask:
+
+“Can we use online text source?”
+
+Answer:
+YES.
+
+PRINT STATEMENTS
+print(text1)
+
+Displays document contents.
+
+CELL 5 — INITIALIZE NLP TOOLS
+STOPWORDS
+stop_words = set(stopwords.words("english"))
+
+MOST IMPORTANT.
+
+WHAT DOES THIS DO?
+
+Loads English stopwords.
+
+WHY set() USED?
+
+Because:
+
+searching is faster in sets.
+STEMMER
+stemmer = PorterStemmer()
+
+Creates stemming object.
+
+LEMMATIZER
+lemmatizer = WordNetLemmatizer()
+
+Creates lemmatization object.
+
+CELL 6 — TOKENIZATION
+tokens1 = word_tokenize(text1)
+
+MOST IMPORTANT NLP STEP.
+
+WHAT DOES IT DO?
+
+Breaks document into:
+
+words and punctuation.
+EXAMPLE
+
+Sentence:
+
+Whales are big.
+
+Tokens:
+
+['Whales', 'are', 'big', '.']
+WHY IMPORTANT?
+
+Machine learning works better on:
+
+smaller units.
+CELL 7 — POS TAGGING
+pos_tags1 = pos_tag(tokens1)
+
+Assigns grammar tags.
+
+EXAMPLE
+('Whales', 'NNS')
+
+means:
+
+Whales = plural noun.
+COMMON POS TAGS
+Tag	Meaning
+NN	noun
+VB	verb
+JJ	adjective
+WHY POS TAGGING IMPORTANT?
+
+Helps understand:
+
+grammatical meaning.
+
+Used in:
+
+chatbots,
+translation,
+sentiment analysis.
+CELL 8 — STOPWORD REMOVAL
+
+MOST IMPORTANT SECTION.
+
+filtered1 = [
+
+Creates:
+
+list comprehension.
+WHAT IS LIST COMPREHENSION?
+
+Short method to create lists.
+
+THIS PART
+word.lower()
+
+Converts words to lowercase.
+
+WHY LOWERCASE?
+
+To avoid:
+
+Whale
+whale
+
+being treated differently.
+
+THIS PART
+word.lower() not in stop_words
+
+Removes stopwords.
+
+THIS PART
+word.isalpha()
+
+Keeps only alphabetic words.
+
+Removes:
+
+punctuation,
+numbers.
+OUTPUT
+
+Cleaner meaningful text.
+
+CELL 9 — STEMMING
+stemmer.stem(word)
+
+Converts word into root form.
+
+EXAMPLES
+Original	Stemmed
+whales	whale
+swimming	swim
+WHY USED?
+
+Reduces vocabulary size.
+
+CELL 10 — LEMMATIZATION
+lemmatizer.lemmatize(word)
+
+Converts into:
+
+meaningful base word.
+EXAMPLE
+Original	Lemmatized
+studies	study
+WHY BETTER THAN STEMMING?
+
+Produces:
+
+valid dictionary words.
+CELL 11 — CLEAN DOCUMENTS
+" ".join(lemmatized1)
+
+MOST IMPORTANT.
+
+WHAT DOES join() DO?
+
+Combines list into sentence.
+
+EXAMPLE
+
+List:
+
+['whale','ocean']
+
+becomes:
+
+whale ocean
+WHY NEEDED?
+
+TF-IDF works better with:
+
+clean processed text.
+CELL 12 — VOCABULARY
+set(doc1.split())
+
+Creates:
+
+unique words set.
+WHAT IS VOCABULARY?
+
+All distinct words from documents.
+
+WHAT DOES union() DO?
+
+Combines unique words from both documents.
+
+CELL 13 — WORD FREQUENCY DICTIONARY
+dict.fromkeys(vocabulary, 0)
+
+Creates dictionary.
+
+EXAMPLE
+{
+ 'whale':0,
+ 'fish':0
+}
+WHY?
+
+To count word frequencies.
+
+LOOP
+for word in doc1.split():
+
+Iterates through words.
+
+THIS LINE
+wordDict1[word] += 1
+
+Increases count.
+
+EXAMPLE
+
+If whale appears 3 times:
+
+'whale':3
+CELL 14 — TERM FREQUENCY
+def computeTF(wordDict, document):
+
+Creates TF calculation function.
+
+WHAT IS FUNCTION?
+
+Reusable block of code.
+
+TOTAL WORDS
+len(document.split())
+
+Counts total words.
+
+TF FORMULA
+
+TF=
+Total Words
+Word Count
+	​
+
+
+MEANING
+
+Measures:
+
+how often word appears in one document.
+CELL 15 — IDF
+
+MOST IMPORTANT THEORY.
+
+def computeIDF(documents):
+IDF FORMULA
+
+IDF=log(
+Documents containing word
+Total Documents
+	​
+
+)
+
+WHAT DOES IDF MEAN?
+
+Measures:
+
+how rare/important word is globally.
+IMPORTANT WORDS
+
+Rare words:
+→ higher IDF.
+
+Common words:
+→ lower IDF.
+
+WHY log() USED?
+
+To reduce extremely large values.
+
+THIS PART
+if value > 0:
+
+Checks whether word exists in document.
+
+CELL 16 — TF-IDF
+
+MOST IMPORTANT FINAL STEP.
+
+TF-IDF = TF × IDF
+
+TF-IDF=TF×IDF
+
+WHAT DOES TF-IDF MEAN?
+
+Word importance considering:
+
+local frequency,
+global rarity.
+EXAMPLE
+
+If:
+
+whale appears many times in one document,
+but rare overall,
+
+then:
+
+TF-IDF becomes high.
+CELL 17 — DATAFRAME
+pd.DataFrame()
+
+Creates table representation.
+
+WHY IMPORTANT?
+
+Easy visualization of TF-IDF scores.
+
+INDEX NAMES
+tfidf_df.index
+
+Assigns row labels.
+
+CELL 18 — BAR GRAPH
+plt.bar()
+
+Creates bar chart.
+
+WHAT DOES GRAPH SHOW?
+
+Top important words.
+
+SORTING
+sorted(... reverse=True)
+
+Sorts words by:
+
+highest TF-IDF.
+[:5]
+
+Top 5 words only.
+
+CELL 19 — SCIKIT TF-IDF
+TfidfVectorizer()
+
+Automatic TF-IDF generator.
+
+WHAT DOES IT DO?
+
+Internally:
+
+tokenization,
+TF,
+IDF,
+normalization.
+
+Automatically.
+
+THIS LINE
+fit_transform(documents)
+
+MOST IMPORTANT.
+
+WHAT DOES fit() DO?
+
+Learns vocabulary and IDF.
+
+WHAT DOES transform() DO?
+
+Converts documents into numerical TF-IDF matrix.
+
+WHY KEEP BOTH MANUAL & SKLEARN?
+Manual TF-IDF	sklearn TF-IDF
+proves understanding	industry usage
+educational	faster
+MOST IMPORTANT VIVA QUESTIONS
+Q1
+
+What is NLP?
+
+Field helping computers process human language.
+
+Q2
+
+What is tokenization?
+
+Breaking text into smaller tokens.
+
+Q3
+
+What are stopwords?
+
+Common words with little meaning.
+
+Q4
+
+Difference between stemming and lemmatization?
+
+Stemming	Lemmatization
+rough root	meaningful root
+Q5
+
+What is TF?
+
+Frequency of word in document.
+
+Q6
+
+What is IDF?
+
+Importance of word across documents.
+
+Q7
+
+Why use TF-IDF?
+
+To identify important words.
+
+Q8
+
+Why log used in IDF?
+
+To normalize large values.
+
+Q9
+
+What is vocabulary?
+
+Set of unique words.
+
+Q10
+
+Why convert text into numbers?
+
+Machine learning models require numerical input.

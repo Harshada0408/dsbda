@@ -1,0 +1,395 @@
+```python
+# =========================================================
+# DATA ANALYTICS III
+# Naive Bayes Classification on Iris Dataset
+# =========================================================
+
+# Aim:
+# 1. Implement Naive Bayes Classification Algorithm
+# 2. Compute:
+#    TP, FP, TN, FN
+#    Accuracy
+#    Error Rate
+#    Precision
+#    Recall
+
+
+# =========================================================
+# CELL 1 : Install Required Libraries
+# =========================================================
+
+# Run only once if libraries are not installed
+
+# !pip install pandas numpy matplotlib seaborn scikit-learn
+
+
+# =========================================================
+# CELL 2 : Import Required Libraries
+# =========================================================
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Machine Learning Libraries
+
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+
+# Evaluation Metrics
+
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score,
+    classification_report
+)
+
+# pandas      -> data handling
+# numpy       -> numerical calculations
+# matplotlib  -> plotting graphs
+# seaborn     -> advanced visualization
+# sklearn     -> machine learning algorithms
+
+
+# =========================================================
+# CELL 3 : Load Iris Dataset
+# =========================================================
+
+# OPTION 1 : Load Downloaded CSV Dataset
+
+df = pd.read_csv("Iris.csv")
+
+# OPTION 2 : Load Dataset Using URL
+
+# url = "https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv"
+# df = pd.read_csv(url)
+
+print("First 5 Rows of Dataset:")
+print(df.head())
+
+
+# =========================================================
+# CELL 4 : Dataset Information
+# =========================================================
+
+print("\nDataset Shape:")
+print(df.shape)
+
+print("\nColumn Names:")
+print(df.columns)
+
+print("\nDataset Information:")
+df.info()
+
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+print("\nData Types:")
+print(df.dtypes)
+
+
+# =========================================================
+# CELL 5 : Remove Unnecessary Column
+# =========================================================
+
+# Remove Id column if present
+
+if 'Id' in df.columns:
+    df.drop('Id', axis=1, inplace=True)
+
+print("\nDataset After Removing Id Column:")
+print(df.head())
+
+
+# =========================================================
+# CELL 6 : Define Features and Target Variable
+# =========================================================
+
+# Input Features (Independent Variables)
+
+X = df.iloc[:, :-1].values
+
+# Output Variable (Dependent Variable)
+
+y = df.iloc[:, -1].values
+
+print("\nFeatures Shape:", X.shape)
+
+print("Target Shape:", y.shape)
+
+
+# =========================================================
+# CELL 7 : Split Dataset into Training and Testing Sets
+# =========================================================
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+print("\nTraining Data Shape:", X_train.shape)
+
+print("Testing Data Shape :", X_test.shape)
+
+
+# =========================================================
+# CELL 8 : Create Gaussian Naive Bayes Model
+# =========================================================
+
+# Creating Naive Bayes Classifier
+
+model = GaussianNB()
+
+print("\nGaussian Naive Bayes Model Created Successfully.")
+
+
+# =========================================================
+# CELL 9 : Train the Model
+# =========================================================
+
+# Train model using training data
+
+model.fit(X_train, y_train)
+
+print("\nModel Trained Successfully.")
+
+
+# =========================================================
+# CELL 10 : Predict Test Results
+# =========================================================
+
+# Predict output for test data
+
+y_pred = model.predict(X_test)
+
+print("\nPredicted Values:")
+
+print(y_pred)
+
+
+# =========================================================
+# CELL 11 : Compare Actual and Predicted Values
+# =========================================================
+
+comparison = pd.DataFrame({
+    'Actual Value': y_test,
+    'Predicted Value': y_pred
+})
+
+print("\nComparison of Actual and Predicted Values:")
+
+print(comparison.head(10))
+
+
+# =========================================================
+# CELL 12 : Create Confusion Matrix
+# =========================================================
+
+conf_mat = confusion_matrix(y_test, y_pred)
+
+print("\nConfusion Matrix:")
+
+print(conf_mat)
+
+
+# =========================================================
+# CELL 13 : Calculate Accuracy
+# =========================================================
+
+accuracy = accuracy_score(y_test, y_pred)
+
+print("\nAccuracy:", accuracy)
+
+
+# =========================================================
+# CELL 14 : Calculate Error Rate
+# =========================================================
+
+error_rate = 1 - accuracy
+
+print("Error Rate:", error_rate)
+
+
+# =========================================================
+# CELL 15 : Calculate Precision
+# =========================================================
+
+precision = precision_score(
+    y_test,
+    y_pred,
+    average='weighted'
+)
+
+print("Precision:", precision)
+
+
+# =========================================================
+# CELL 16 : Calculate Recall
+# =========================================================
+
+recall = recall_score(
+    y_test,
+    y_pred,
+    average='weighted'
+)
+
+print("Recall:", recall)
+
+
+# =========================================================
+# CELL 17 : Classification Report
+# =========================================================
+
+report = classification_report(
+    y_test,
+    y_pred
+)
+
+print("\nClassification Report:")
+
+print(report)
+
+
+# =========================================================
+# CELL 18 : Calculate TP, FP, TN, FN for Each Class
+# =========================================================
+
+classes = np.unique(y)
+
+print("\nTP, FP, TN, FN For Each Class:\n")
+
+for i, cls in enumerate(classes):
+
+    # True Positive
+
+    TP = conf_mat[i, i]
+
+    # False Positive
+
+    FP = np.sum(conf_mat[:, i]) - TP
+
+    # False Negative
+
+    FN = np.sum(conf_mat[i, :]) - TP
+
+    # True Negative
+
+    TN = np.sum(conf_mat) - (TP + FP + FN)
+
+    print(f"Class: {cls}")
+
+    print("True Positive (TP):", TP)
+
+    print("False Positive (FP):", FP)
+
+    print("False Negative (FN):", FN)
+
+    print("True Negative (TN):", TN)
+
+    print()
+
+
+# =========================================================
+# CELL 19 : Confusion Matrix using Seaborn
+# =========================================================
+
+plt.figure(figsize=(6,5))
+
+sns.heatmap(
+    conf_mat,
+    annot=True,
+    fmt='d',
+    cmap='Blues',
+    xticklabels=classes,
+    yticklabels=classes
+)
+
+plt.title("Confusion Matrix using Seaborn")
+
+plt.xlabel("Predicted Labels")
+
+plt.ylabel("Actual Labels")
+
+plt.show()
+
+
+# =========================================================
+# CELL 20 : Confusion Matrix using Matplotlib
+# =========================================================
+
+
+plt.figure(figsize=(6,5))
+
+plt.matshow(conf_mat, cmap='Blues')
+
+plt.title("Confusion Matrix using Matplotlib")
+
+plt.colorbar()
+
+plt.xlabel("Predicted Labels")
+
+plt.ylabel("Actual Labels")
+
+plt.show()
+
+
+# =========================================================
+# CELL 21 : Scatter Plot using Matplotlib
+# =========================================================
+
+plt.figure(figsize=(6,4))
+
+plt.scatter(
+    df.iloc[:, 0],
+    df.iloc[:, 2]
+)
+
+plt.title("Sepal Length vs Petal Length using Matplotlib")
+
+plt.xlabel(df.columns[0])
+
+plt.ylabel(df.columns[2])
+
+plt.show()
+
+
+# =========================================================
+# CELL 22 : Scatter Plot using Seaborn
+# =========================================================
+
+plt.figure(figsize=(6,4))
+
+sns.scatterplot(
+    x=df.columns[0],
+    y=df.columns[2],
+    hue=df.columns[-1],
+    data=df
+)
+
+plt.title("Sepal Length vs Petal Length using Seaborn")
+
+plt.show()
+
+
+# =========================================================
+# CELL 23 : Probability Prediction (Optional)
+# =========================================================
+
+# Predict probability of each class
+
+probabilities = model.predict_proba(X_test)
+
+print("\nClass Probabilities:")
+
+print(probabilities[:5])
+
+
+# =========================================================
+# END OF PRACTICAL
+# =========================================================
+```

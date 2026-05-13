@@ -1,0 +1,296 @@
+```python id="irisviz3"
+# =========================================================
+# DATA VISUALIZATION III
+# Iris Dataset Analysis and Visualization
+# =========================================================
+
+# Aim:
+# 1. List features and their types
+# 2. Create histogram for each feature
+# 3. Create boxplot for each feature
+# 4. Compare distributions and identify outliers
+
+
+# =========================================================
+# CELL 1 : Install Required Libraries
+# =========================================================
+
+# Run only once if libraries are not installed
+
+# !pip install pandas matplotlib seaborn scikit-learn
+
+
+# =========================================================
+# CELL 2 : Import Required Libraries
+# =========================================================
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Alternative dataset loading library
+
+from sklearn.datasets import load_iris
+
+# pandas      -> data handling
+# matplotlib  -> basic plotting
+# seaborn     -> advanced visualization
+# sklearn     -> built-in datasets
+
+
+# =========================================================
+# CELL 3 : Load Iris Dataset
+# =========================================================
+
+# OPTION 1 : Load Dataset using sklearn
+
+iris = load_iris()
+
+df = pd.DataFrame(
+    data=iris.data,
+    columns=iris.feature_names
+)
+
+df['species'] = iris.target_names[iris.target]
+
+
+# OPTION 2 : Load Downloaded CSV Dataset
+
+# df = pd.read_csv("Iris.csv")
+
+
+# OPTION 3 : Load Dataset Using URL
+
+# url = "https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv"
+# df = pd.read_csv(url)
+
+
+print("First 5 Rows of Dataset:\n")
+
+print(df.head())
+
+
+# =========================================================
+# CELL 4 : Dataset Information
+# =========================================================
+
+print("\nShape of Dataset:")
+
+print(df.shape)
+
+print("\nColumn Names:")
+
+print(df.columns)
+
+print("\nDataset Information:")
+
+df.info()
+
+print("\nMissing Values:")
+
+print(df.isnull().sum())
+
+print("\nStatistical Summary:")
+
+print(df.describe(include='all'))
+
+
+# =========================================================
+# CELL 5 : Features and Their Types
+# =========================================================
+
+print("\nFeatures and Their Types:\n")
+
+for col in df.columns:
+
+    if df[col].dtype in ['float64', 'int64']:
+
+        feature_type = 'Numeric'
+
+    elif df[col].dtype == 'object':
+
+        feature_type = 'Nominal'
+
+    else:
+
+        feature_type = 'Other'
+
+    print(f"{col} : {feature_type} ({df[col].dtype})")
+
+
+# =========================================================
+# CELL 6 : Select Numeric Features
+# =========================================================
+
+# Remove species column because it is categorical
+
+numeric_features = df.select_dtypes(
+    include=['float64', 'int64']
+).columns
+
+print("\nNumeric Features:\n")
+
+print(numeric_features)
+
+
+# =========================================================
+# CELL 7 : Histograms using Seaborn
+# =========================================================
+
+# Histogram for each numeric feature
+
+plt.figure(figsize=(12,8))
+
+for i, feature in enumerate(numeric_features):
+
+    plt.subplot(2, 2, i + 1)
+
+    sns.histplot(
+        df[feature],
+        kde=True
+    )
+
+    plt.title(f"Histogram of {feature}")
+
+    plt.xlabel(feature)
+
+    plt.ylabel("Frequency")
+
+plt.tight_layout()
+
+plt.show()
+
+
+# =========================================================
+# CELL 8 : Histograms using Matplotlib
+# =========================================================
+
+# Alternative histogram using matplotlib
+
+plt.figure(figsize=(12,8))
+
+for i, feature in enumerate(numeric_features):
+
+    plt.subplot(2, 2, i + 1)
+
+    plt.hist(
+        df[feature],
+        bins=15
+    )
+
+    plt.title(f"Histogram of {feature}")
+
+    plt.xlabel(feature)
+
+    plt.ylabel("Frequency")
+
+plt.tight_layout()
+
+plt.show()
+
+
+# =========================================================
+# CELL 9 : Boxplots using Seaborn
+# =========================================================
+
+# Boxplot for each feature
+
+plt.figure(figsize=(12,8))
+
+for i, feature in enumerate(numeric_features):
+
+    plt.subplot(2, 2, i + 1)
+
+    sns.boxplot(
+        y=df[feature]
+    )
+
+    plt.title(f"Boxplot of {feature}")
+
+    plt.ylabel(feature)
+
+plt.tight_layout()
+
+plt.show()
+
+
+# =========================================================
+# CELL 10 : Boxplots using Matplotlib
+# =========================================================
+
+# Alternative boxplots using matplotlib
+
+plt.figure(figsize=(12,8))
+
+for i, feature in enumerate(numeric_features):
+
+    plt.subplot(2, 2, i + 1)
+
+    plt.boxplot(
+        df[feature]
+    )
+
+    plt.title(f"Boxplot of {feature}")
+
+plt.tight_layout()
+
+plt.show()
+
+
+# =========================================================
+# CELL 11 : Outlier Detection using IQR Method
+# =========================================================
+
+print("\nOutlier Detection using IQR Method:\n")
+
+for feature in numeric_features:
+
+    # Calculate Quartiles
+
+    Q1 = df[feature].quantile(0.25)
+
+    Q3 = df[feature].quantile(0.75)
+
+    # Calculate IQR
+
+    IQR = Q3 - Q1
+
+    # Calculate Lower and Upper Limits
+
+    lower_limit = Q1 - 1.5 * IQR
+
+    upper_limit = Q3 + 1.5 * IQR
+
+    # Detect Outliers
+
+    outliers = df[
+        (df[feature] < lower_limit) |
+        (df[feature] > upper_limit)
+    ]
+
+    print(f"{feature} : {len(outliers)} outlier(s)")
+
+
+# =========================================================
+# CELL 12 : Final Observations
+# =========================================================
+
+print("\nObservations:\n")
+
+print("1. Most features follow approximately normal distribution.")
+
+print("2. Petal length and petal width show clear variation.")
+
+print("3. Some features contain a few outliers.")
+
+print("4. Histogram helps understand feature distribution.")
+
+print("5. Boxplot helps identify spread and outliers.")
+
+print("6. Iris dataset is relatively clean and balanced.")
+
+
+# =========================================================
+# END OF PRACTICAL
+# =========================================================
+```

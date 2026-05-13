@@ -1,0 +1,212 @@
+code DSBDA Practical 1 : Data Wrangling I
+# =========================================================
+
+# Aim:
+# Perform data wrangling operations on an open-source dataset
+# using Python libraries like Pandas and NumPy.
+
+# Dataset Used: Titanic Dataset
+# Source: https://www.kaggle.com/datasets/yasserh/titanic-dataset
+#
+# Description:
+# The Titanic dataset contains passenger information from the
+# RMS Titanic, which sank on April 15, 1912. It is widely used
+# for binary classification tasks (survival prediction).
+# The dataset has 891 rows and 12 columns.
+#
+# Variable Descriptions:
+# PassengerId -> Unique ID for each passenger          (Integer)
+# Survived    -> Survival status: 0 = No, 1 = Yes      (Integer -> Category)
+# Pclass      -> Ticket class: 1 = 1st, 2 = 2nd, 3rd  (Integer)
+# Name        -> Full name of passenger                 (Object/String)
+# Sex         -> Gender of passenger                    (Object/Categorical)
+# Age         -> Age of passenger in years              (Float/Numeric)
+# SibSp       -> No. of siblings/spouses aboard        (Integer)
+# Parch       -> No. of parents/children aboard        (Integer)
+# Ticket      -> Ticket number                          (Object/String)
+# Fare        -> Passenger fare paid                    (Float/Numeric)
+# Cabin       -> Cabin number (highly incomplete)       (Object/String)
+# Embarked    -> Port of embarkation:
+#                C = Cherbourg, Q = Queenstown,
+#                S = Southampton                        (Object/Categorical)
+
+
+# =========================================================
+# STEP 1 : Import Required Libraries
+# =========================================================
+
+import pandas as pd          # Used for DataFrame and data handling
+import numpy as np           # Used for numerical operations
+
+
+# =========================================================
+# STEP 2 : Load Dataset
+# =========================================================
+
+# Read CSV file into pandas DataFrame
+df = pd.read_csv("Titanic-Dataset.csv")
+
+
+# =========================================================
+# STEP 3 : Display First 5 Rows
+# =========================================================
+
+print("First 5 Rows of Dataset:")
+print(df.head())
+
+
+# =========================================================
+# STEP 4 : Check Dataset Dimensions
+# =========================================================
+
+print("\nDataset Shape (rows, columns):")
+print(df.shape)
+
+
+# =========================================================
+# STEP 5 : Display Column Names
+# =========================================================
+
+print("\nColumn Names:")
+print(df.columns.tolist())
+
+
+# =========================================================
+# STEP 6 : Check Data Types
+# =========================================================
+
+print("\nData Types of Each Column:")
+print(df.dtypes)
+
+# Data Types present in this dataset:
+# int64    -> Integer values  (PassengerId, Survived, Pclass, SibSp, Parch)
+# float64  -> Decimal values  (Age, Fare)
+# object   -> String/Text     (Name, Sex, Ticket, Cabin, Embarked)
+
+
+# =========================================================
+# STEP 7 : Dataset Information
+# =========================================================
+
+print("\nDataset Information:")
+df.info()
+
+# info() provides:
+# - Total rows and columns
+# - Non-null count per column (helps spot missing data)
+# - Data types
+# - Memory usage
+
+
+# =========================================================
+# STEP 8 : Statistical Summary
+# =========================================================
+
+print("\nStatistical Summary:")
+print(df.describe())
+
+# describe() provides summary statistics for numeric columns:
+# count  -> Number of non-null values
+# mean   -> Average value
+# std    -> Standard deviation
+# min    -> Minimum value
+# 25%    -> First quartile
+# 50%    -> Median
+# 75%    -> Third quartile
+# max    -> Maximum value
+
+
+# =========================================================
+# STEP 9 : Check Missing Values
+# =========================================================
+
+print("\nMissing Values in Dataset (Before Cleaning):")
+print(df.isnull().sum())
+
+# Observations:
+# Age     -> ~177 missing values  -> Fill with mean
+# Cabin   -> ~687 missing values  -> Drop column (too many missing ~77%)
+# Embarked-> 2 missing values     -> Fill with mode
+
+
+# =========================================================
+# STEP 10 : Handle Missing Values
+# =========================================================
+
+# Drop Cabin column — over 77% values are missing,
+# imputing it would introduce significant noise
+df.drop(columns=['Cabin'], inplace=True)
+
+# Fill missing Age values with the column mean
+# Mean is used because Age is a continuous numeric variable
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+
+# Fill missing Embarked values with the mode
+# Mode is used because Embarked is a categorical variable
+df['Embarked'] = df['Embarked'].fillna(df['Embarked'].mode()[0])
+
+# Verify: check missing values after cleaning
+print("\nMissing Values After Cleaning:")
+print(df.isnull().sum())
+
+
+# =========================================================
+# STEP 11 : Type Conversion
+# =========================================================
+
+# Convert Survived column to category datatype
+# because it represents classes (0/1), not a numeric quantity
+df['Survived'] = df['Survived'].astype('category')
+
+print("\nUpdated Data Types:")
+print(df.dtypes)
+
+
+# =========================================================
+# STEP 12 : Convert Categorical Variables into Numerical
+# =========================================================
+
+# One-Hot Encoding using get_dummies()
+# Converts categorical columns (Sex, Embarked) into binary (0/1) columns
+# This is required because ML algorithms work with numeric data
+
+df = pd.get_dummies(df, columns=['Sex', 'Embarked'])
+
+print("\nColumns after One-Hot Encoding:")
+print(df.columns.tolist())
+
+
+# =========================================================
+# STEP 13 : Data Normalization
+# =========================================================
+
+# Min-Max Normalization scales values to range [0, 1]
+# Formula: (x - min) / (max - min)
+# Applied to continuous numeric columns: Age, Fare
+
+df['Age'] = (df['Age'] - df['Age'].min()) / \
+            (df['Age'].max() - df['Age'].min())
+
+df['Fare'] = (df['Fare'] - df['Fare'].min()) / \
+             (df['Fare'].max() - df['Fare'].min())
+
+
+# =========================================================
+# STEP 14 : Display Final Processed Dataset
+# =========================================================
+
+print("\nProcessed Dataset (First 5 Rows):")
+print(df.head())
+
+
+# =========================================================
+# STEP 15 : Display Normalized Columns
+# =========================================================
+
+print("\nNormalized Age and Fare Columns:")
+print(df[['Age', 'Fare']].head())
+
+
+# =========================================================
+# END OF PRACTICAL
+# =========================================================

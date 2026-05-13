@@ -1,0 +1,453 @@
+```python
+# =========================================================
+# TEXT ANALYTICS PRACTICAL
+# NLP Preprocessing and TF-IDF Representation
+# =========================================================
+
+# Aim:
+# 1. Apply document preprocessing methods:
+#    - Tokenization
+#    - POS Tagging
+#    - Stop Words Removal
+#    - Stemming
+#    - Lemmatization
+#
+# 2. Create document representation using:
+#    - Term Frequency (TF)
+#    - Inverse Document Frequency (IDF)
+#    - TF-IDF
+
+
+# =========================================================
+# CELL 1 : Install Required Libraries
+# =========================================================
+
+# Run only once if libraries are not installed
+
+# !pip install nltk pandas matplotlib scikit-learn
+
+
+# =========================================================
+# CELL 2 : Import Required Libraries
+# =========================================================
+
+import nltk
+import re
+import string
+import math
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# NLTK Modules
+
+from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+
+# Alternative TF-IDF Library
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+
+# =========================================================
+# CELL 3 : Download Required NLTK Resources
+# =========================================================
+
+nltk.download('punkt')
+
+nltk.download('averaged_perceptron_tagger')
+
+nltk.download('stopwords')
+
+nltk.download('wordnet')
+
+
+# =========================================================
+# CELL 4 : Sample Text Documents
+# =========================================================
+
+# OPTION 1 : Manual Sample Documents
+
+text1 = """
+Whales are very big animals that live in the ocean.
+They are mammals and they breathe air.
+Whales eat small fish and travel long distances in water.
+They use sound to communicate with each other.
+Whales are important for the ocean environment and need protection.
+"""
+
+text2 = """
+Goldfish are small fish that live in water and are kept as pets.
+They need clean water and food to survive.
+Goldfish can swim easily and live in tanks or ponds.
+They are easy to take care of and people like to keep them at home.
+"""
+
+
+# OPTION 2 : Load Text File Using URL (Optional)
+
+# url = "https://example.com/sample.txt"
+# df = pd.read_csv(url)
+
+
+print("Document 1:\n")
+
+print(text1)
+
+print("\nDocument 2:\n")
+
+print(text2)
+
+
+# =========================================================
+# CELL 5 : Initialize NLP Tools
+# =========================================================
+
+# Stop Words
+
+stop_words = set(stopwords.words("english"))
+
+# Stemming Tool
+
+stemmer = PorterStemmer()
+
+# Lemmatization Tool
+
+lemmatizer = WordNetLemmatizer()
+
+
+# =========================================================
+# CELL 6 : Tokenization
+# =========================================================
+
+# Convert document into individual words
+
+tokens1 = word_tokenize(text1)
+
+tokens2 = word_tokenize(text2)
+
+print("\nTokens of Document 1:\n")
+
+print(tokens1)
+
+print("\nTokens of Document 2:\n")
+
+print(tokens2)
+
+
+# =========================================================
+# CELL 7 : POS Tagging
+# =========================================================
+
+# Identify grammatical category of each word
+
+pos_tags1 = pos_tag(tokens1)
+
+pos_tags2 = pos_tag(tokens2)
+
+print("\nPOS Tags of Document 1:\n")
+
+print(pos_tags1)
+
+print("\nPOS Tags of Document 2:\n")
+
+print(pos_tags2)
+
+
+# =========================================================
+# CELL 8 : Stop Words Removal
+# =========================================================
+
+# Remove common meaningless words
+
+filtered1 = [
+    word.lower()
+    for word in tokens1
+    if word.lower() not in stop_words
+    and word.isalpha()
+]
+
+filtered2 = [
+    word.lower()
+    for word in tokens2
+    if word.lower() not in stop_words
+    and word.isalpha()
+]
+
+print("\nFiltered Tokens of Document 1:\n")
+
+print(filtered1)
+
+print("\nFiltered Tokens of Document 2:\n")
+
+print(filtered2)
+
+
+# =========================================================
+# CELL 9 : Stemming
+# =========================================================
+
+# Reduce words to root form
+
+stemmed1 = [stemmer.stem(word) for word in filtered1]
+
+stemmed2 = [stemmer.stem(word) for word in filtered2]
+
+print("\nStemmed Words of Document 1:\n")
+
+print(stemmed1)
+
+print("\nStemmed Words of Document 2:\n")
+
+print(stemmed2)
+
+
+# =========================================================
+# CELL 10 : Lemmatization
+# =========================================================
+
+# Convert words into meaningful base form
+
+lemmatized1 = [
+    lemmatizer.lemmatize(word)
+    for word in filtered1
+]
+
+lemmatized2 = [
+    lemmatizer.lemmatize(word)
+    for word in filtered2
+]
+
+print("\nLemmatized Words of Document 1:\n")
+
+print(lemmatized1)
+
+print("\nLemmatized Words of Document 2:\n")
+
+print(lemmatized2)
+
+
+# =========================================================
+# CELL 11 : Clean Documents for TF-IDF
+# =========================================================
+
+# Convert processed tokens back into text
+
+doc1 = " ".join(lemmatized1)
+
+doc2 = " ".join(lemmatized2)
+
+documents = [doc1, doc2]
+
+print("\nCleaned Document 1:\n")
+
+print(doc1)
+
+print("\nCleaned Document 2:\n")
+
+print(doc2)
+
+
+# =========================================================
+# CELL 12 : Create Vocabulary
+# =========================================================
+
+# Create unique words set
+
+vocabulary = set(doc1.split()).union(set(doc2.split()))
+
+print("\nUnique Vocabulary:\n")
+
+print(vocabulary)
+
+
+# =========================================================
+# CELL 13 : Create Word Frequency Dictionaries
+# =========================================================
+
+wordDict1 = dict.fromkeys(vocabulary, 0)
+
+wordDict2 = dict.fromkeys(vocabulary, 0)
+
+# Count word occurrences
+
+for word in doc1.split():
+    wordDict1[word] += 1
+
+for word in doc2.split():
+    wordDict2[word] += 1
+
+print("\nWord Frequency Dictionary for Document 1:\n")
+
+print(wordDict1)
+
+print("\nWord Frequency Dictionary for Document 2:\n")
+
+print(wordDict2)
+
+
+# =========================================================
+# CELL 14 : Calculate Term Frequency (TF)
+# =========================================================
+
+def computeTF(wordDict, document):
+
+    tfDict = {}
+
+    total_words = len(document.split())
+
+    for word, count in wordDict.items():
+
+        tfDict[word] = count / total_words
+
+    return tfDict
+
+
+tf1 = computeTF(wordDict1, doc1)
+
+tf2 = computeTF(wordDict2, doc2)
+
+print("\nTerm Frequency of Document 1:\n")
+
+print(tf1)
+
+print("\nTerm Frequency of Document 2:\n")
+
+print(tf2)
+
+
+# =========================================================
+# CELL 15 : Calculate Inverse Document Frequency (IDF)
+# =========================================================
+
+def computeIDF(documents):
+
+    N = len(documents)
+
+    idfDict = dict.fromkeys(documents[0].keys(), 0)
+
+    for document in documents:
+
+        for word, value in document.items():
+
+            if value > 0:
+
+                idfDict[word] += 1
+
+    for word, value in idfDict.items():
+
+        idfDict[word] = math.log(N / float(value))
+
+    return idfDict
+
+
+idf = computeIDF([wordDict1, wordDict2])
+
+print("\nInverse Document Frequency:\n")
+
+print(idf)
+
+
+# =========================================================
+# CELL 16 : Calculate TF-IDF
+# =========================================================
+
+def computeTFIDF(tf, idf):
+
+    tfidf = {}
+
+    for word, value in tf.items():
+
+        tfidf[word] = value * idf[word]
+
+    return tfidf
+
+
+tfidf1 = computeTFIDF(tf1, idf)
+
+tfidf2 = computeTFIDF(tf2, idf)
+
+print("\nTF-IDF of Document 1:\n")
+
+print(tfidf1)
+
+print("\nTF-IDF of Document 2:\n")
+
+print(tfidf2)
+
+
+# =========================================================
+# CELL 17 : Display TF-IDF Table
+# =========================================================
+
+tfidf_df = pd.DataFrame([tfidf1, tfidf2])
+
+tfidf_df.index = [
+    'Document 1 - Whales',
+    'Document 2 - Goldfish'
+]
+
+print("\nTF-IDF DataFrame:\n")
+
+print(tfidf_df)
+
+
+# =========================================================
+# CELL 18 : Visualize Top TF-IDF Words using Matplotlib
+# =========================================================
+
+# Sort top words from document 1
+
+top_words = dict(
+    sorted(
+        tfidf1.items(),
+        key=lambda item: item[1],
+        reverse=True
+    )[:5]
+)
+
+plt.figure(figsize=(8,5))
+
+plt.bar(
+    top_words.keys(),
+    top_words.values()
+)
+
+plt.title("Top TF-IDF Words - Document 1")
+
+plt.xlabel("Words")
+
+plt.ylabel("TF-IDF Score")
+
+plt.show()
+
+
+# =========================================================
+# CELL 19 : Alternative TF-IDF using Scikit-Learn
+# =========================================================
+
+# Automatic TF-IDF generation using sklearn
+
+vectorizer = TfidfVectorizer()
+
+tfidf_matrix = vectorizer.fit_transform(documents)
+
+feature_names = vectorizer.get_feature_names_out()
+
+tfidf_auto = pd.DataFrame(
+    tfidf_matrix.toarray(),
+    columns=feature_names
+)
+
+print("\nTF-IDF using Scikit-Learn:\n")
+
+print(tfidf_auto)
+
+
+# =========================================================
+# END OF PRACTICAL
+# =========================================================
+```

@@ -1,0 +1,279 @@
+```python
+# =========================================================
+# TEXT ANALYTICS PRACTICAL
+# NLP Preprocessing and TF-IDF Representation
+# =========================================================
+
+# Aim:
+# 1. Apply document preprocessing methods:
+#    - Tokenization
+#    - POS Tagging
+#    - Stop Words Removal
+#    - Stemming
+#    - Lemmatization
+#
+# 2. Create representation of document using:
+#    - Term Frequency (TF)
+#    - Inverse Document Frequency (IDF)
+#    - TF-IDF
+
+
+# =========================================================
+# CELL 1 : Install Required Libraries
+# =========================================================
+
+# Run only once if libraries are not installed
+
+# !pip install nltk pandas matplotlib scikit-learn
+
+
+# =========================================================
+# CELL 2 : Import Required Libraries
+# =========================================================
+
+import nltk
+import pandas as pd
+
+# NLP Processing Libraries
+
+from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+
+# TF-IDF Library
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+
+# =========================================================
+# CELL 3 : Download Required NLTK Resources
+# =========================================================
+
+nltk.download('punkt')
+
+nltk.download('averaged_perceptron_tagger')
+
+nltk.download('stopwords')
+
+nltk.download('wordnet')
+
+
+# =========================================================
+# CELL 4 : Sample Document
+# =========================================================
+
+# OPTION 1 : Manual Text Document
+
+sample_document = """
+Natural language processing (NLP) is a subfield of artificial intelligence.
+It focuses on enabling computers to understand, interpret,
+and generate human language.
+"""
+
+# OPTION 2 : Load Dataset Using URL (Optional)
+
+# url = "https://example.com/sample.txt"
+# df = pd.read_csv(url)
+
+print("Original Document:\n")
+
+print(sample_document)
+
+
+# =========================================================
+# CELL 5 : Tokenization
+# =========================================================
+
+# Convert sentence into individual words
+
+tokens = word_tokenize(sample_document)
+
+print("\nTokens:\n")
+
+print(tokens)
+
+
+# =========================================================
+# CELL 6 : POS Tagging
+# =========================================================
+
+# Identify grammatical role of each word
+
+pos_tags = pos_tag(tokens)
+
+print("\nPOS Tags:\n")
+
+print(pos_tags)
+
+
+# =========================================================
+# CELL 7 : Stop Words Removal
+# =========================================================
+
+# Load English stop words
+
+stop_words = set(stopwords.words('english'))
+
+# Remove stop words and punctuation
+
+filtered_tokens = [
+    word.lower()
+    for word in tokens
+    if word.lower() not in stop_words
+    and word.isalpha()
+]
+
+print("\nTokens after Stop Words Removal:\n")
+
+print(filtered_tokens)
+
+
+# =========================================================
+# CELL 8 : Stemming
+# =========================================================
+
+# Create stemming object
+
+stemmer = PorterStemmer()
+
+# Convert words into root form
+
+stemmed_tokens = [
+    stemmer.stem(word)
+    for word in filtered_tokens
+]
+
+print("\nStemmed Tokens:\n")
+
+print(stemmed_tokens)
+
+
+# =========================================================
+# CELL 9 : Lemmatization
+# =========================================================
+
+# Create lemmatizer object
+
+lemmatizer = WordNetLemmatizer()
+
+# Convert words into meaningful base form
+
+lemmatized_tokens = [
+    lemmatizer.lemmatize(word)
+    for word in filtered_tokens
+]
+
+print("\nLemmatized Tokens:\n")
+
+print(lemmatized_tokens)
+
+
+# =========================================================
+# CELL 10 : Create Clean Processed Document
+# =========================================================
+
+# Join tokens into sentence again
+
+processed_document = " ".join(lemmatized_tokens)
+
+print("\nProcessed Document:\n")
+
+print(processed_document)
+
+
+# =========================================================
+# CELL 11 : Manual Term Frequency (TF)
+# =========================================================
+
+# Split processed document into words
+
+words = processed_document.split()
+
+# Count total words
+
+total_words = len(words)
+
+# Create empty dictionary
+
+tf_dict = {}
+
+# Count frequency of each word
+
+for word in words:
+
+    tf_dict[word] = tf_dict.get(word, 0) + 1
+
+# Calculate TF
+
+for word in tf_dict:
+
+    tf_dict[word] = tf_dict[word] / total_words
+
+print("\nTerm Frequency (TF):\n")
+
+print(tf_dict)
+
+
+# =========================================================
+# CELL 12 : Manual Inverse Document Frequency (IDF)
+# =========================================================
+
+# Since only one document is used,
+# every word appears in one document only
+
+idf_dict = {}
+
+N = 1
+
+for word in tf_dict:
+
+    idf_dict[word] = 0
+
+print("\nInverse Document Frequency (IDF):\n")
+
+print(idf_dict)
+
+
+# =========================================================
+# CELL 13 : TF-IDF using Scikit-Learn
+# =========================================================
+
+# Create corpus
+
+corpus = [processed_document]
+
+# Initialize TF-IDF Vectorizer
+
+vectorizer = TfidfVectorizer()
+
+# Fit and transform document
+
+tfidf_matrix = vectorizer.fit_transform(corpus)
+
+# Get feature names
+
+feature_names = vectorizer.get_feature_names_out()
+
+# Convert sparse matrix into array
+
+dense_matrix = tfidf_matrix.toarray()
+
+# Create DataFrame
+
+tfidf_df = pd.DataFrame(
+    dense_matrix,
+    columns=feature_names,
+    index=['Sample Document']
+)
+
+print("\nTF-IDF Representation:\n")
+
+print(tfidf_df)
+
+
+# =========================================================
+# END OF PRACTICAL
+# =========================================================
+```

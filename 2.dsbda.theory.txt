@@ -1,0 +1,694 @@
+WHAT THIS PRACTICAL IS TEACHING
+
+This practical teaches:
+
+Data Cleaning + Data Preprocessing
+
+Real-world data is never perfect.
+
+It contains:
+
+missing values,
+incorrect values,
+outliers,
+skewed distributions.
+
+So before analysis or machine learning:
+we clean and transform data.
+
+That process is:
+
+Data Wrangling
+STEP 1 — IMPORT LIBRARIES
+import pandas as pd
+WHAT IS PANDAS?
+
+pandas
+
+Pandas is a Python library used for:
+
+data handling,
+DataFrames,
+CSV reading,
+preprocessing,
+filtering,
+cleaning.
+WHY CALLED PANDAS?
+
+Derived from:
+
+Panel Data
+
+term used in econometrics/statistics.
+
+WHY as pd?
+
+Shortcut.
+
+Instead of:
+
+pandas.DataFrame()
+
+we write:
+
+pd.DataFrame()
+NEXT LIBRARY
+import numpy as np
+WHAT IS NUMPY?
+
+NumPy
+
+NumPy is used for:
+
+arrays,
+mathematics,
+numerical operations,
+missing values,
+transformations.
+WHY IMPORTANT?
+
+Pandas internally depends on NumPy.
+
+Without NumPy:
+
+pandas becomes slower.
+WHY np?
+
+Shortcut alias.
+
+NEXT LIBRARY
+import matplotlib.pyplot as plt
+WHAT IS MATPLOTLIB?
+
+Matplotlib
+
+Used for:
+
+graphs,
+charts,
+visualization.
+WHAT IS pyplot?
+
+A module inside matplotlib.
+
+Provides plotting functions.
+
+WHY plt?
+
+Shortcut alias.
+
+NEXT LIBRARY
+import seaborn as sns
+WHAT IS SEABORN?
+
+Seaborn
+
+Advanced visualization library built on matplotlib.
+
+WHY SEABORN USED?
+
+Because:
+
+prettier graphs,
+easier statistical plots,
+less code,
+built-in themes.
+DIFFERENCE BETWEEN MATPLOTLIB AND SEABORN
+Matplotlib	Seaborn
+basic plotting	statistical plotting
+more control	easier
+more coding	simpler
+less attractive	prettier
+STEP 2 — CREATE DATASET
+data = {
+WHAT IS THIS?
+
+Python dictionary.
+
+WHAT IS DICTIONARY?
+
+Data structure storing:
+
+key-value pairs
+
+Example:
+
+{
+ 'Name':'Harshada'
+}
+HERE:
+'Maths':[85,90,np.nan]
+
+means:
+
+column name = Maths
+values = list
+WHAT IS LIST?
+
+Ordered collection of values.
+
+Example:
+
+[1,2,3]
+WHAT IS np.nan?
+
+MOST IMPORTANT.
+
+nan means:
+
+Not a Number
+
+Used to represent:
+
+missing numerical value
+WHY NOT NULL?
+
+Because Python numerical columns require special numeric missing marker.
+
+NumPy provides:
+
+np.nan
+WHY INTENTIONALLY ADD:
+Maths = 200
+
+Because practical requires:
+
+inconsistency detection
+
+Marks out of 100.
+
+200 impossible.
+
+So:
+
+inconsistent data.
+NEXT LINE
+df = pd.DataFrame(data)
+
+MOST IMPORTANT.
+
+WHAT IS DATAFRAME?
+
+A:
+
+2-dimensional tabular structure
+
+like Excel table.
+
+WHAT HAPPENS HERE?
+
+Dictionary converts into table.
+
+BEFORE
+
+Dictionary:
+
+{
+ 'Maths':[85,90]
+}
+AFTER
+Maths
+85
+90
+WHY DATAFRAME IMPORTANT?
+
+Because almost all data analysis uses tabular structure.
+
+STEP 3 — PRINT DATASET
+print(df)
+
+Displays complete dataset.
+
+STEP 4 — CHECK MISSING VALUES
+df.isnull().sum()
+
+VERY IMPORTANT.
+
+WHAT IS isnull()?
+
+Checks:
+
+whether value is missing.
+
+Returns:
+
+True
+False
+EXAMPLE
+Maths
+85
+NaN
+
+becomes:
+
+Maths
+False
+True
+WHAT DOES sum() DO?
+
+Counts total True values.
+
+Because:
+
+True = 1
+False = 0
+FINAL OUTPUT
+Maths    1
+
+means:
+
+1 missing value in Maths.
+STEP 5 — HANDLE MISSING VALUES
+fillna()
+WHAT IS fillna()?
+
+Replaces missing values.
+
+THIS LINE
+df[col] = df[col].fillna(df[col].mean())
+
+BREAK IT DOWN.
+
+df[col]
+
+Select current column.
+
+.mean()
+
+Calculate average.
+
+Formula:
+
+Mean=
+n
+∑x
+	​
+
+
+fillna(mean)
+
+Replace missing values using average.
+
+WHY USE MEAN?
+
+Because:
+
+preserves trend,
+simple,
+works for continuous numeric data.
+WHEN NOT TO USE MEAN?
+
+When:
+
+outliers exist,
+skewed data exists.
+
+Then:
+
+median better.
+STEP 6 — HANDLE INCONSISTENCIES
+df[df['Maths'] > 100]
+WHAT DOES THIS DO?
+
+Filters rows where:
+
+Maths > 100
+WHY?
+
+Because marks above 100 impossible.
+
+WHAT IS BOOLEAN FILTERING?
+
+Condition-based row selection.
+
+THIS LINE
+df.loc[df['Maths'] > 100, 'Maths']
+
+MOST IMPORTANT.
+
+WHAT IS loc[]?
+
+Label-based selection.
+
+Used for:
+
+selecting rows,
+selecting columns,
+conditional modification.
+STRUCTURE
+df.loc[rows, columns]
+HERE
+df.loc[df['Maths'] > 100, 'Maths']
+
+means:
+
+rows where Maths >100
+select Maths column
+THIS LINE
+df.loc[df['Maths'] > 100, 'Maths'] = df['Maths'].mean()
+
+means:
+
+replace inconsistent values using mean.
+WHY MEAN USED HERE?
+
+Because:
+
+keeps distribution balanced,
+avoids deleting data.
+STEP 7 — OUTLIER DETECTION
+
+MOST IMPORTANT SECTION.
+
+WHAT IS OUTLIER?
+
+Value far away from normal data.
+
+Example:
+
+20,21,22,19,18,500
+
+500 = outlier.
+
+WHY DANGEROUS?
+
+Outliers:
+
+distort mean,
+affect graphs,
+reduce ML accuracy.
+IQR METHOD
+WHAT IS QUARTILE?
+
+Quartiles divide data into 4 parts.
+
+Q1
+
+25th percentile.
+
+Q2
+
+Median.
+
+Q3
+
+75th percentile.
+
+THIS LINE
+Q1 = df[col].quantile(0.25)
+
+finds:
+
+first quartile
+THIS LINE
+Q3 = df[col].quantile(0.75)
+
+finds:
+
+third quartile
+WHAT IS IQR?
+
+Formula:
+
+IQR=Q3−Q1
+
+Measures spread of middle 50% data.
+
+OUTLIER LIMITS
+
+Lower Bound:
+
+Q1−1.5×IQR
+
+Upper Bound:
+
+Q3+1.5×IQR
+
+Outside values = outliers.
+
+THIS LINE
+outliers = df[(df[col] < lower) | (df[col] > upper)]
+
+finds all outlier rows.
+
+WHAT IS | ?
+
+Logical OR.
+
+STEP 8 — WINSORIZATION
+
+MOST IMPORTANT VIVA QUESTION.
+
+WHAT IS WINSORIZATION?
+
+Instead of deleting outliers:
+
+cap them to boundary values.
+WHY BETTER?
+
+Because:
+
+preserves dataset size,
+avoids data loss.
+THIS LINE
+np.where()
+
+works like:
+
+conditional replacement
+STRUCTURE
+np.where(condition, true_value, false_value)
+HERE
+np.where(df[col] > upper, upper, df[col])
+
+means:
+
+if value > upper limit
+→ replace with upper limit
+otherwise keep original.
+STEP 9 — BOXPLOT
+sns.boxplot()
+
+MOST IMPORTANT GRAPH.
+
+WHAT IS BOXPLOT?
+
+Graph used to:
+
+detect outliers,
+show distribution,
+show quartiles.
+HOW BOXPLOT IS DRAWN?
+
+Contains:
+
+minimum
+Q1
+median
+Q3
+maximum
+
+and possible outliers.
+
+STRUCTURE
+|---|====|----|
+PARTS OF BOXPLOT
+Part	Meaning
+box	middle 50% data
+line inside box	median
+whiskers	normal range
+dots outside	outliers
+WHY IMPORTANT?
+
+Quickly visualizes:
+
+spread,
+skewness,
+outliers.
+STEP 10 — LOG TRANSFORMATION
+np.log()
+WHAT IS LOG?
+
+Mathematical logarithm.
+
+Compresses large values.
+
+WHY LOG TRANSFORMATION USED?
+
+To:
+
+reduce skewness,
+reduce extreme effect,
+make data more normal.
+THIS LINE
+df['Maths_log'] = np.log(df['Maths'] + 1)
+
+creates transformed column.
+
+WHY +1?
+
+Because:
+
+log(0) is undefined
+
+Adding 1 avoids log(0).
+
+WHAT IS SKEWNESS?
+
+Measure of asymmetry in distribution.
+
+TYPES
+Type	Meaning
+positive skew	long right tail
+negative skew	long left tail
+zero skew	symmetric
+THIS LINE
+df['Maths'].skew()
+
+calculates skewness.
+
+INTERPRETATION
+Skewness	Meaning
+0	normal
+>0	right skew
+<0	left skew
+STEP 11 — HISTOGRAM
+sns.histplot()
+
+MOST IMPORTANT GRAPH.
+
+WHAT IS HISTOGRAM?
+
+Graph showing:
+
+frequency distribution
+HOW DRAWN?
+
+Data grouped into intervals called:
+
+bins
+
+Example:
+
+Marks Range	Students
+0-10	2
+10-20	5
+
+Bars drawn.
+
+DIFFERENCE BETWEEN BAR GRAPH AND HISTOGRAM
+Bar Graph	Histogram
+categorical data	continuous data
+bars separated	bars touch
+WHAT DOES HISTOGRAM SHOW?
+distribution,
+skewness,
+concentration,
+spread.
+WHAT IS KDE?
+kde=True
+
+Adds smooth probability density curve.
+
+Helps understand distribution shape.
+
+STEP 12 — SUBPLOTS
+plt.subplots(1,2)
+
+means:
+
+1 row
+2 graphs
+WHAT IS fig?
+
+Complete figure/window.
+
+WHAT IS axes?
+
+Individual graph areas.
+
+THIS LINE
+axes[0]
+
+first graph.
+
+THIS LINE
+axes[1]
+
+second graph.
+
+WHY USE BEFORE/AFTER HISTOGRAMS?
+
+To compare:
+
+original distribution
+transformed distribution
+STEP 13 — FINAL DATASET
+print(df)
+
+Displays cleaned and transformed dataset.
+
+MOST IMPORTANT VIVA QUESTIONS
+Q1
+
+What is outlier?
+
+Abnormal value far from other values.
+
+Q2
+
+Why outliers dangerous?
+
+They distort analysis and ML models.
+
+Q3
+
+What is IQR?
+
+Difference between Q3 and Q1.
+
+Q4
+
+Why use IQR method?
+
+Robust against extreme values.
+
+Q5
+
+What is boxplot?
+
+Graph for outlier visualization.
+
+Q6
+
+What is histogram?
+
+Frequency distribution graph.
+
+Q7
+
+Difference between histogram and bar graph?
+
+Histogram:
+continuous data.
+
+Bar graph:
+categorical data.
+
+Q8
+
+What is skewness?
+
+Measure of asymmetry.
+
+Q9
+
+Why use log transformation?
+
+To reduce skewness and compress large values.
+
+Q10
+
+Why use winsorization?
+
+To preserve dataset size while controlling outliers.

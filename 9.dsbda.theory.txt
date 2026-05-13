@@ -1,0 +1,661 @@
+FIRST UNDERSTAND THE WHOLE PRACTICAL
+
+This practical is about:
+
+DATA VISUALIZATION
+
+You are using graphs to:
+
+understand data,
+identify patterns,
+compare groups,
+detect outliers,
+analyze distributions.
+WHAT IS THE MAIN AIM HERE?
+
+You need to:
+
+visualize age distribution,
+compare males and females,
+compare survived vs non-survived passengers,
+analyze patterns using boxplots.
+WHAT IS TITANIC DATASET?
+
+Titanic dataset contains passenger information from the Titanic ship.
+
+It includes:
+
+age,
+gender,
+ticket fare,
+passenger class,
+survival status.
+NOW COMPLETE LINE-BY-LINE EXPLANATION
+HEADER COMMENTS
+# =========================================================
+# DATA VISUALIZATION II
+# Titanic Dataset Visualization using Box Plot
+# =========================================================
+PURPOSE
+
+These are:
+
+comments
+
+Python ignores them during execution.
+
+Used for:
+
+readability,
+documentation,
+organization.
+AIM SECTION
+# Aim:
+
+Explains:
+
+objective of practical.
+CELL 1 — INSTALL LIBRARIES
+# !pip install pandas matplotlib seaborn
+WHAT IS pip?
+
+pip =
+
+Python package installer.
+
+Used to install external libraries.
+
+WHY ! USED?
+
+In Jupyter Notebook:
+
+!
+
+runs terminal/system commands.
+
+WHAT IS A LIBRARY?
+
+Collection of prewritten code.
+
+Helps avoid writing everything manually.
+
+PANDAS
+
+pandas
+
+Used for:
+
+tables,
+CSV handling,
+DataFrames,
+preprocessing.
+MATPLOTLIB
+
+Matplotlib
+
+Used for:
+
+graphs,
+plots,
+visualization.
+SEABORN
+
+Seaborn
+
+Built on Matplotlib.
+
+Provides:
+
+attractive graphs,
+simpler syntax,
+statistical visualizations.
+CELL 2 — IMPORT LIBRARIES
+PANDAS IMPORT
+import pandas as pd
+
+Imports pandas library.
+
+WHY as pd?
+
+Creates:
+
+short alias.
+
+Instead of:
+
+pandas.read_csv()
+
+we write:
+
+pd.read_csv()
+MATPLOTLIB IMPORT
+import matplotlib.pyplot as plt
+
+Imports plotting module.
+
+WHY plt?
+
+Shortcut alias for plotting functions.
+
+SEABORN IMPORT
+import seaborn as sns
+
+Imports seaborn library.
+
+WHY sns?
+
+Standard shorthand alias.
+
+COMMENTS BELOW IMPORTS
+# pandas -> data handling
+
+Explain purpose of libraries.
+
+Useful in viva.
+
+CELL 3 — LOAD DATASET
+
+MOST IMPORTANT SECTION.
+
+BUILT-IN DATASET
+titanic = sns.load_dataset("titanic")
+
+Loads Titanic dataset directly from Seaborn.
+
+WHAT HAPPENS INTERNALLY?
+
+Seaborn downloads dataset and converts it into:
+
+pandas DataFrame.
+WHAT IS A DATAFRAME?
+
+MOST IMPORTANT QUESTION.
+
+DataFrame =
+
+2-dimensional tabular data structure.
+
+Looks like Excel table.
+
+Contains:
+
+rows,
+columns.
+EXAMPLE
+age	sex	survived
+22	male	0
+ALTERNATIVE CSV LOADING
+# titanic = pd.read_csv("titanic.csv")
+
+Loads local CSV file.
+
+WHAT IS CSV?
+
+CSV =
+
+Comma Separated Values.
+
+Stores tabular data.
+
+URL LOADING
+# url = "https://..."
+
+Loads dataset directly from internet.
+
+WHY KEEP ALTERNATIVES?
+
+External may ask:
+
+“Can dataset be loaded differently?”
+
+Answer:
+YES.
+
+PRINT FIRST 5 ROWS
+print(titanic.head())
+WHAT DOES head() DO?
+
+Displays:
+
+first 5 rows.
+WHY IMPORTANT?
+
+Quickly inspect:
+
+columns,
+datatypes,
+sample data.
+CELL 4 — DATASET INFORMATION
+SHAPE
+print(titanic.shape)
+
+Returns:
+
+(rows, columns)
+EXAMPLE
+(891, 15)
+
+means:
+
+891 rows,
+15 columns.
+COLUMN NAMES
+print(titanic.columns)
+
+Displays all feature names.
+
+INFO FUNCTION
+titanic.info()
+
+VERY IMPORTANT.
+
+WHAT DOES info() SHOW?
+Information	Meaning
+rows	total entries
+columns	total variables
+datatype	data type
+non-null count	missing values
+memory usage	RAM usage
+COMMON DATATYPES
+Type	Meaning
+int64	integer
+float64	decimal
+object	string/text
+bool	True/False
+MISSING VALUES
+titanic.isnull().sum()
+
+MOST IMPORTANT.
+
+WHAT IS isnull()?
+
+Checks missing values.
+
+Returns:
+
+True for missing,
+False otherwise.
+WHAT DOES sum() DO?
+
+Counts total missing values.
+
+WHY IMPORTANT?
+
+Missing values affect:
+
+analysis,
+machine learning,
+graphs.
+CELL 5 — SEABORN STYLE
+sns.set(style="darkgrid")
+
+Changes graph appearance.
+
+WHAT IS darkgrid?
+
+Adds:
+
+dark background grid,
+cleaner visual appearance.
+WHY USED?
+
+Improves readability.
+
+CELL 6 — BOXPLOT USING SEABORN
+
+MOST IMPORTANT GRAPH.
+
+CREATE FIGURE
+plt.figure(figsize=(10,6))
+
+Creates graph canvas.
+
+WHAT IS FIGSIZE?
+
+Controls graph size.
+
+Format:
+
+(width, height)
+BOXPLOT
+sns.boxplot(
+    x='sex',
+    y='age',
+    hue='survived',
+    data=titanic
+)
+
+Creates:
+
+box plot.
+WHAT IS BOXPLOT?
+
+Graph showing:
+
+distribution,
+median,
+quartiles,
+outliers.
+WHAT DOES x='sex' DO?
+
+Places:
+
+male,
+female
+
+on x-axis.
+
+WHAT DOES y='age' DO?
+
+Plots age values vertically.
+
+WHAT DOES hue='survived' DO?
+
+MOST IMPORTANT.
+
+Splits graph into:
+
+survived,
+not survived categories.
+
+Using different colors.
+
+WHAT DOES THIS GRAPH SHOW?
+
+Compares:
+
+age distribution,
+gender,
+survival status.
+
+ALL TOGETHER.
+
+MAIN PARTS OF BOXPLOT
+Part	Meaning
+Box	middle 50% data
+Median line	center value
+Whiskers	range
+Dots outside	outliers
+WHAT IS MEDIAN?
+
+Middle value after sorting.
+
+WHAT ARE QUARTILES?
+
+Dataset divided into:
+
+4 equal parts.
+Quartile	Meaning
+Q1	25%
+Q2	50% (median)
+Q3	75%
+WHAT IS IQR?
+
+IQR =
+
+Interquartile Range
+
+Formula:
+
+IQR=Q
+3
+	​
+
+−Q
+1
+	​
+
+
+WHAT ARE OUTLIERS?
+
+Extreme abnormal values.
+
+Shown as:
+
+separate dots.
+TITLE
+plt.title()
+
+Adds graph title.
+
+LABELS
+plt.xlabel()
+plt.ylabel()
+
+Add axis names.
+
+LEGEND
+plt.legend(title="Survived")
+
+Shows color meaning.
+
+SHOW
+plt.show()
+
+Displays graph.
+
+CELL 7 — BOXPLOT USING MATPLOTLIB
+
+Alternative implementation.
+
+FILTER MALE DATA
+male_age = titanic[titanic['sex'] == 'male']['age'].dropna()
+
+VERY IMPORTANT LINE.
+
+STEP-BY-STEP
+STEP 1
+titanic['sex'] == 'male'
+
+Creates:
+
+boolean condition.
+
+Example:
+
+sex	result
+male	True
+female	False
+STEP 2
+titanic[condition]
+
+Filters only male rows.
+
+STEP 3
+['age']
+
+Selects age column only.
+
+STEP 4
+dropna()
+
+Removes missing values.
+
+SAME FOR FEMALES
+female_age = ...
+
+Stores female ages.
+
+MATPLOTLIB BOXPLOT
+plt.boxplot(
+    [male_age, female_age],
+    labels=['Male', 'Female']
+)
+
+Creates boxplot manually.
+
+WHY LIST USED?
+
+Each list represents:
+
+one category/group.
+LABELS
+
+Names for x-axis groups.
+
+WARNING YOU GOT
+
+New Matplotlib uses:
+
+tick_labels=
+
+instead of:
+
+labels=
+CELL 8 — COUNTPLOT
+sns.countplot(
+    x='sex',
+    hue='survived',
+    data=titanic
+)
+
+Creates:
+
+categorical frequency graph.
+WHAT DOES IT SHOW?
+
+Number of:
+
+males survived,
+males died,
+females survived,
+females died.
+OBSERVATION
+
+Females survived more.
+
+WHY?
+
+“Women and children first” rescue policy.
+
+CELL 9 — HISTOGRAM
+
+MOST IMPORTANT DISTRIBUTION GRAPH.
+
+HISTPLOT
+sns.histplot(
+    titanic['age'].dropna(),
+    bins=20,
+    kde=True
+)
+
+Creates:
+
+histogram.
+WHAT IS HISTOGRAM?
+
+Graph showing:
+
+frequency distribution.
+WHAT ARE BINS?
+
+Intervals/groups.
+
+Example:
+
+Age Range	Count
+0-10	50 passengers
+WHAT DOES bins=20 MEAN?
+
+Divides ages into:
+
+20 groups.
+WHAT IS KDE?
+
+KDE =
+
+Kernel Density Estimation.
+
+Smooth probability curve.
+
+WHY USE KDE?
+
+Better understanding of:
+
+distribution shape.
+WHAT DOES THIS GRAPH SHOW?
+
+Age distribution of passengers.
+
+WHAT IS DISTRIBUTION?
+
+How values are spread.
+
+IMPORTANT OBSERVATIONS
+Observation 1
+
+Most passengers were:
+
+young adults.
+Observation 2
+
+Female survival rate was higher.
+
+Observation 3
+
+Some outliers visible in age distribution.
+
+Observation 4
+
+Children had better survival chances.
+
+IMPORTANT VIVA QUESTIONS
+Q1
+
+What is boxplot?
+
+Graph showing statistical distribution.
+
+Q2
+
+What does median line represent?
+
+Middle value.
+
+Q3
+
+What are outliers?
+
+Extreme abnormal values.
+
+Q4
+
+Why use dropna()?
+
+Removes missing values.
+
+Q5
+
+Difference between histogram and boxplot?
+
+Histogram	Boxplot
+frequency distribution	statistical summary
+Q6
+
+What is hue in seaborn?
+
+Subgroup coloring.
+
+Q7
+
+Why use seaborn?
+
+Better statistical visualization.
+
+Q8
+
+What is KDE?
+
+Smooth density curve.
+
+Q9
+
+What is frequency?
+
+Number of occurrences.
+
+Q10
+
+Why Titanic dataset used?
+
+Popular real-world dataset for analysis and visualization.

@@ -1,0 +1,661 @@
+CELL 5 : FEATURES AND THEIR TYPES
+print("\nFeatures and Their Types:\n")
+WHAT DOES \n MEAN?
+
+\n means:
+
+new line
+
+Used for:
+
+cleaner output formatting.
+WHAT IS A FEATURE?
+
+MOST IMPORTANT.
+
+Feature =
+
+column/attribute/variable of dataset.
+
+Example in Iris dataset:
+
+sepal length,
+petal width,
+species.
+
+All are:
+
+features.
+LOOP
+for col in df.columns:
+WHAT IS df.columns?
+
+Returns:
+
+all column names.
+
+Example:
+
+Index([
+'sepal length',
+'sepal width',
+'petal length',
+'petal width',
+'species'
+])
+WHAT DOES LOOP DO?
+
+Iterates through every column one by one.
+
+FIRST ITERATION
+col = 'sepal length'
+
+Second:
+
+col = 'sepal width'
+
+and so on.
+
+DATATYPE CHECK
+if df[col].dtype in ['float64', 'int64']:
+
+VERY IMPORTANT.
+
+STEP-BY-STEP
+df[col]
+
+Selects one column.
+
+Example:
+
+df['sepal length']
+.dtype
+
+Returns datatype of column.
+
+COMMON DATATYPES
+Type	Meaning
+int64	integers
+float64	decimal numbers
+object	strings/text
+WHY FLOAT64?
+
+Because flower measurements contain:
+
+decimal values.
+
+Example:
+
+5.1
+4.7
+6.3
+IF CONDITION
+feature_type = 'Numeric'
+
+Assigns feature category.
+
+NUMERIC DATA
+
+Numeric data means:
+
+numbers that can be mathematically calculated.
+
+Examples:
+
+height,
+weight,
+marks.
+ELIF
+elif df[col].dtype == 'object':
+
+Checks for:
+
+text/string data.
+OBJECT TYPE
+
+In pandas:
+
+object
+
+usually means:
+
+text/string values.
+
+Example:
+
+setosa
+versicolor
+NOMINAL DATA
+
+Nominal means:
+
+categorical data without numerical meaning.
+
+Example:
+
+colors,
+flower species,
+gender.
+ELSE BLOCK
+feature_type = 'Other'
+
+Handles unexpected datatypes.
+
+PRINT STATEMENT
+print(f"{col} : {feature_type} ({df[col].dtype})")
+
+VERY IMPORTANT.
+
+WHAT IS f""?
+
+Called:
+
+f-string
+
+Used for:
+
+dynamic formatting.
+EXAMPLE OUTPUT
+sepal length : Numeric (float64)
+species : Nominal (object)
+WHY THIS STEP IMPORTANT?
+
+PS REQUIREMENT:
+
+“List down features and their types”
+
+This cell fulfills it.
+
+CELL 6 : SELECT NUMERIC FEATURES
+
+MOST IMPORTANT FOR VISUALIZATION.
+
+COMMENT
+# Remove species column because it is categorical
+WHY REMOVE SPECIES?
+
+Because:
+
+histogram,
+boxplot
+
+work best on:
+
+numerical continuous data.
+
+Species is:
+
+categorical.
+SELECT_DTYPES
+numeric_features = df.select_dtypes(
+    include=['float64', 'int64']
+).columns
+
+VERY IMPORTANT FUNCTION.
+
+WHAT DOES select_dtypes() DO?
+
+Selects columns based on datatype.
+
+HERE IT SELECTS
+
+Only:
+
+float64,
+int64 columns.
+RESULT
+Index([
+'sepal length',
+'sepal width',
+'petal length',
+'petal width'
+])
+WHY STORE IN numeric_features?
+
+So we can:
+
+loop through all numeric columns automatically.
+PRINT
+print(numeric_features)
+
+Displays selected numeric columns.
+
+CELL 7 : HISTOGRAMS USING SEABORN
+
+MOST IMPORTANT VISUALIZATION SECTION.
+
+WHAT IS HISTOGRAM?
+
+Histogram shows:
+
+distribution of numerical data.
+WHAT IS DISTRIBUTION?
+
+How values are spread.
+
+Example:
+
+many small values?
+many large values?
+symmetric?
+skewed?
+FIGURE
+plt.figure(figsize=(12,8))
+
+Creates graph canvas.
+
+FIGSIZE
+(12,8)
+
+means:
+
+width = 12,
+height = 8.
+LOOP
+for i, feature in enumerate(numeric_features):
+
+VERY IMPORTANT.
+
+WHAT IS ENUMERATE?
+
+Adds:
+
+index,
+value together.
+EXAMPLE
+i	feature
+0	sepal length
+1	sepal width
+WHY ENUMERATE NEEDED?
+
+Because subplot positions require:
+
+numbering/indexing.
+SUBPLOT
+plt.subplot(2, 2, i + 1)
+
+VERY IMPORTANT.
+
+WHAT IS SUBPLOT?
+
+Creates:
+
+multiple graphs inside same figure.
+(2,2,i+1) MEANS
+Value	Meaning
+2	rows
+2	columns
+i+1	graph position
+VISUAL LAYOUT
+1 2
+3 4
+WHY i+1?
+
+Subplot numbering starts from:
+
+1
+
+NOT 0.
+
+HISTPLOT
+sns.histplot(
+    df[feature],
+    kde=True
+)
+
+MOST IMPORTANT LINE.
+
+df[feature]
+
+Selects one feature column.
+
+Example:
+
+df['petal length']
+WHAT DOES HISTPLOT DO?
+
+Creates histogram.
+
+WHAT ARE BINS?
+
+Histogram divides values into:
+
+intervals/groups.
+
+Example:
+
+Range	Count
+1-2	30 flowers
+2-3	50 flowers
+KDE
+kde=True
+
+VERY IMPORTANT.
+
+WHAT IS KDE?
+
+KDE =
+
+Kernel Density Estimation.
+
+Smooth probability curve over histogram.
+
+WHY USE KDE?
+
+Helps understand:
+
+distribution shape more smoothly.
+TITLE
+plt.title(f"Histogram of {feature}")
+
+Dynamic graph title.
+
+Example:
+
+Histogram of petal length
+LABELS
+plt.xlabel(feature)
+plt.ylabel("Frequency")
+WHAT IS FREQUENCY?
+
+Number of occurrences.
+
+TIGHT_LAYOUT
+plt.tight_layout()
+
+VERY IMPORTANT.
+
+WHY USED?
+
+Prevents:
+
+overlapping graphs,
+overlapping titles.
+SHOW
+plt.show()
+
+Displays graphs.
+
+WHAT DOES HISTOGRAM TELL US?
+
+VERY IMPORTANT.
+
+Histogram helps identify:
+
+normal distribution,
+skewness,
+spread,
+concentration.
+NORMAL DISTRIBUTION
+
+Bell-shaped distribution.
+
+Most values near center.
+
+SKEWNESS
+Type	Meaning
+Right skew	long right tail
+Left skew	long left tail
+CELL 8 : HISTOGRAM USING MATPLOTLIB
+
+Alternative implementation.
+
+HIST FUNCTION
+plt.hist(
+    df[feature],
+    bins=15
+)
+
+Creates histogram manually.
+
+WHAT IS bins=15?
+
+Divides data into:
+
+15 intervals.
+DIFFERENCE
+Seaborn	Matplotlib
+prettier	simpler
+KDE support	basic
+CELL 9 : BOXPLOTS USING SEABORN
+
+MOST IMPORTANT GRAPH AFTER HISTOGRAM.
+
+WHAT IS BOXPLOT?
+
+Graph showing:
+
+median,
+quartiles,
+spread,
+outliers.
+FIGURE
+plt.figure(figsize=(12,8))
+
+Creates graph area.
+
+LOOP
+for i, feature in enumerate(numeric_features):
+
+Loops through all features.
+
+SUBPLOT
+plt.subplot(2, 2, i + 1)
+
+Creates multiple boxplots.
+
+BOXPLOT
+sns.boxplot(
+    y=df[feature]
+)
+
+Creates vertical boxplot.
+
+WHY ONLY y=?
+
+Because:
+
+one variable plotted,
+vertical orientation used.
+MAIN PARTS OF BOXPLOT
+Part	Meaning
+Box	middle 50% data
+Median line	center value
+Whiskers	range
+Dots	outliers
+WHAT IS MEDIAN?
+
+Middle value after sorting.
+
+WHAT ARE QUARTILES?
+
+Dataset divided into:
+
+4 equal parts.
+Quartile	Meaning
+Q1	25%
+Q2	50%
+Q3	75%
+WHAT IS IQR?
+
+Interquartile Range:
+
+IQR=Q
+3
+	​
+
+−Q
+1
+	​
+
+
+WHAT ARE OUTLIERS?
+
+Extreme abnormal values.
+
+Shown as:
+
+separate dots.
+TITLE
+plt.title(f"Boxplot of {feature}")
+
+Adds feature-specific title.
+
+CELL 10 : BOXPLOT USING MATPLOTLIB
+
+Alternative plotting method.
+
+MATPLOTLIB BOXPLOT
+plt.boxplot(
+    df[feature]
+)
+
+Creates boxplot manually.
+
+DIFFERENCE
+Seaborn	Matplotlib
+prettier	basic
+statistical styling	simple
+CELL 11 : OUTLIER DETECTION USING IQR
+
+MOST IMPORTANT THEORY SECTION.
+
+LOOP
+for feature in numeric_features:
+
+Processes each numeric feature.
+
+Q1
+Q1 = df[feature].quantile(0.25)
+
+Calculates:
+
+25th percentile.
+Q3
+Q3 = df[feature].quantile(0.75)
+
+Calculates:
+
+75th percentile.
+IQR
+
+IQR=Q
+3
+	​
+
+−Q
+1
+	​
+
+
+Measures spread of middle data.
+
+LOWER LIMIT
+
+Lower Limit=Q
+1
+	​
+
+−1.5×IQR
+
+UPPER LIMIT
+
+Upper Limit=Q
+3
+	​
+
++1.5×IQR
+
+OUTLIER DETECTION
+outliers = df[
+    (df[feature] < lower_limit) |
+    (df[feature] > upper_limit)
+]
+
+MOST IMPORTANT LINE.
+
+| MEANS
+
+Logical:
+
+OR
+CONDITION
+
+Selects rows where:
+
+value smaller than lower limit,
+OR
+value greater than upper limit.
+LEN
+len(outliers)
+
+Counts number of outlier rows.
+
+FINAL OBSERVATIONS
+
+These are:
+
+interpretations/inferences.
+
+VERY IMPORTANT FOR EXTERNAL.
+
+IMPORTANT VIVA QUESTIONS
+Q1
+
+Why histogram used?
+
+To understand feature distribution.
+
+Q2
+
+Why boxplot used?
+
+To identify spread and outliers.
+
+Q3
+
+What is frequency?
+
+Number of occurrences.
+
+Q4
+
+What is KDE?
+
+Smooth probability density curve.
+
+Q5
+
+What is IQR?
+
+Interquartile range.
+
+Q6
+
+What are quartiles?
+
+Dataset divided into 4 equal parts.
+
+Q7
+
+What is outlier?
+
+Extreme abnormal value.
+
+Q8
+
+Difference between matplotlib and seaborn?
+
+Matplotlib	Seaborn
+basic plotting	advanced statistical plotting
+Q9
+
+Why species excluded?
+
+Because it is categorical.
+
+Q10
+
+What does tight_layout() do?
+
+Prevents overlapping graphs.

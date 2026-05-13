@@ -1,0 +1,190 @@
+```python
+# =========================================================
+# DATA VISUALIZATION II
+# Titanic Dataset Visualization using Box Plot
+# =========================================================
+
+# Aim:
+# 1. Plot box plot for distribution of age
+#    with respect to gender and survival status
+# 2. Write observations from the visualization
+
+
+# =========================================================
+# CELL 1 : Install Required Libraries
+# =========================================================
+
+# Run only once if libraries are not installed
+
+# !pip install pandas matplotlib seaborn
+
+
+# =========================================================
+# CELL 2 : Import Required Libraries
+# =========================================================
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# pandas      -> data handling
+# matplotlib  -> plotting graphs
+# seaborn     -> advanced visualization
+
+
+# =========================================================
+# CELL 3 : Load Titanic Dataset
+# =========================================================
+
+# OPTION 1 : Load Built-in Titanic Dataset
+
+titanic = sns.load_dataset("titanic")
+
+# OPTION 2 : Load Downloaded CSV Dataset
+
+# titanic = pd.read_csv("titanic.csv")
+
+# OPTION 3 : Load Dataset Using URL
+
+# url = "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv"
+# titanic = pd.read_csv(url)
+
+print("First 5 Rows of Dataset:\n")
+
+print(titanic.head())
+
+
+# =========================================================
+# CELL 4 : Dataset Information
+# =========================================================
+
+print("\nShape of Dataset:")
+
+print(titanic.shape)
+
+print("\nColumn Names:")
+
+print(titanic.columns)
+
+print("\nDataset Information:")
+
+titanic.info()
+
+print("\nMissing Values:")
+
+print(titanic.isnull().sum())
+
+
+# =========================================================
+# CELL 5 : Set Seaborn Style
+# =========================================================
+
+# Improve graph appearance
+
+sns.set(style="darkgrid")
+
+
+# =========================================================
+# CELL 6 : Box Plot using Seaborn
+# =========================================================
+
+# Box plot for age distribution according to:
+# - Gender
+# - Survival status
+
+plt.figure(figsize=(10,6))
+
+sns.boxplot(
+    x='sex',
+    y='age',
+    hue='survived',
+    data=titanic
+)
+
+plt.title("Age Distribution by Gender and Survival Status")
+
+plt.xlabel("Gender")
+
+plt.ylabel("Age")
+
+plt.legend(title="Survived")
+
+plt.show()
+
+
+# =========================================================
+# CELL 7 : Box Plot using Matplotlib
+# =========================================================
+
+# Alternative box plot using matplotlib
+
+male_age = titanic[titanic['sex'] == 'male']['age'].dropna()
+
+female_age = titanic[titanic['sex'] == 'female']['age'].dropna()
+
+plt.figure(figsize=(8,5))
+
+plt.boxplot(
+    [male_age, female_age],
+    labels=['Male', 'Female']
+)
+
+plt.title("Age Distribution by Gender using Matplotlib")
+
+plt.xlabel("Gender")
+
+plt.ylabel("Age")
+
+plt.show()
+
+
+# =========================================================
+# CELL 8 : Count Plot for Survival Analysis
+# =========================================================
+
+# Additional visualization for survival comparison
+
+plt.figure(figsize=(7,5))
+
+sns.countplot(
+    x='sex',
+    hue='survived',
+    data=titanic
+)
+
+plt.title("Survival Count by Gender")
+
+plt.xlabel("Gender")
+
+plt.ylabel("Number of Passengers")
+
+plt.show()
+
+
+# =========================================================
+# CELL 9 : Histogram of Age Distribution
+# =========================================================
+
+# Distribution of passenger age
+
+plt.figure(figsize=(8,5))
+
+sns.histplot(
+    titanic['age'].dropna(),
+    bins=20,
+    kde=True
+)
+
+plt.title("Age Distribution of Passengers")
+
+plt.xlabel("Age")
+
+plt.ylabel("Frequency")
+
+plt.show()
+
+
+# =========================================================
+# END OF PRACTICAL
+# =========================================================
+```

@@ -1,0 +1,1146 @@
+DESCRIPTIVE STATISTICS — MEASURES OF CENTRAL TENDENCY AND VARIABILITY
+
+This practical mainly teaches:
+
+How to summarize data mathematically
+How to compare categories using statistics
+How to analyze distribution and spread of data
+
+The dataset used is:
+
+Iris flower dataset
+
+which contains measurements of iris flowers.
+
+CELL 1 — INSTALLING REQUIRED LIBRARIES
+# !pip install pandas numpy matplotlib seaborn scikit-learn
+WHAT IS THIS?
+
+This command installs Python libraries.
+
+WHAT IS A LIBRARY?
+
+A library is:
+
+collection of prewritten code
+
+that helps perform tasks easily.
+
+Instead of writing everything manually,
+we use existing tools.
+
+WHAT DOES pip MEAN?
+
+pip =
+
+Package Installer for Python
+
+Used to download libraries from internet.
+
+WHY # IS USED?
+
+# means:
+
+comment
+
+Comments are ignored by Python.
+
+Used for explanation/documentation.
+
+WHY ! IS USED?
+
+In Jupyter Notebook:
+
+!
+
+runs system/terminal commands.
+
+So:
+
+!pip install pandas
+
+runs installation command.
+
+WHY RUN ONLY ONCE?
+
+Because after installation:
+libraries remain installed in system.
+
+LIBRARIES USED
+Library	Purpose
+pandas	data handling
+numpy	mathematical operations
+matplotlib	graph plotting
+seaborn	advanced visualization
+CELL 2 — IMPORTING LIBRARIES
+import pandas as pd
+WHAT DOES import DO?
+
+Brings external library into Python program.
+
+WHAT IS PANDAS?
+
+pandas
+
+Pandas is used for:
+
+DataFrames
+CSV reading
+grouping
+filtering
+analysis
+WHY as pd?
+
+Creates shortcut alias.
+
+Instead of:
+
+pandas.read_csv()
+
+we write:
+
+pd.read_csv()
+NEXT LIBRARY
+import numpy as np
+WHAT IS NUMPY?
+
+NumPy
+
+Used for:
+
+numerical calculations
+arrays
+percentiles
+mathematical functions
+WHY IMPORTANT?
+
+Pandas internally depends on NumPy.
+
+NEXT LIBRARY
+import matplotlib.pyplot as plt
+WHAT IS MATPLOTLIB?
+
+Matplotlib
+
+Used for:
+
+graphs
+charts
+plotting
+WHAT IS pyplot?
+
+Submodule for plotting.
+
+WHY plt?
+
+Shortcut alias.
+
+NEXT LIBRARY
+import seaborn as sns
+WHAT IS SEABORN?
+
+Seaborn
+
+Advanced graph library built on matplotlib.
+
+WHY USE SEABORN?
+
+Because:
+
+prettier graphs,
+easier statistical plotting,
+built-in styles.
+DIFFERENCE BETWEEN MATPLOTLIB AND SEABORN
+Matplotlib	Seaborn
+basic plotting	advanced plotting
+more coding	easier
+less attractive	prettier
+CELL 3 — LOADING DATASET
+url = "https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv"
+WHAT IS THIS?
+
+Dataset URL.
+
+Dataset stored online on GitHub.
+
+NEXT LINE
+df = pd.read_csv(url)
+
+MOST IMPORTANT.
+
+WHAT DOES read_csv() DO?
+
+Reads CSV dataset.
+
+WHAT IS CSV?
+
+CSV =
+
+Comma Separated Values
+
+Example:
+
+Name,Age
+Harshada,20
+WHAT HAPPENS INTERNALLY?
+
+Pandas:
+
+downloads file
+reads rows
+separates commas
+creates DataFrame
+WHAT IS DATAFRAME?
+
+2-dimensional table structure.
+
+Like Excel sheet.
+
+WHY STORE IN df?
+
+df means:
+
+DataFrame
+
+Standard naming convention.
+
+NEXT LINE
+print(df.head())
+WHAT IS head()?
+
+Displays first 5 rows.
+
+WHY IMPORTANT?
+
+Quickly inspect dataset structure.
+
+CELL 4 — SHAPE
+print(df.shape)
+WHAT IS shape?
+
+Returns:
+
+(rows, columns)
+
+Example:
+
+(150,5)
+
+means:
+
+150 rows
+5 columns
+WHY IMPORTANT?
+
+Helps understand dataset size.
+
+CELL 5 — INFO
+print(df.info())
+WHAT DOES info() DO?
+
+Shows:
+
+rows
+columns
+datatype
+non-null values
+memory usage
+VERY IMPORTANT
+
+Actually:
+
+df.info()
+
+is enough.
+
+Because:
+info() already prints output.
+
+WHY print(df.info()) NOT IDEAL?
+
+Because:
+info() returns:
+
+None
+
+So extra None may print.
+
+DIFFERENCE BETWEEN info() AND describe()
+info()	describe()
+structure	statistics
+datatype	mean
+non-null count	std
+memory	quartiles
+CELL 6 — MISSING VALUES
+df.isnull().sum()
+WHAT IS NULL VALUE?
+
+Missing/empty data.
+
+WHAT DOES isnull() DO?
+
+Checks whether value is missing.
+
+Returns:
+
+True
+False
+EXAMPLE
+Value
+5
+NaN
+
+becomes:
+
+Result
+False
+True
+WHAT DOES sum() DO?
+
+Counts total True values.
+
+Because:
+
+True = 1
+False = 0
+FINAL RESULT
+0
+
+means:
+
+no missing values.
+CELL 7 — DESCRIPTIVE STATISTICS
+df.describe()
+
+MOST IMPORTANT FUNCTION.
+
+WHAT DOES describe() PROVIDE?
+Statistic	Meaning
+count	total values
+mean	average
+std	standard deviation
+min	minimum
+max	maximum
+25%	first quartile
+50%	median
+75%	third quartile
+WHAT IS MEAN?
+
+Average.
+
+Formula:
+
+Mean=
+n
+∑x
+	​
+
+
+WHAT IS MEDIAN?
+
+Middle value after sorting.
+
+WHAT IS STANDARD DEVIATION?
+
+Spread around mean.
+
+WHAT IS QUARTILE?
+
+Divides data into 4 equal parts.
+
+CELL 8 — UNIQUE SPECIES
+df['species'].unique()
+WHAT DOES THIS DO?
+
+Shows all distinct species values.
+
+OUTPUT
+setosa
+versicolor
+virginica
+WHAT IS unique()?
+
+Returns distinct/non-repeated values.
+
+WHY IMPORTANT?
+
+Helps identify categories.
+
+CELL 9 — GROUPING DATA
+grouped_data = df.groupby('species')
+
+MOST IMPORTANT FOR VIVA.
+
+WHAT IS GROUPING?
+
+Dividing data into categories.
+
+HERE DATA DIVIDES INTO:
+Group
+setosa
+versicolor
+virginica
+WHY GROUPING USED?
+
+To calculate statistics separately for each category.
+
+NEXT LINE
+print(grouped_data)
+
+Displays:
+
+GroupBy object
+
+stored in memory.
+
+WHAT IS GROUPBY OBJECT?
+
+Special pandas object storing grouped structure.
+
+NEXT LINE
+grouped_data.first()
+WHAT DOES THIS DO?
+
+Displays:
+
+first row from each group.
+EXAMPLE
+Species	SepalLength
+setosa	5.1
+versicolor	7.0
+NEXT LINE
+grouped_data.mean()
+WHAT DOES THIS DO?
+
+Calculates:
+
+average values separately for each species.
+EXAMPLE
+Species	Avg SepalLength
+setosa	5.0
+virginica	6.5
+WHY IMPORTANT?
+
+Helps compare flower categories statistically.
+
+CELL 10 — GROUPED MEAN
+grouped_data.mean(numeric_only=True)
+WHAT DOES THIS DO?
+
+Calculates:
+
+mean of all numeric columns separately for each species.
+WHAT IS numeric_only=True?
+
+Ignore text columns.
+
+Because:
+mean only works on numbers.
+
+CELL 11 — GROUPED MEDIAN
+grouped_data.median(numeric_only=True)
+WHAT DOES THIS DO?
+
+Calculates:
+
+median separately for each species.
+WHY MEDIAN IMPORTANT?
+
+Median is less affected by outliers.
+
+DIFFERENCE BETWEEN MEAN & MEDIAN
+Mean	Median
+average	middle value
+affected by outliers	resistant to outliers
+CELL 12 — GROUPED MINIMUM
+grouped_data.min(numeric_only=True)
+WHAT DOES THIS DO?
+
+Finds:
+
+smallest value in each species group.
+WHY IMPORTANT?
+
+Shows lower boundary of data.
+
+CELL 13 — GROUPED MAXIMUM
+grouped_data.max(numeric_only=True)
+WHAT DOES THIS DO?
+
+Finds:
+
+largest value in each species group.
+WHY IMPORTANT?
+
+Shows upper boundary of data.
+
+CELL 14 — GROUPED STANDARD DEVIATION
+grouped_data.std(numeric_only=True)
+
+MOST IMPORTANT.
+
+WHAT IS STANDARD DEVIATION?
+
+Measures:
+
+spread of data around mean.
+LOW STD
+
+Values close together.
+
+HIGH STD
+
+Values widely spread.
+
+FORMULA
+
+σ=
+n
+∑(x−μ)
+2
+	​
+
+	​
+
+
+WHY IMPORTANT?
+
+Helps measure variability.
+
+CELL 15 — AGGREGATION
+grouped_data.agg([
+'mean',
+'median',
+'min',
+'max',
+'std'
+])
+
+MOST IMPORTANT.
+
+WHAT IS AGGREGATION?
+
+Performing multiple operations together.
+
+THIS LINE CALCULATES:
+
+For EACH species:
+
+mean
+median
+minimum
+maximum
+standard deviation
+
+all together.
+
+WHY USE agg()?
+
+Efficient and compact.
+
+Instead of writing:
+
+mean()
+median()
+std()
+
+separately.
+
+MOST IMPORTANT VIVA QUESTIONS
+Q1
+
+What is descriptive statistics?
+
+Methods used to summarize and describe data.
+
+Q2
+
+What is central tendency?
+
+Measure representing center of data.
+
+Q3
+
+What is variability?
+
+Measure of spread of data.
+
+Q4
+
+Difference between mean and median?
+
+Mean:
+average.
+
+Median:
+middle value.
+
+Q5
+
+What does groupby() do?
+
+Groups data category-wise.
+
+Q6
+
+Why use numeric_only=True?
+
+Statistical operations work only on numeric columns.
+
+Q7
+
+What is standard deviation?
+
+Measure of spread around mean.
+
+Q8
+
+What is aggregation?
+
+Performing multiple statistical operations together.
+
+
+CELL 16 — CREATING LIST FOR EACH SPECIES
+setosa_list = df[
+    df['Species'] == 'Iris-setosa'
+]['SepalLengthCm'].tolist()
+
+MOST IMPORTANT.
+
+WHAT IS THIS DOING?
+
+This line:
+
+filters only Setosa flowers,
+selects SepalLength column,
+converts it into Python list.
+BREAK IT DOWN STEP-BY-STEP
+PART 1
+df['Species'] == 'Iris-setosa'
+
+This creates:
+
+Boolean condition
+WHAT IS BOOLEAN?
+
+Boolean means:
+
+True
+False
+EXAMPLE
+
+Suppose:
+
+Species
+Iris-setosa
+Iris-virginica
+
+Condition becomes:
+
+Result
+True
+False
+PART 2
+df[df['Species'] == 'Iris-setosa']
+
+This means:
+
+select only rows where condition is True.
+RESULT
+
+Only Setosa flower rows remain.
+
+PART 3
+['SepalLengthCm']
+
+Now select only:
+
+SepalLengthCm column
+RESULT
+
+A pandas Series is returned.
+
+PART 4
+.tolist()
+
+MOST IMPORTANT.
+
+Converts pandas Series into:
+
+normal Python list.
+WHY REQUIRED?
+
+Because PS says:
+
+“Create a list containing numeric values for each categorical response.”
+
+So this directly satisfies requirement.
+
+FINAL OUTPUT LOOKS LIKE
+[5.1, 4.9, 4.7, 4.6]
+SAME LOGIC FOR:
+versicolor_list
+
+and
+
+virginica_list
+WHY CREATE SEPARATE LISTS?
+
+To:
+
+analyze category-wise values,
+compare distributions,
+perform separate statistics.
+EXTERNAL MAY ASK
+Q:
+
+Why use tolist()?
+
+Answer:
+
+To convert pandas Series into normal Python list.
+
+Q:
+
+Difference between Series and list?
+
+Series	List
+pandas object	Python object
+indexed	normal collection
+more functions	basic structure
+CELL 17 — PERCENTILE FOR SETOSA
+setosa = df[
+    df['Species'] == 'Iris-setosa'
+]
+WHAT DOES THIS DO?
+
+Creates separate DataFrame containing only:
+
+Iris-setosa rows.
+WHY STORE IN VARIABLE?
+
+Because:
+
+easier reuse,
+cleaner code,
+avoids repeated filtering.
+NEXT LINE
+np.percentile(setosa['SepalLengthCm'], 25)
+
+MOST IMPORTANT.
+
+WHAT IS PERCENTILE?
+
+Percentile indicates:
+
+percentage of observations below a value.
+25TH PERCENTILE MEANS
+
+25% values lie below this point.
+
+50TH PERCENTILE
+
+Median.
+
+75TH PERCENTILE
+
+75% values below this point.
+
+INTERNALLY WHAT HAPPENS?
+
+NumPy:
+
+sorts data,
+finds requested percentage position,
+returns corresponding value.
+EXAMPLE
+
+Values:
+
+1,2,3,4,5
+50TH PERCENTILE
+
+Middle:
+
+3
+WHY IMPORTANT?
+
+Percentiles help understand:
+
+distribution,
+spread,
+concentration.
+WHY 25, 50, 75 USED?
+
+These are:
+
+quartiles
+Quartile	Percentile
+Q1	25
+Q2	50
+Q3	75
+SAME THING IN CELL 18 & 19
+
+Done separately for:
+
+Versicolor
+Virginica
+
+to compare species distributions.
+
+EXTERNAL MAY ASK
+Q:
+
+Difference between percentile and percentage?
+
+Percentile	Percentage
+relative position	proportion out of 100
+Q:
+
+Why is 50th percentile median?
+
+Because:
+
+50% values lie below median.
+CELL 20 — DESCRIBE FOR SETOSA
+setosa.describe()
+WHAT DOES THIS DO?
+
+Provides complete statistical summary ONLY for:
+
+Iris-setosa
+OUTPUT INCLUDES
+Statistic
+count
+mean
+std
+min
+max
+quartiles
+WHY IMPORTANT?
+
+Allows:
+
+species-wise statistical comparison.
+SAME FOR:
+Versicolor
+Virginica
+
+in Cells 21 and 22.
+
+WHY DO THIS SEPARATELY?
+
+Because each flower species has:
+
+different dimensions,
+different spread,
+different averages.
+CELL 23 — HISTOGRAM USING MATPLOTLIB
+plt.figure(figsize=(6,4))
+WHAT DOES THIS DO?
+
+Creates plotting area.
+
+WHAT IS figsize=(6,4)?
+
+Graph size.
+
+Number	Meaning
+6	width
+4	height
+NEXT LINE
+plt.hist(df['SepalLengthCm'])
+
+MOST IMPORTANT.
+
+WHAT IS HISTOGRAM?
+
+Graph showing:
+
+frequency distribution.
+WHAT DOES IT SHOW?
+how values are distributed,
+concentration,
+skewness,
+spread.
+HOW HISTOGRAM WORKS?
+
+Data divided into:
+
+bins
+
+Example:
+
+Range	Count
+4–5	20
+5–6	40
+
+Bars drawn.
+
+WHY BARS TOUCH?
+
+Because:
+
+histogram uses continuous data.
+DIFFERENCE BETWEEN BAR GRAPH & HISTOGRAM
+Histogram	Bar Graph
+continuous data	categorical data
+bars touch	bars separated
+NEXT LINE
+plt.title()
+
+Adds graph title.
+
+NEXT LINE
+plt.xlabel()
+
+Adds x-axis label.
+
+NEXT LINE
+plt.ylabel()
+
+Adds y-axis label.
+
+WHAT IS X-AXIS?
+
+Horizontal axis.
+
+WHAT IS Y-AXIS?
+
+Vertical axis.
+
+FINAL LINE
+plt.show()
+
+Displays graph.
+
+CELL 24 — HISTOGRAM USING SEABORN
+sns.histplot()
+DIFFERENCE?
+
+Seaborn version:
+
+prettier,
+statistical styling,
+easier customization.
+BOTH SHOW SAME CONCEPT:
+frequency distribution.
+CELL 25 — BOXPLOT USING MATPLOTLIB
+plt.boxplot(df['PetalLengthCm'])
+
+MOST IMPORTANT GRAPH.
+
+WHAT IS BOXPLOT?
+
+Graph showing:
+
+quartiles,
+median,
+spread,
+outliers.
+PARTS OF BOXPLOT
+Part	Meaning
+box	middle 50%
+line inside box	median
+whiskers	normal range
+points outside	outliers
+WHY IMPORTANT?
+
+Quick outlier detection.
+
+HOW BOXPLOT IS DRAWN?
+
+Uses:
+
+Q1
+median
+Q3
+IQR
+BOX REPRESENTS
+
+Middle 50% data.
+
+WHISKERS REPRESENT
+
+Normal value range.
+
+OUTSIDE DOTS
+
+Outliers.
+
+CELL 26 — BOXPLOT USING SEABORN
+sns.boxplot(y=df['PetalLengthCm'])
+
+Same concept.
+
+Better styling.
+
+WHY y= USED?
+
+Because:
+
+plotting single vertical variable.
+CELL 27 — SCATTER PLOT USING MATPLOTLIB
+plt.scatter(
+    df['SepalLengthCm'],
+    df['PetalLengthCm']
+)
+
+MOST IMPORTANT.
+
+WHAT IS SCATTER PLOT?
+
+Graph showing:
+
+relationship between two variables.
+EACH DOT REPRESENTS
+
+One flower.
+
+X-AXIS
+
+Sepal length.
+
+Y-AXIS
+
+Petal length.
+
+WHAT DOES SCATTER PLOT SHOW?
+trends,
+clustering,
+correlation.
+POSITIVE CORRELATION
+
+As one increases,
+other also increases.
+
+NEGATIVE CORRELATION
+
+As one increases,
+other decreases.
+
+CELL 28 — SCATTER PLOT USING SEABORN
+sns.scatterplot(
+    x='SepalLengthCm',
+    y='PetalLengthCm',
+    hue='Species',
+    data=df
+)
+
+MOST IMPORTANT.
+
+WHAT IS hue='Species'?
+
+Adds:
+
+different colors for different species.
+WHY USEFUL?
+
+Helps visualize:
+
+category-wise clustering.
+WHAT IS CLUSTERING?
+
+Similar points grouping together.
+
+CELL 29 — CORRELATION HEATMAP
+df.corr(numeric_only=True)
+
+MOST IMPORTANT VIVA TOPIC.
+
+WHAT IS CORRELATION?
+
+Measures relationship between variables.
+
+RANGE
+Value	Meaning
++1	strong positive
+0	no relation
+-1	strong negative
+EXAMPLE
+
+Positive:
+
+study hours & marks.
+
+Negative:
+
+speed & travel time.
+THIS LINE
+sns.heatmap()
+
+creates:
+
+color representation of correlation matrix.
+WHAT IS MATRIX?
+
+Table of relationships.
+
+WHAT DOES COLOR SHOW?
+
+Strength of correlation.
+
+THIS LINE
+annot=True
+
+Displays actual values inside boxes.
+
+WHY HEATMAP IMPORTANT?
+
+Quickly shows:
+
+strongly related variables,
+weak relationships,
+patterns.
+MOST IMPORTANT VIVA QUESTIONS
+Q1
+
+What is percentile?
+
+Percentage of observations below a value.
+
+Q2
+
+Why use histogram?
+
+To visualize frequency distribution.
+
+Q3
+
+Difference between histogram and bar graph?
+
+Histogram:
+continuous data.
+
+Bar graph:
+categorical data.
+
+Q4
+
+What is boxplot used for?
+
+Detecting outliers and spread.
+
+Q5
+
+What is scatter plot?
+
+Relationship graph between two variables.
+
+Q6
+
+What is correlation?
+
+Measure of variable dependency.
+
+Q7
+
+Why use heatmap?
+
+To visualize correlations clearly.
+
+Q8
+
+What does hue mean in seaborn?
+
+Color grouping based on categories.

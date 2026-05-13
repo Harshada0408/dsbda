@@ -1,0 +1,738 @@
+FIRST UNDERSTAND WHAT THIS PRACTICAL IS ACTUALLY TEACHING
+
+This practical teaches:
+
+CLASSIFICATION
+
+using:
+
+LOGISTIC REGRESSION
+MOST IMPORTANT DIFFERENCE
+Linear Regression	Logistic Regression
+predicts continuous values	predicts categories
+example: house price	example: yes/no
+output = numbers	output = classes
+THIS PRACTICAL'S GOAL
+
+Predict whether customer:
+
+PURCHASED or NOT PURCHASED
+
+based on:
+
+age
+salary
+OUTPUT CLASSES
+Purchased
+0 → No
+1 → Yes
+
+This is:
+
+binary classification
+
+because only 2 classes exist.
+
+WHAT IS CLASSIFICATION?
+
+Classification means:
+
+assigning category/class label.
+
+Examples:
+
+spam/not spam
+diseased/healthy
+purchased/not purchased
+WHAT IS LOGISTIC REGRESSION?
+
+MOST IMPORTANT.
+
+Logistic Regression is:
+
+supervised machine learning classification algorithm.
+
+Used when:
+
+output is categorical.
+WHY CALLED “REGRESSION” EVEN THOUGH IT CLASSIFIES?
+
+Because internally it still calculates:
+
+weighted mathematical equation.
+
+But final output converted into:
+
+probability,
+then category.
+MOST IMPORTANT CONCEPT
+LOGISTIC REGRESSION DOES NOT OUTPUT DIRECTLY 0 OR 1
+
+It first predicts:
+
+probability
+
+Example:
+
+Probability	Final Class
+0.9	1
+0.2	0
+HOW DOES IT CONVERT PROBABILITY?
+
+Using:
+
+SIGMOID FUNCTION
+
+MOST IMPORTANT FORMULA.
+
+σ(x)=
+1+e
+−x
+1
+	​
+
+
+WHAT DOES SIGMOID FUNCTION DO?
+
+Converts:
+
+any value → range between 0 and 1
+WHY IMPORTANT?
+
+Because probability must lie between:
+
+0 and 1
+SIGMOID GRAPH SHAPE
+
+S-shaped curve.
+
+Also called:
+
+logistic curve
+SIMPLE UNDERSTANDING
+Linear Regression	Logistic Regression
+straight line	sigmoid curve
+NOW COMPLETE CODE EXPLANATION
+CELL 1 — INSTALL LIBRARIES
+!pip install pandas numpy matplotlib seaborn scikit-learn
+WHAT IS SCIKIT-LEARN?
+
+scikit-learn
+
+Most important ML library.
+
+Provides:
+
+regression,
+classification,
+preprocessing,
+evaluation metrics.
+CELL 2 — IMPORT LIBRARIES
+PANDAS
+import pandas as pd
+
+Used for:
+
+DataFrames,
+CSV handling,
+preprocessing.
+NUMPY
+import numpy as np
+
+Used for:
+
+mathematics,
+arrays,
+calculations.
+MATPLOTLIB
+import matplotlib.pyplot as plt
+
+Used for:
+
+plotting graphs.
+SEABORN
+import seaborn as sns
+
+Used for:
+
+advanced statistical graphs.
+IMPORTANT SKLEARN IMPORTS
+TRAIN TEST SPLIT
+from sklearn.model_selection import train_test_split
+
+Used to divide:
+
+training data,
+testing data.
+WHY SPLIT DATASET?
+
+Because:
+
+training teaches model,
+testing evaluates model.
+STANDARD SCALER
+from sklearn.preprocessing import StandardScaler
+
+MOST IMPORTANT.
+
+WHAT IS FEATURE SCALING?
+
+Adjusting numerical values to similar scale.
+
+WHY NEEDED HERE?
+
+Because:
+
+Age range maybe:
+20–60
+
+but salary range maybe:
+
+15000–150000
+
+Large values dominate learning.
+
+SO WE SCALE FEATURES
+WHAT DOES STANDARD SCALER DO?
+
+Uses formula:
+
+z=
+σ
+x−μ
+	​
+
+x
+μ
+σ
+z=
+σ
+x−μ
+	​
+
+≈1.2
+Φ(z)≈88.5%
+WHAT EACH TERM MEANS
+Symbol	Meaning
+x	original value
+μ	mean
+σ	standard deviation
+RESULT
+
+Data gets:
+
+mean ≈ 0
+std ≈ 1
+WHY IMPORTANT FOR LOGISTIC REGRESSION?
+
+Because logistic regression is:
+
+distance and gradient sensitive.
+
+Scaling improves:
+
+convergence,
+accuracy,
+training speed.
+LOGISTIC REGRESSION IMPORT
+from sklearn.linear_model import LogisticRegression
+
+Imports logistic regression algorithm.
+
+EVALUATION METRICS
+confusion_matrix
+accuracy_score
+classification_report
+
+Used to evaluate classification model.
+
+CELL 3 — LOAD DATASET
+df = pd.read_csv("Social_Network_Ads.csv")
+
+Loads dataset into DataFrame.
+
+WHAT DOES DATASET CONTAIN?
+Feature
+Age
+Gender
+EstimatedSalary
+Purchased
+TARGET VARIABLE
+Purchased
+WHAT ARE WE PREDICTING?
+
+Whether customer buys product.
+
+CELL 5 — SHAPE
+df.shape
+
+Returns:
+
+(rows, columns)
+CELL 6 — INFO
+df.info()
+
+Shows:
+
+datatype,
+null values,
+memory usage.
+CELL 7 — MISSING VALUES
+df.isnull().sum()
+
+Checks missing data.
+
+CELL 8 — DESCRIBE
+df.describe()
+
+Provides:
+
+mean,
+std,
+min,
+max,
+quartiles.
+CELL 9 — DROP USER ID
+df.drop('User ID', axis=1, inplace=True)
+
+MOST IMPORTANT.
+
+WHY REMOVE USER ID?
+
+Because:
+
+it has no predictive meaning.
+
+Just identifier.
+
+WHAT IS axis=1?
+
+Means:
+
+column operation.
+WHAT IS inplace=True?
+
+Modify original DataFrame directly.
+
+CELL 10 — ENCODE GENDER
+df['Gender'] = df['Gender'].map({
+    'Male':0,
+    'Female':1
+})
+
+MOST IMPORTANT.
+
+WHY NEEDED?
+
+ML models need:
+
+numerical input.
+
+Cannot directly understand text.
+
+WHAT IS MAPPING?
+
+Converting categories into numbers.
+
+BEFORE
+Gender
+Male
+Female
+AFTER
+Gender
+0
+1
+CELL 11 — INPUT & OUTPUT VARIABLES
+x = df[['Age', 'EstimatedSalary']]
+
+Creates:
+
+independent variables/features.
+NEXT LINE
+y = df['Purchased']
+
+Creates:
+
+dependent variable/target.
+IMPORTANT CONCEPT
+Variable	Meaning
+X	input
+y	output
+CELL 12 — TRAIN TEST SPLIT
+train_test_split()
+
+Splits data into:
+
+training,
+testing.
+THIS PART
+test_size=0.25
+
+means:
+
+25% testing,
+75% training.
+RANDOM STATE
+random_state=42
+
+Ensures:
+
+same random split every run.
+CELL 13 — FEATURE SCALING
+
+MOST IMPORTANT SECTION.
+
+scaler = StandardScaler()
+
+Creates scaler object.
+
+THIS LINE
+x_train = scaler.fit_transform(x_train)
+
+MOST IMPORTANT.
+
+WHAT DOES fit_transform() DO?
+
+Actually TWO steps:
+
+Step	Meaning
+fit	learn mean/std
+transform	scale values
+WHY ONLY fit_transform() ON TRAIN DATA?
+
+Because:
+
+model must learn ONLY from training data.
+THIS LINE
+x_test = scaler.transform(x_test)
+
+ONLY transforms test data.
+
+WHY NOT fit_transform() ON TEST DATA?
+
+Because:
+
+test data should remain unseen.
+
+Otherwise:
+
+data leakage occurs.
+
+MOST IMPORTANT VIVA QUESTION.
+
+WHAT IS DATA LEAKAGE?
+
+Model accidentally learns test information.
+
+Leads to:
+
+unrealistic accuracy.
+CELL 14 — CREATE MODEL
+model = LogisticRegression()
+
+Creates logistic regression model object.
+
+CELL 15 — TRAIN MODEL
+model.fit(x_train, y_train)
+
+MOST IMPORTANT LINE.
+
+WHAT DOES fit() DO?
+
+Trains model.
+
+INTERNALLY MODEL:
+studies patterns
+calculates coefficients
+finds best sigmoid curve
+minimizes classification error
+CELL 16 — PREDICTION
+y_pred = model.predict(x_test)
+
+Uses trained model to predict:
+
+0 or 1.
+CELL 17 — COMPARISON
+
+Creates comparison table.
+
+Actual	Predicted
+
+Used to inspect predictions.
+
+CELL 18 — CONFUSION MATRIX
+
+MOST IMPORTANT PART OF PRACTICAL.
+
+confusion_matrix(y_test, y_pred)
+WHAT IS CONFUSION MATRIX?
+
+Table evaluating classification performance.
+
+STRUCTURE
+Actual/Predicted	Positive	Negative
+Positive	TP	FN
+Negative	FP	TN
+TRUE POSITIVE (TP)
+
+Model correctly predicts:
+
+positive class.
+
+Example:
+
+customer purchased,
+model predicted purchased.
+TRUE NEGATIVE (TN)
+
+Model correctly predicts:
+
+negative class.
+
+Example:
+
+customer not purchased,
+model predicted not purchased.
+FALSE POSITIVE (FP)
+
+Model incorrectly predicts positive.
+
+Example:
+
+customer not purchased,
+model predicted purchased.
+
+Also called:
+
+Type I Error
+FALSE NEGATIVE (FN)
+
+Model incorrectly predicts negative.
+
+Example:
+
+customer purchased,
+model predicted not purchased.
+
+Also called:
+
+Type II Error
+CELL 19 — EXTRACT VALUES
+tn = cm[0][0]
+fp = cm[0][1]
+fn = cm[1][0]
+tp = cm[1][1]
+
+Extracts values from confusion matrix.
+
+WHY 2D INDEXING?
+
+Because confusion matrix is:
+
+2-dimensional array.
+CELL 20 — ACCURACY
+
+MOST IMPORTANT METRIC.
+
+accuracy_score()
+
+Formula:
+
+Accuracy=
+TP+TN+FP+FN
+TP+TN
+	​
+
+
+WHAT DOES ACCURACY MEAN?
+
+Percentage of correct predictions.
+
+CELL 21 — ERROR RATE
+1 - accuracy
+
+Formula:
+
+Error Rate=1−Accuracy
+
+WHAT DOES ERROR RATE MEAN?
+
+Percentage of incorrect predictions.
+
+CELL 22 — PRECISION
+
+Formula:
+
+Precision=
+TP+FP
+TP
+	​
+
+
+WHAT DOES PRECISION MEAN?
+
+Among predicted positives:
+
+how many were actually positive.
+IMPORTANT IN:
+spam detection,
+fraud detection.
+CELL 23 — RECALL
+
+Formula:
+
+Recall=
+TP+FN
+TP
+	​
+
+
+WHAT DOES RECALL MEAN?
+
+Among actual positives:
+
+how many correctly identified.
+IMPORTANT IN:
+disease detection,
+cancer prediction.
+CELL 24 — CLASSIFICATION REPORT
+classification_report()
+
+Provides:
+
+precision,
+recall,
+f1-score,
+support.
+WHAT IS F1 SCORE?
+
+Balance between:
+
+precision,
+recall.
+
+Formula:
+
+F1=2×
+Precision+Recall
+Precision×Recall
+	​
+
+
+CELL 25 — CONFUSION MATRIX HEATMAP
+sns.heatmap()
+
+Visual representation of confusion matrix.
+
+WHAT DOES COLOR SHOW?
+
+Magnitude/frequency.
+
+WHAT IS annot=True?
+
+Displays actual values inside cells.
+
+WHAT IS fmt='d'?
+
+Display integers.
+
+CELL 26–27 — SCATTER PLOTS
+
+Show relationship between:
+
+age,
+salary,
+purchase behavior.
+WHAT DOES hue='Purchased' DO?
+
+Different colors for:
+
+purchased,
+not purchased.
+DOES THIS PRACTICAL NEED IMPROVEMENT?
+
+YES — SMALL IMPROVEMENTS.
+
+IMPROVEMENT 1
+
+Replace:
+
+print(df.info())
+
+with:
+
+df.info()
+IMPROVEMENT 2
+
+Add confusion matrix labels:
+
+xticklabels=['No','Yes']
+yticklabels=['No','Yes']
+IMPROVEMENT 3
+
+Could also add:
+
+model.predict_proba()
+
+to show probabilities.
+
+MOST IMPORTANT VIVA QUESTIONS
+Q1
+
+Difference between linear and logistic regression?
+
+Linear	Logistic
+continuous output	categorical output
+Q2
+
+Why logistic regression used here?
+
+Because output is binary class.
+
+Q3
+
+What is sigmoid function?
+
+Function converting values into probabilities between 0 and 1.
+
+Q4
+
+Why feature scaling needed?
+
+Features have different ranges.
+
+Q5
+
+Why use StandardScaler?
+
+To standardize features.
+
+Q6
+
+Difference between fit() and transform()?
+
+fit	learns parameters
+transform	applies scaling
+Q7
+
+What is confusion matrix?
+
+Table evaluating classification results.
+
+Q8
+
+Difference between precision and recall?
+
+Precision	Recall
+correctness of predicted positives	coverage of actual positives
+Q9
+
+What is false positive?
+
+Incorrectly predicting positive.
+
+Q10
+
+What is false negative?
+
+Incorrectly predicting negative.

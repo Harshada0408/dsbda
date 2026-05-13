@@ -1,0 +1,540 @@
+PRACTICAL TITLE
+Design a Distributed Application Using MapReduce Which Processes a Log File of a System
+
+This practical is about:
+
+reading a system log file
+extracting log levels
+counting occurrences
+using the MapReduce concept
+
+Your program processes logs like:
+
+2015-10-18 18:01:47,978 INFO ...
+
+and counts:
+
+INFO
+WARN
+ERROR
+FATAL
+FIRST — WHAT IS A LOG FILE?
+
+A log file stores system events/messages.
+
+Systems continuously generate logs for:
+
+debugging
+monitoring
+security
+tracking errors
+
+Example:
+
+INFO  → normal message
+WARN  → warning
+ERROR → problem occurred
+FATAL → severe crash
+REAL LIFE EXAMPLE
+
+Suppose:
+
+Netflix server crashes
+bank server fails
+cloud server gets overloaded
+
+Thousands or millions of logs are generated.
+
+Manually checking them is impossible.
+
+So systems use:
+
+Log Analysis
+
+to:
+
+count errors
+detect failures
+monitor system health
+WHY MAPREDUCE?
+
+Normal programs struggle with:
+
+huge datasets
+terabytes of logs
+distributed systems
+
+MapReduce solves this by:
+
+splitting work
+processing in parallel
+combining results
+WHAT IS HADOOP?
+Apache Hadoop
+
+Hadoop is an open-source framework used for:
+
+distributed storage
+distributed processing
+big data analytics
+MAIN COMPONENTS OF HADOOP
+Component	Purpose
+HDFS	Storage
+MapReduce	Processing
+YARN	Resource management
+Hadoop Common	Shared libraries
+WHAT IS HDFS?
+HDFS = Hadoop Distributed File System
+
+Instead of storing one big file on one computer:
+HDFS splits files into blocks.
+
+Example:
+
+10 GB file →
+
+Block 1 → Machine A
+Block 2 → Machine B
+Block 3 → Machine C
+
+Benefits:
+
+parallel processing
+fault tolerance
+scalability
+WHAT IS MAPREDUCE?
+
+MapReduce is a programming model.
+
+It has 2 main phases:
+
+INPUT
+  ↓
+MAPPER
+  ↓
+INTERMEDIATE DATA
+  ↓
+REDUCER
+  ↓
+FINAL OUTPUT
+UNDERSTANDING MAPPER
+
+Mapper:
+
+reads data
+processes records
+emits key-value pairs
+YOUR PROGRAM'S MAPPER
+
+Input log:
+
+2015-10-18 INFO system started
+
+Mapper output:
+
+(INFO,1)
+
+Meaning:
+
+key = INFO
+value = 1 occurrence
+WHY VALUE = 1?
+
+Because each line represents:
+ONE occurrence.
+
+Reducer later adds all 1s.
+
+Example:
+
+(INFO,1)
+(INFO,1)
+(INFO,1)
+
+Reducer:
+
+INFO : 3
+UNDERSTANDING REDUCER
+
+Reducer:
+
+groups same keys
+aggregates data
+produces final result
+SHUFFLE AND SORT
+
+Very important concept.
+
+Between Mapper and Reducer:
+Hadoop automatically groups identical keys.
+
+Example:
+
+Mapper output:
+
+(INFO,1)
+(ERROR,1)
+(INFO,1)
+
+After shuffle/sort:
+
+INFO → [1,1]
+ERROR → [1]
+
+Reducer then sums values.
+
+NOW LET'S UNDERSTAND YOUR CODE
+FILE 1 — LogMapper.java
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+IMPORTS
+
+These import required Java classes.
+
+BufferedReader
+
+Used for:
+efficient file reading.
+
+Reads line by line.
+
+Without it:
+file reading becomes slower.
+
+FileReader
+
+Opens file from disk.
+
+Example:
+
+new FileReader("log.txt")
+
+means:
+open log.txt.
+
+IOException
+
+Handles file-related errors.
+
+Example:
+
+file missing
+permission denied
+ArrayList and List
+
+Used to store mapper outputs dynamically.
+
+Example:
+
+(INFO,1)
+(ERROR,1)
+CLASS DECLARATION
+public class LogMapper
+
+Creates mapper class.
+
+MAP METHOD
+public List<String> map() throws IOException
+
+Meaning:
+
+returns list of strings
+may throw file exception
+CREATE LIST
+List<String> mappedData = new ArrayList<>();
+
+Stores mapper outputs.
+
+OPEN FILE
+BufferedReader br = new BufferedReader(
+        new FileReader("log.txt"));
+
+Steps:
+
+FileReader opens file
+BufferedReader reads efficiently
+STRING LINE
+String line;
+
+Stores one line at a time.
+
+DEBUG COUNTER
+int debugCount = 0;
+
+Used to:
+
+count processed records
+limit printed output
+MAIN LOOP
+while ((line = br.readLine()) != null)
+
+Reads file line by line until:
+END OF FILE.
+
+SPLIT LINE
+String[] parts = line.split(" ");
+
+Splits using spaces.
+
+Example:
+
+2015-10-18 INFO system started
+
+becomes:
+
+Index	Value
+0	2015-10-18
+1	INFO
+2	system
+CONDITION
+if (parts.length > 2)
+
+Prevents:
+ArrayIndexOutOfBoundsException.
+
+Checks enough data exists.
+
+EXTRACT LOG LEVEL
+String logLevel = parts[2];
+
+Gets:
+INFO/WARN/ERROR.
+
+For this dataset:
+index 2 contains log level.
+
+EMIT INTERMEDIATE DATA
+mappedData.add(logLevel + ",1");
+
+Creates:
+
+(INFO,1)
+
+This simulates Mapper output.
+
+DEBUG PRINT
+if (debugCount < 10)
+
+Prints only first 10 records.
+
+Otherwise console becomes huge.
+
+INCREMENT COUNTER
+debugCount++;
+
+Tracks total records processed.
+
+CLOSE FILE
+br.close();
+
+Important:
+frees system resources.
+
+RETURN DATA
+return mappedData;
+
+Sends mapper output to reducer.
+
+FILE 2 — LogReducer.java
+HASHMAP
+Map<String, Integer> result = new HashMap<>();
+
+Stores:
+
+INFO → 1040
+ERROR → 150
+LOOP THROUGH MAPPER OUTPUT
+for (String entry : mappedData)
+
+Processes each mapper record.
+
+SPLIT
+String[] parts = entry.split(",");
+
+Example:
+
+INFO,1
+
+becomes:
+
+Index	Value
+0	INFO
+1	1
+EXTRACT KEY
+String logLevel = parts[0];
+
+Gets:
+INFO/WARN/etc.
+
+CORE REDUCER LOGIC
+result.put(
+        logLevel,
+        result.getOrDefault(logLevel, 0) + 1
+);
+
+MOST IMPORTANT LINE.
+
+WHAT DOES getOrDefault DO?
+
+If key exists:
+return value.
+
+Else:
+return 0.
+
+Example:
+
+INFO already exists → 5
+
+New value:
+
+5 + 1 = 6
+RETURN RESULT
+return result;
+
+Returns final counts.
+
+FILE 3 — LogDriver.java
+
+Driver controls everything.
+
+CREATE MAPPER
+LogMapper mapper = new LogMapper();
+
+Creates mapper object.
+
+RUN MAP PHASE
+List<String> mappedData = mapper.map();
+
+Calls mapper function.
+
+CREATE REDUCER
+LogReducer reducer = new LogReducer();
+
+Creates reducer object.
+
+RUN REDUCER
+Map<String, Integer> result = reducer.reduce(mappedData);
+
+Processes mapper output.
+
+PRINT FINAL OUTPUT
+for (Map.Entry<String, Integer> entry : result.entrySet())
+
+Prints:
+
+INFO : 1040
+WHY THIS IS DISTRIBUTED CONCEPTUALLY
+
+Even though running on one machine:
+
+Mapper tasks can run independently.
+
+Example:
+
+machine 1 processes block A
+machine 2 processes block B
+
+Reducer combines results.
+
+So logic is distributable.
+
+LIMITATIONS OF YOUR IMPLEMENTATION
+
+This is NOT real Hadoop execution.
+
+Missing:
+
+HDFS
+Hadoop APIs
+cluster nodes
+YARN
+actual distributed runtime
+
+This is:
+
+MapReduce Simulation in Java
+
+Very important viva point.
+
+MOST IMPORTANT VIVA QUESTIONS
+1. What is MapReduce?
+
+MapReduce is a programming model used for processing large datasets in distributed systems using Mapper and Reducer phases.
+
+2. What does Mapper do?
+
+Mapper reads input data and generates intermediate key-value pairs.
+
+3. What does Reducer do?
+
+Reducer groups identical keys and aggregates values.
+
+4. Why use Hadoop?
+
+Hadoop enables distributed storage and parallel processing of big data.
+
+5. What is HDFS?
+
+HDFS is Hadoop Distributed File System used to store large files across multiple machines.
+
+6. Why BufferedReader?
+
+BufferedReader efficiently reads large text files line by line.
+
+7. Why HashMap?
+
+HashMap provides fast key-value storage and retrieval for counting log levels.
+
+8. What is intermediate data?
+
+Mapper output before reducer processing is called intermediate data.
+
+9. Why use (INFO,1)?
+
+It represents one occurrence of INFO log level.
+
+10. What is shuffle and sort?
+
+Hadoop automatically groups identical keys between mapper and reducer phases.
+
+11. Is this real Hadoop MapReduce?
+
+No. This practical simulates the MapReduce concept using Java without actual Hadoop cluster execution.
+
+12. Why is MapReduce scalable?
+
+Because data processing can be divided across multiple systems and executed in parallel.
+
+13. What happens if log.txt is missing?
+
+FileNotFoundException occurs.
+
+14. Why check parts.length > 2?
+
+To avoid ArrayIndexOutOfBoundsException for malformed log lines.
+
+15. What is fault tolerance in Hadoop?
+
+If one node fails, replicated data blocks on other nodes prevent data loss.
+
+16. Difference between traditional processing and MapReduce?
+Traditional	MapReduce
+Single machine	Multiple machines
+Limited scalability	Highly scalable
+Slower for huge data	Parallel processing
+Less fault tolerant	Highly fault tolerant
+FINAL CONCLUSION
+
+Your practical:
+
+correctly implements MapReduce logic
+processes system log data
+extracts log levels
+counts occurrences
+demonstrates distributed processing concepts
+
+Even though it is not real Hadoop execution, it correctly follows the MapReduce programming model required by the problem statement.

@@ -1,0 +1,899 @@
+FIRST UNDERSTAND THE COMPLETE FLOW OF THIS PRACTICAL
+
+This practical performs:
+
+Classification using Naive Bayes Algorithm
+
+on:
+
+Iris flower dataset
+
+The complete workflow is:
+
+Step	Purpose
+Load dataset	Read data
+Preprocess	Clean/check data
+Split dataset	Train/test separation
+Train model	Learn patterns
+Predict	Generate outputs
+Evaluate	Measure performance
+Visualize	Understand results
+VERY IMPORTANT THEORY BEFORE CODE
+WHAT IS MACHINE LEARNING?
+
+Machine learning means:
+
+computer learns patterns from data.
+
+Instead of manually programming every rule.
+
+WHAT IS CLASSIFICATION?
+
+Classification means:
+
+assigning category/class labels.
+
+Examples:
+
+spam/not spam
+diseased/healthy
+flower species prediction
+WHAT IS NAIVE BAYES?
+
+Naive Bayes is:
+
+probability-based supervised learning algorithm.
+
+Used mainly for:
+
+classification problems.
+WHY CALLED “NAIVE”?
+
+Because it assumes:
+
+all input features are independent.
+
+Even though in real life they may not be.
+
+WHAT IS BAYES THEOREM?
+
+MOST IMPORTANT FORMULA OF THIS PRACTICAL.
+
+P(A∣B)=
+P(B)
+P(B∣A)P(A)
+	​
+
+P(A)
+P(B∣A)
+P(B∣¬A)
+P(A∣B)=
+P(B)
+P(B∣A)P(A)
+	​
+
+≈0.68,P(B)≈0.25
+P(B)=0.25
+P(B|A)P(A)=0.17
+P(A|B)~0.68
+Posterior = useful evidence / total evidence
+WHAT EACH TERM MEANS
+Symbol	Meaning
+P(A|B)	probability of A given B
+P(B|A)	probability of B given A
+P(A)	probability of A
+P(B)	probability of B
+SIMPLE REAL UNDERSTANDING
+
+Suppose:
+
+flower petal length is small,
+petal width is small.
+
+Then probability of:
+
+Iris-setosa becomes high.
+
+Naive Bayes calculates these probabilities.
+
+WHY GaussianNB() USED?
+
+There are multiple Naive Bayes types.
+
+Type	Used For
+GaussianNB	continuous numeric data
+MultinomialNB	text/count data
+BernoulliNB	binary data
+
+Iris dataset contains:
+
+continuous measurements.
+
+So:
+
+GaussianNB is correct.
+NOW COMPLETE LINE-BY-LINE EXPLANATION
+CELL 1 — INSTALL LIBRARIES
+# !pip install pandas numpy matplotlib seaborn scikit-learn
+WHAT IS pip?
+
+pip =
+
+Python package installer.
+
+Used to install libraries.
+
+WHAT IS A LIBRARY?
+
+Library =
+
+collection of prewritten code.
+
+Helps avoid writing everything manually.
+
+WHY # USED?
+
+# means:
+
+comment
+
+Python ignores comments.
+
+Used for explanation.
+
+WHY ! USED?
+
+In Jupyter Notebook:
+
+!
+
+runs terminal/system command.
+
+WHAT IS SCIKIT-LEARN?
+
+scikit-learn
+
+Most important ML library.
+
+Provides:
+
+regression,
+classification,
+clustering,
+preprocessing.
+CELL 2 — IMPORT LIBRARIES
+PANDAS
+import pandas as pd
+WHAT IS PANDAS?
+
+pandas
+
+Used for:
+
+DataFrames,
+CSV handling,
+filtering,
+grouping.
+WHY as pd?
+
+Creates shortcut alias.
+
+Instead of:
+
+pandas.read_csv()
+
+we write:
+
+pd.read_csv()
+NUMPY
+import numpy as np
+WHAT IS NUMPY?
+
+NumPy
+
+Used for:
+
+arrays,
+mathematics,
+calculations.
+MATPLOTLIB
+import matplotlib.pyplot as plt
+WHAT IS MATPLOTLIB?
+
+Matplotlib
+
+Used for:
+
+charts,
+graphs,
+visualization.
+WHAT IS pyplot?
+
+Submodule used for plotting.
+
+WHY plt?
+
+Shortcut alias.
+
+SEABORN
+import seaborn as sns
+WHAT IS SEABORN?
+
+Seaborn
+
+Advanced graph library built on matplotlib.
+
+DIFFERENCE BETWEEN MATPLOTLIB & SEABORN
+Matplotlib	Seaborn
+basic plotting	advanced statistical plots
+more manual	easier
+less styling	prettier
+TRAIN TEST SPLIT
+from sklearn.model_selection import train_test_split
+WHAT DOES THIS DO?
+
+Splits dataset into:
+
+training data,
+testing data.
+WHY IMPORTANT?
+
+Because:
+
+model learns from training data,
+model evaluated on testing data.
+WHAT IF WE DON’T SPLIT?
+
+Model may:
+
+memorize data.
+
+This is called:
+
+overfitting.
+GAUSSIANNB IMPORT
+from sklearn.naive_bayes import GaussianNB
+
+Imports Naive Bayes classification algorithm.
+
+EVALUATION METRICS IMPORT
+confusion_matrix
+accuracy_score
+precision_score
+recall_score
+classification_report
+
+Used for:
+
+model evaluation.
+CELL 3 — LOAD DATASET
+df = pd.read_csv("Iris.csv")
+
+MOST IMPORTANT.
+
+WHAT DOES read_csv() DO?
+
+Reads CSV file and converts into:
+
+DataFrame.
+WHAT IS CSV?
+
+CSV =
+
+Comma Separated Values
+
+Example:
+
+Name,Age
+Harshada,20
+WHAT IS DATAFRAME?
+
+2-dimensional tabular structure.
+
+Like Excel sheet.
+
+URL METHOD
+url = "https://..."
+
+Alternative online dataset loading.
+
+WHY KEEP URL METHOD?
+
+External may ask:
+
+“Can dataset be loaded online?”
+
+Answer:
+YES.
+
+NEXT LINE
+print(df.head())
+WHAT DOES head() DO?
+
+Displays:
+
+first 5 rows.
+WHY IMPORTANT?
+
+Quick inspection of dataset.
+
+CELL 4 — DATASET INFORMATION
+SHAPE
+df.shape
+
+Returns:
+
+(rows, columns)
+
+Example:
+
+(150,5)
+
+means:
+
+150 rows,
+5 columns.
+COLUMN NAMES
+df.columns
+
+Displays all column names.
+
+INFO
+df.info()
+
+Shows:
+
+datatypes,
+non-null values,
+memory usage.
+MISSING VALUES
+df.isnull().sum()
+
+MOST IMPORTANT.
+
+WHAT IS NULL VALUE?
+
+Missing/empty value.
+
+WHAT DOES isnull() DO?
+
+Checks:
+
+whether values are missing.
+
+Returns:
+
+True
+False
+WHAT DOES sum() DO?
+
+Counts total missing values.
+
+Because:
+
+True = 1
+False = 0
+DTYPES
+df.dtypes
+
+Displays datatype of each column.
+
+COMMON DATATYPES
+Type	Meaning
+int64	integer
+float64	decimal
+object	text
+CELL 5 — REMOVE ID COLUMN
+if 'Id' in df.columns:
+
+MOST IMPORTANT.
+
+WHAT IS THIS CHECKING?
+
+Checks whether:
+
+Id
+
+column exists.
+
+WHY IMPORTANT?
+
+Some Iris datasets contain:
+
+Id
+
+some don’t.
+
+NEXT LINE
+df.drop('Id', axis=1, inplace=True)
+WHAT DOES drop() DO?
+
+Removes column.
+
+WHAT IS axis=1?
+
+Means:
+
+column operation.
+axis	meaning
+0	rows
+1	columns
+WHAT IS inplace=True?
+
+Modify original DataFrame directly.
+
+WHY REMOVE ID?
+
+Because:
+
+ID has no predictive value.
+
+It’s just serial number.
+
+CELL 6 — FEATURES & TARGET
+FEATURES
+X = df.iloc[:, :-1].values
+
+MOST IMPORTANT.
+
+WHAT IS iloc?
+
+Integer-location indexing.
+
+WHAT DOES : MEAN?
+
+Select all rows.
+
+WHAT DOES :-1 MEAN?
+
+Select all columns except last column.
+
+WHAT ARE FEATURES?
+
+Input variables.
+
+Examples:
+
+sepal length,
+petal width.
+WHAT DOES .values DO?
+
+Converts DataFrame into:
+
+NumPy array.
+TARGET VARIABLE
+y = df.iloc[:, -1].values
+WHAT DOES -1 MEAN?
+
+Last column.
+
+TARGET VARIABLE HERE
+
+Species:
+
+Setosa
+Versicolor
+Virginica
+IMPORTANT CONCEPT
+Variable	Meaning
+X	independent/input
+y	dependent/output
+CELL 7 — TRAIN TEST SPLIT
+train_test_split()
+
+MOST IMPORTANT VIVA TOPIC.
+
+WHAT DOES THIS DO?
+
+Splits dataset into:
+
+training data,
+testing data.
+THIS PART
+test_size=0.2
+
+means:
+
+20% testing,
+80% training.
+THIS PART
+random_state=42
+
+ensures:
+
+same split every run.
+WHY 42?
+
+Just common convention.
+
+No special mathematical reason.
+
+CELL 8 — CREATE MODEL
+model = GaussianNB()
+
+Creates Naive Bayes model object.
+
+WHAT IS MODEL?
+
+Mathematical learning system.
+
+CELL 9 — TRAIN MODEL
+model.fit(X_train, y_train)
+
+MOST IMPORTANT LINE.
+
+WHAT DOES fit() DO?
+
+Trains model.
+
+INTERNALLY MODEL:
+studies training data,
+calculates probabilities,
+learns feature distributions,
+stores parameters.
+THIS IS:
+learning phase.
+CELL 10 — PREDICTION
+y_pred = model.predict(X_test)
+
+MOST IMPORTANT.
+
+WHAT DOES predict() DO?
+
+Uses learned probabilities to:
+
+predict flower species.
+OUTPUT
+
+Predicted class labels.
+
+CELL 11 — COMPARISON
+
+Creates DataFrame comparing:
+
+actual labels,
+predicted labels.
+WHY IMPORTANT?
+
+Helps visually inspect prediction correctness.
+
+CELL 12 — CONFUSION MATRIX
+confusion_matrix(y_test, y_pred)
+
+MOST IMPORTANT TOPIC.
+
+WHAT IS CONFUSION MATRIX?
+
+Table evaluating classification performance.
+
+STRUCTURE
+Actual/Predicted	Positive	Negative
+Positive	TP	FN
+Negative	FP	TN
+TRUE POSITIVE (TP)
+
+Correctly predicted positive.
+
+FALSE POSITIVE (FP)
+
+Incorrectly predicted positive.
+
+Also called:
+
+Type I Error
+FALSE NEGATIVE (FN)
+
+Incorrectly predicted negative.
+
+Also called:
+
+Type II Error
+TRUE NEGATIVE (TN)
+
+Correctly predicted negative.
+
+CELL 13 — ACCURACY
+accuracy_score()
+
+Formula:
+
+Accuracy=
+TP+TN+FP+FN
+TP+TN
+	​
+
+
+WHAT DOES ACCURACY MEAN?
+
+Percentage of correct predictions.
+
+CELL 14 — ERROR RATE
+1 - accuracy
+
+Formula:
+
+Error Rate=1−Accuracy
+
+WHAT DOES ERROR RATE MEAN?
+
+Percentage of wrong predictions.
+
+CELL 15 — PRECISION
+precision_score()
+
+Formula:
+
+Precision=
+TP+FP
+TP
+	​
+
+
+WHAT DOES PRECISION MEAN?
+
+Among predicted positives:
+
+how many were actually correct.
+WHAT IS average='weighted'?
+
+IMPORTANT.
+
+Because Iris dataset is:
+
+multiclass dataset.
+
+Weighted average:
+
+considers class sizes.
+CELL 16 — RECALL
+recall_score()
+
+Formula:
+
+Recall=
+TP+FN
+TP
+	​
+
+
+WHAT DOES RECALL MEAN?
+
+Among actual positives:
+
+how many correctly identified.
+CELL 17 — CLASSIFICATION REPORT
+classification_report()
+
+Provides:
+
+precision,
+recall,
+f1-score,
+support.
+WHAT IS F1 SCORE?
+
+Balance between:
+
+precision,
+recall.
+
+Formula:
+
+F1=2×
+Precision+Recall
+Precision×Recall
+	​
+
+
+WHAT IS SUPPORT?
+
+Number of actual samples in each class.
+
+CELL 18 — TP FP TN FN FOR EACH CLASS
+classes = np.unique(y)
+
+Gets all unique class labels.
+
+WHAT DOES unique() DO?
+
+Returns distinct values.
+
+LOOP
+for i, cls in enumerate(classes):
+
+Loops through each class.
+
+WHAT IS enumerate()?
+
+Returns:
+
+index,
+value.
+
+Example:
+
+i	cls
+0	Setosa
+1	Versicolor
+TP
+TP = conf_mat[i, i]
+
+Diagonal elements.
+
+Correct predictions.
+
+FP
+FP = np.sum(conf_mat[:, i]) - TP
+
+Column sum minus TP.
+
+FN
+FN = np.sum(conf_mat[i, :]) - TP
+
+Row sum minus TP.
+
+TN
+TN = total - (TP+FP+FN)
+
+Remaining correctly rejected samples.
+
+CELL 19 — SEABORN HEATMAP
+sns.heatmap()
+
+MOST IMPORTANT VISUALIZATION.
+
+WHAT DOES HEATMAP SHOW?
+
+Color representation of matrix values.
+
+annot=True
+
+Displays numbers inside boxes.
+
+fmt='d'
+
+Display integers.
+
+cmap='Blues'
+
+Blue color theme.
+
+xticklabels
+
+Labels x-axis.
+
+yticklabels
+
+Labels y-axis.
+
+CELL 20 — MATPLOTLIB MATRIX
+plt.matshow()
+
+Displays matrix visually.
+
+WHAT DOES colorbar() DO?
+
+Displays color scale legend.
+
+CELL 21 — SCATTER PLOT (MATPLOTLIB)
+plt.scatter()
+
+MOST IMPORTANT GRAPH.
+
+WHAT IS SCATTER PLOT?
+
+Graph showing:
+
+relationship between two variables.
+EACH DOT REPRESENTS
+
+One flower.
+
+X-AXIS
+
+Sepal Length.
+
+Y-AXIS
+
+Petal Length.
+
+CELL 22 — SCATTER PLOT (SEABORN)
+sns.scatterplot()
+
+Same graph but prettier.
+
+WHAT DOES hue= DO?
+
+Adds:
+
+different colors for different species.
+WHY IMPORTANT?
+
+Helps visualize:
+
+clustering.
+WHAT IS CLUSTERING?
+
+Grouping of similar data points.
+
+CELL 23 — PROBABILITY PREDICTION
+model.predict_proba(X_test)
+
+MOST IMPORTANT.
+
+WHAT DOES THIS DO?
+
+Returns:
+
+probability of each class.
+EXAMPLE OUTPUT
+Setosa	Versicolor	Virginica
+0.95	0.03	0.02
+FINAL PREDICTION
+
+Highest probability wins.
+
+MOST IMPORTANT VIVA QUESTIONS
+Q1
+
+What is Naive Bayes?
+
+Probability-based classification algorithm.
+
+Q2
+
+Why called Naive?
+
+Assumes features are independent.
+
+Q3
+
+What is Bayes Theorem?
+
+P(A∣B)=
+P(B)
+P(B∣A)P(A)
+	​
+
+P(A)
+P(B∣A)
+P(B∣¬A)
+P(A∣B)=
+P(B)
+P(B∣A)P(A)
+	​
+
+≈0.68,P(B)≈0.25
+P(B)=0.25
+P(B|A)P(A)=0.17
+P(A|B)~0.68
+Posterior = useful evidence / total evidence
+Q4
+
+Why GaussianNB used?
+
+Because dataset contains continuous numerical values.
+
+Q5
+
+Difference between classification and regression?
+
+Classification	Regression
+categorical output	continuous output
+Q6
+
+What is confusion matrix?
+
+Table evaluating classification performance.
+
+Q7
+
+Difference between precision and recall?
+
+Precision	Recall
+correctness of predictions	coverage of actual positives
+Q8
+
+What is overfitting?
+
+Model memorizes training data instead of generalizing.

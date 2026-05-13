@@ -1,0 +1,512 @@
+PRACTICAL TITLE
+Weather Data Analysis Using Java File Processing
+Problem Statement
+
+“Locate dataset (e.g., sample_weather.txt) for working on weather data which reads the text input files and finds average for temperature, dew point and wind speed.”
+
+Your program:
+
+reads a weather dataset
+extracts weather values
+calculates averages
+displays results
+
+This is a basic:
+
+Data Analytics / Data Processing application
+FIRST — WHAT IS WEATHER DATA?
+
+Weather data contains atmospheric measurements collected daily or hourly.
+
+Example:
+
+Date	Temp	Dew Point	Wind Speed
+2024-01-09	23	16	10
+WHAT EACH FIELD MEANS
+Field	Meaning
+Date	Observation date
+Temp	Temperature
+Dew Point	Moisture content in air
+Wind Speed	Speed of moving air
+WHAT IS DEW POINT?
+
+VERY IMPORTANT VIVA QUESTION.
+
+Dew point =
+temperature at which air becomes saturated with moisture.
+
+Simple understanding:
+
+higher dew point → humid air
+lower dew point → dry air
+
+Example:
+
+rainy climate → high dew point
+desert climate → low dew point
+WHAT IS CSV DATA?
+
+CSV =
+
+Comma Separated Values
+
+Example:
+
+2024-01-09,23,16,10
+
+Each value is separated using commas.
+
+CSV is widely used because:
+
+simple
+lightweight
+easy to process
+supported everywhere
+WHAT YOUR PROGRAM DOES
+
+Your program performs:
+
+Read File
+   ↓
+Read Each Line
+   ↓
+Split CSV Data
+   ↓
+Extract Values
+   ↓
+Add Totals
+   ↓
+Count Records
+   ↓
+Calculate Averages
+   ↓
+Display Output
+INPUT DATASET STRUCTURE
+
+Example row:
+
+2024-01-09,23,16,10
+
+After splitting:
+
+Index	Value
+parts[0]	Date
+parts[1]	Temperature
+parts[2]	Dew Point
+parts[3]	Wind Speed
+PROJECT STRUCTURE
+WeatherAnalysisProject
+│
+├── src
+│   └── WeatherAnalyzer.java
+│
+└── sample_weather.txt
+COMPLETE CODE
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class WeatherAnalyzer {
+
+    public static void main(String[] args) {
+
+        try {
+
+            BufferedReader br = new BufferedReader(
+                    new FileReader("sample_weather.txt"));
+
+            String line;
+
+            double tempSum = 0;
+            double dewSum = 0;
+            double windSum = 0;
+
+            int count = 0;
+
+            while ((line = br.readLine()) != null) {
+
+                if (line.startsWith("Date")) {
+                    continue;
+                }
+
+                String[] parts = line.split(",");
+
+                if (parts.length == 4) {
+
+                    double temperature = Double.parseDouble(parts[1]);
+                    double dewPoint = Double.parseDouble(parts[2]);
+                    double windSpeed = Double.parseDouble(parts[3]);
+
+                    tempSum += temperature;
+                    dewSum += dewPoint;
+                    windSum += windSpeed;
+
+                    count++;
+                }
+            }
+
+            br.close();
+
+            double avgTemp = tempSum / count;
+            double avgDew = dewSum / count;
+            double avgWind = windSum / count;
+
+            System.out.println("average weather statistics:\n");
+
+            System.out.println("average temperature : " + avgTemp);
+            System.out.println("average dew point   : " + avgDew);
+            System.out.println("average wind speed  : " + avgWind);
+
+        } catch (IOException e) {
+
+            System.out.println("error reading file: " + e.getMessage());
+        }
+    }
+}
+
+NOW COMPLETE LINE-BY-LINE EXPLANATION
+IMPORTS
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+These import Java classes needed for file processing.
+
+BufferedReader
+
+Used for:
+efficient file reading.
+
+Reads file:
+line by line.
+
+Without BufferedReader:
+reading large files becomes slower.
+
+FileReader
+
+Used to:
+open file from disk.
+
+Example:
+
+new FileReader("sample_weather.txt")
+
+means:
+open weather dataset file.
+
+IOException
+
+Handles:
+file-related errors.
+
+Examples:
+
+file missing
+permission denied
+corrupted file
+CLASS DECLARATION
+public class WeatherAnalyzer
+
+Creates Java class named:
+WeatherAnalyzer.
+
+MAIN METHOD
+public static void main(String[] args)
+
+Program execution starts here.
+
+TRY BLOCK
+try
+
+Used because:
+file operations may generate exceptions.
+
+OPEN FILE
+BufferedReader br = new BufferedReader(
+        new FileReader("sample_weather.txt"));
+
+MOST IMPORTANT LINE.
+
+Steps:
+
+FileReader opens file
+BufferedReader reads efficiently
+STORE EACH LINE
+String line;
+
+Stores one dataset row at a time.
+
+SUM VARIABLES
+double tempSum = 0;
+double dewSum = 0;
+double windSum = 0;
+
+Used to store total sums.
+
+Example:
+
+23 + 24 + 25 + ...
+COUNT VARIABLE
+int count = 0;
+
+Tracks total valid rows.
+
+MAIN LOOP
+while ((line = br.readLine()) != null)
+
+Reads file:
+line by line
+until end of file.
+
+HEADER SKIPPING
+if (line.startsWith("Date"))
+
+Skips:
+
+Date,Temp,DewPoint,WindSpeed
+
+Because:
+header is not numeric data.
+
+SPLIT CSV DATA
+String[] parts = line.split(",");
+
+Splits row using commas.
+
+Example:
+
+2024-01-09,23,16,10
+
+becomes:
+
+Index	Value
+0	2024-01-09
+1	23
+2	16
+3	10
+VALIDATION CHECK
+if (parts.length == 4)
+
+Ensures:
+correct row structure.
+
+Prevents:
+ArrayIndexOutOfBoundsException.
+
+TYPE CONVERSION
+Double.parseDouble(parts[1]);
+
+Converts:
+String → double.
+
+Example:
+
+"23"
+
+becomes:
+
+23.0
+EXTRACT VALUES
+double temperature = Double.parseDouble(parts[1]);
+double dewPoint = Double.parseDouble(parts[2]);
+double windSpeed = Double.parseDouble(parts[3]);
+
+Extracts:
+
+temperature
+dew point
+wind speed
+ADD TOTALS
+tempSum += temperature;
+dewSum += dewPoint;
+windSum += windSpeed;
+
+Continuously adds values.
+
+Example:
+
+23 + 24 + 25 + ...
+RECORD COUNT
+count++;
+
+Increments valid row counter.
+
+CLOSE FILE
+br.close();
+
+Very important.
+
+Releases system resources.
+
+AVERAGE FORMULA
+
+Your program uses:
+
+Average=
+Number of Records
+Total Sum
+	​
+
+
+CALCULATE AVERAGES
+double avgTemp = tempSum / count;
+double avgDew = dewSum / count;
+double avgWind = windSum / count;
+
+Computes averages.
+
+DISPLAY RESULTS
+System.out.println(...)
+
+Prints output on console.
+
+CATCH BLOCK
+catch (IOException e)
+
+Handles:
+file errors safely.
+
+SAMPLE OUTPUT
+average weather statistics:
+
+average temperature : 23.208791208791208
+average dew point   : 16.373626373626372
+average wind speed  : 7.3076923076923075
+
+IMPORTANT CONCEPTS
+1. FILE HANDLING
+
+Reading data from files.
+
+Java classes used:
+
+FileReader
+BufferedReader
+2. CSV PROCESSING
+
+Processing comma-separated data.
+
+3. DATA PARSING
+
+Extracting structured information from raw text.
+
+4. AGGREGATION
+
+Combining multiple values into summary results.
+
+Examples:
+
+average
+sum
+count
+5. TYPE CONVERSION
+
+Converting String values into numbers.
+
+6. STATISTICAL COMPUTATION
+
+Calculating:
+
+average
+totals
+analytics
+REAL-WORLD APPLICATIONS
+
+This concept is used in:
+
+weather forecasting
+climate monitoring
+IoT sensors
+environmental analytics
+smart agriculture
+meteorological systems
+LIMITATIONS OF YOUR PROGRAM
+
+Your implementation assumes:
+
+all rows are valid
+numeric data always exists
+commas are correctly placed
+
+Real-world systems require:
+
+error validation
+missing value handling
+malformed row detection
+
+But for practicals:
+your implementation is correct.
+
+MOST IMPORTANT VIVA QUESTIONS
+1. What is CSV?
+
+CSV stands for Comma Separated Values used for storing tabular data.
+
+2. Why BufferedReader?
+
+BufferedReader efficiently reads text files line by line.
+
+3. Why FileReader?
+
+FileReader opens and reads files from disk.
+
+4. Why use split(",")?
+
+To separate CSV values using commas.
+
+5. Why use parseDouble?
+
+To convert String values into numeric decimal values.
+
+6. Why skip header row?
+
+Header contains column names, not actual numeric weather data.
+
+7. What is dew point?
+
+Dew point is the temperature at which air becomes saturated with moisture.
+
+8. Why use double datatype?
+
+Because averages may contain decimal values.
+
+9. What is IOException?
+
+IOException handles input/output related file errors.
+
+10. Why use count variable?
+
+To track number of valid records for average calculation.
+
+11. What happens if file is missing?
+
+FileNotFoundException occurs.
+
+12. Why check parts.length == 4?
+
+To avoid invalid row processing and array index errors.
+
+13. What is data parsing?
+
+Converting raw text data into structured usable values.
+
+14. Difference between int and double?
+int	double
+whole numbers	decimal values
+5	5.67
+15. What is aggregation?
+
+Aggregation means combining multiple values into summarized information.
+
+16. What is the time complexity?
+
+Your program processes each row once.
+
+So:
+
+O(n)
+
+where:
+
+n = number of rows

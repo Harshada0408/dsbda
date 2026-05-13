@@ -1,0 +1,747 @@
+FIRST UNDERSTAND WHAT THIS PRACTICAL IS ACTUALLY ABOUT
+
+This practical teaches:
+
+SUPERVISED MACHINE LEARNING
+
+Specifically:
+
+LINEAR REGRESSION
+WHAT IS THE GOAL?
+
+Predict:
+
+house prices
+
+using:
+
+crime rate,
+rooms,
+tax,
+pollution,
+etc.
+INPUT FEATURES
+
+Examples:
+
+number of rooms,
+crime rate,
+property tax.
+
+These are called:
+
+independent variables/features.
+
+Represented by:
+
+X
+OUTPUT
+
+House price.
+
+Represented by:
+
+y
+WHY CALLED SUPERVISED LEARNING?
+
+Because:
+
+correct outputs already exist.
+
+Example:
+
+Rooms	Price
+5	20 lakh
+8	50 lakh
+
+Model learns relationship.
+
+WHAT IS LINEAR REGRESSION?
+
+MOST IMPORTANT.
+
+Linear regression tries to:
+
+fit best straight line
+
+between:
+
+inputs,
+output.
+EXAMPLE
+
+More rooms generally:
+→ higher price.
+
+So model learns:
+
+rooms ↑ → price ↑
+LINEAR REGRESSION EQUATION
+
+MOST IMPORTANT FORMULA.
+
+y=b
+0
+	​
+
++b
+1
+	​
+
+x
+1
+	​
+
++b
+2
+	​
+
+x
+2
+	​
+
++⋯+b
+n
+	​
+
+x
+n
+	​
+
+
+WHAT EACH TERM MEANS
+Symbol	Meaning
+y	predicted output
+b₀	intercept
+b₁,b₂	coefficients
+x	input features
+SIMPLE REAL EXAMPLE
+
+Suppose:
+
+Price=5+2(Rooms)
+
+If rooms = 3:
+
+Price=5+2(3)=11
+
+WHAT IS COEFFICIENT?
+
+Represents:
+
+impact of feature on output.
+POSITIVE COEFFICIENT
+
+Feature increases output.
+
+Example:
+
+more rooms → higher price.
+NEGATIVE COEFFICIENT
+
+Feature decreases output.
+
+Example:
+
+more crime → lower price.
+NOW CODE EXPLANATION
+CELL 1 — INSTALL LIBRARIES
+!pip install pandas numpy matplotlib seaborn scikit-learn
+WHAT IS SCIKIT-LEARN?
+
+scikit-learn
+
+MOST IMPORTANT ML LIBRARY.
+
+Used for:
+
+regression,
+classification,
+clustering,
+preprocessing,
+model evaluation.
+WHY USED HERE?
+
+Because:
+
+LinearRegression class exists inside sklearn.
+CELL 2 — IMPORT LIBRARIES
+PANDAS
+import pandas as pd
+
+Used for:
+
+DataFrames,
+CSV handling,
+preprocessing.
+NUMPY
+import numpy as np
+
+Used for:
+
+mathematics,
+square root,
+arrays.
+MATPLOTLIB
+import matplotlib.pyplot as plt
+
+Used for:
+
+plotting graphs.
+SEABORN
+import seaborn as sns
+
+Used for:
+
+advanced visualization.
+IMPORTANT SKLEARN IMPORTS
+1. TRAIN TEST SPLIT
+from sklearn.model_selection import train_test_split
+
+Used for:
+
+dividing dataset into training and testing data.
+WHY SPLIT DATASET?
+
+Because:
+
+training data teaches model,
+testing data checks performance.
+WITHOUT SPLITTING?
+
+Model may memorize data.
+This is called:
+
+overfitting.
+2. LINEAR REGRESSION
+from sklearn.linear_model import LinearRegression
+
+Imports regression algorithm.
+
+3. EVALUATION METRICS
+mean_absolute_error
+mean_squared_error
+r2_score
+
+Used to evaluate model quality.
+
+CELL 3 — LOAD DATASET
+df = pd.read_csv("HousingData.csv")
+
+Loads dataset into DataFrame.
+
+WHAT IS BOSTON HOUSING DATASET?
+
+Classic ML dataset.
+
+Contains:
+
+506 rows,
+14 columns.
+
+Used for:
+
+regression problems.
+IMPORTANT FEATURES
+Feature	Meaning
+CRIM	crime rate
+RM	rooms
+TAX	tax rate
+AGE	house age
+MEDV	house price
+MOST IMPORTANT COLUMN
+MEDV
+
+Target variable.
+
+Represents:
+
+Median house value.
+CELL 4 — URL METHOD
+
+Alternative loading method.
+
+WHY KEEP THIS?
+
+External may ask:
+
+“Can datasets be loaded online?”
+
+Answer:
+YES.
+
+Using:
+
+pd.read_csv(url)
+CELL 5 — SHAPE
+df.shape
+
+Returns:
+
+(rows, columns)
+CELL 6 — INFO
+df.info()
+
+Shows:
+
+datatype,
+non-null count,
+memory usage.
+CELL 7 — MISSING VALUES
+df.isnull().sum()
+
+Checks missing values.
+
+WHY IMPORTANT?
+
+ML models usually cannot handle missing values.
+
+CELL 8 — DESCRIBE
+df.describe()
+
+Shows:
+
+mean,
+std,
+min,
+max,
+quartiles.
+CELL 9 — HANDLE MISSING VALUES
+df.fillna(df.mean(), inplace=True)
+
+MOST IMPORTANT.
+
+WHAT DOES fillna() DO?
+
+Replaces missing values.
+
+WHY USE MEAN?
+
+Because:
+
+numerical columns,
+preserves average trend.
+WHAT IS inplace=True?
+
+Modify original DataFrame directly.
+
+CELL 10 — CORRELATION
+df.corr()
+
+MOST IMPORTANT.
+
+WHAT IS CORRELATION?
+
+Measures relationship between variables.
+
+RANGE
+Value	Meaning
++1	strong positive
+0	no relation
+-1	strong negative
+EXAMPLE
+
+Positive:
+
+rooms & price.
+
+Negative:
+
+crime & price.
+CELL 11 — HEATMAP
+sns.heatmap()
+
+Visual representation of correlation matrix.
+
+WHAT DOES COLOR SHOW?
+
+Strength of relationship.
+
+WHAT IS annot=True?
+
+Displays actual numbers inside boxes.
+
+CELL 12 — SELECT INPUT & OUTPUT
+x = df.drop('MEDV', axis=1)
+
+MOST IMPORTANT.
+
+WHAT DOES THIS DO?
+
+Creates:
+
+input variables/features.
+WHY DROP MEDV?
+
+Because:
+
+MEDV is output variable.
+WHAT IS axis=1?
+
+Means:
+
+column operation.
+NEXT LINE
+y = df['MEDV']
+
+Creates:
+
+target/output variable.
+VERY IMPORTANT CONCEPT
+Variable Type	Meaning
+independent	input
+dependent	output
+CELL 13 — TRAIN TEST SPLIT
+train_test_split()
+
+MOST IMPORTANT FOR VIVA.
+
+WHAT DOES THIS DO?
+
+Splits dataset into:
+
+training data,
+testing data.
+THIS PART
+test_size=0.2
+
+means:
+
+20% testing,
+80% training.
+THIS PART
+random_state=42
+
+MOST ASKED VIVA QUESTION.
+
+WHAT IS RANDOM STATE?
+
+Controls randomness.
+
+Ensures:
+
+same split every run.
+WHY 42?
+
+No special reason.
+Just famous convention.
+
+CELL 14 — CREATE MODEL
+model = LinearRegression()
+
+Creates linear regression object.
+
+WHAT IS MODEL?
+
+Mathematical system that learns patterns.
+
+CELL 15 — TRAIN MODEL
+model.fit(x_train, y_train)
+
+MOST IMPORTANT LINE.
+
+WHAT DOES fit() DO?
+
+Trains model.
+
+INTERNALLY WHAT HAPPENS?
+
+Model:
+
+studies training data,
+finds relationships,
+calculates coefficients,
+creates regression equation.
+THIS IS:
+learning phase.
+CELL 16 — PREDICTION
+y_pred = model.predict(x_test)
+
+MOST IMPORTANT.
+
+WHAT DOES predict() DO?
+
+Uses learned equation to predict prices.
+
+INPUT
+
+Testing data.
+
+OUTPUT
+
+Predicted prices.
+
+CELL 17 — COMPARISON
+
+Creates table:
+
+Actual	Predicted
+WHY IMPORTANT?
+
+To compare prediction quality.
+
+CELL 18 — EVALUATION METRICS
+
+MOST IMPORTANT SECTION.
+
+MAE
+mean_absolute_error()
+
+Measures:
+
+average absolute error.
+
+Formula:
+
+MAE=
+n
+1
+	​
+
+∑∣y
+i
+	​
+
+−
+y
+i
+	​
+
+^
+	​
+
+∣
+
+SMALLER MAE = BETTER MODEL
+MSE
+mean_squared_error()
+
+Measures:
+
+squared errors.
+
+Formula:
+
+MSE=
+n
+1
+	​
+
+∑(y
+i
+	​
+
+−
+y
+i
+	​
+
+^
+	​
+
+)
+2
+
+WHY SQUARE USED?
+
+Punishes large errors more.
+
+RMSE
+np.sqrt(mse)
+
+Formula:
+
+RMSE=
+MSE
+	​
+
+
+WHY RMSE BETTER THAN MSE?
+
+Because:
+
+returns original units.
+R² SCORE
+r2_score()
+
+MOST IMPORTANT METRIC.
+
+WHAT DOES R² MEAN?
+
+How well model explains data.
+
+RANGE
+Value	Meaning
+1	perfect
+0	poor
+CELL 19–20 — SCATTER PLOTS
+plt.scatter()
+
+and
+
+sns.scatterplot()
+
+show:
+
+actual vs predicted values.
+IDEAL MODEL
+
+Points should lie close to diagonal line.
+
+CELL 21 — REGRESSION LINE
+sns.regplot()
+
+Shows:
+
+trend line,
+relationship between actual and predicted.
+CELL 22 — COEFFICIENTS
+model.coef_
+
+MOST IMPORTANT.
+
+WHAT ARE COEFFICIENTS?
+
+Weights/importance of features.
+
+POSITIVE COEFFICIENT
+
+Feature increases price.
+
+NEGATIVE COEFFICIENT
+
+Feature decreases price.
+
+CELL 23 — INTERCEPT
+model.intercept_
+
+MOST IMPORTANT.
+
+WHAT IS INTERCEPT?
+
+Value of output when all inputs = 0.
+
+COMPLETE REGRESSION EQUATION
+
+y=b
+0
+	​
+
++b
+1
+	​
+
+x
+1
+	​
+
++b
+2
+	​
+
+x
+2
+	​
+
++...+b
+n
+	​
+
+x
+n
+	​
+
+
+where:
+
+intercept = b₀
+coefficients = b₁,b₂…
+DOES THIS PRACTICAL NEED IMPROVEMENT?
+
+YES — SMALL IMPROVEMENTS.
+
+IMPROVEMENT 1
+
+Replace:
+
+print(df.info())
+
+with:
+
+df.info()
+IMPROVEMENT 2
+
+Heatmap:
+
+sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+
+Better visualization.
+
+IMPROVEMENT 3
+
+Can add:
+
+from sklearn.metrics import mean_absolute_percentage_error
+
+optional.
+
+MOST IMPORTANT VIVA QUESTIONS
+Q1
+
+What is machine learning?
+
+Systems learning patterns from data.
+
+Q2
+
+What is supervised learning?
+
+Learning using labeled data.
+
+Q3
+
+What is linear regression?
+
+Algorithm predicting continuous values using linear relationship.
+
+Q4
+
+Difference between dependent and independent variable?
+
+Independent	Dependent
+input	output
+Q5
+
+Why split dataset?
+
+To evaluate model on unseen data.
+
+Q6
+
+What is overfitting?
+
+Model memorizes training data instead of generalizing.
+
+Q7
+
+What does fit() do?
+
+Trains model.
+
+Q8
+
+What does predict() do?
+
+Predicts outputs using trained model.
+
+Q9
+
+What is coefficient?
+
+Feature weight/impact.
+
+Q10
+
+What is intercept?
+
+Output when all inputs are zero.
